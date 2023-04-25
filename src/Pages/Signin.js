@@ -4,8 +4,7 @@ import { Button, Checkbox, Input, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { CURRENT_USER_API } from '../redux/constants/JiraCloneConst';
-import { signinAction } from '../redux/actions/JiraCloneAction';
+import { signinAction } from '../redux/saga/actions/UserAction';
 import LoadingComponent from '../Components/GlobalSetting/LoadingComponent/LoadingComponent';
 
 const { Title } = Typography;

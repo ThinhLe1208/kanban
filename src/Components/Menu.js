@@ -6,23 +6,27 @@ export default function Menu() {
         <div className="menu">
             <div className="account">
                 <div className="avatar">
-                    <img src="./assets/img/download.jfif" alt />
+                    <img src={require("../assets/img/logo.jfif")} alt="logo" />
                 </div>
                 <div className="account-info">
                     <p>CyberLearn.vn</p>
                     <p>Report bugs</p>
                 </div>
             </div>
-            <div className="control">
-                <NavLink to=''>
-                    <i className="fa fa-credit-card" />
-                    <span>Cyber Board</span>
-                </NavLink>
-                <NavLink to='settings'>
-                    <i className="fa fa-cog" />
-                    <span>Project Settings</span>
-                </NavLink>
-            </div>
+            <ul className="control">
+                <li>
+                    <NavLink to='board' className={({ isActive }) => isActive ? 'text-primary' : 'text-dark'}>
+                        <i className="fa fa-credit-card" />
+                        <span>Cyber Board</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='create' className={({ isActive }) => isActive ? 'text-primary' : 'text-dark'}>
+                        <i className="fa fa-cog" />
+                        <span>Create Project</span>
+                    </NavLink>
+                </li>
+            </ul>
             <div className="feature">
                 <div>
                     <i className="fa fa-truck" />

@@ -14,12 +14,12 @@ const UserReducer = createSlice({
     name: 'UserReducer',
     initialState,
     reducers: {
-        userLogin: (state, { payload }) => {
+        userSignin: (state, { payload }) => {
             state.currentUser = payload;
         }
     }
 });
 
-export const { userLogin } = UserReducer.actions;
+export const { userSignin } = UserReducer.actions;
 
 export default UserReducer.reducer;

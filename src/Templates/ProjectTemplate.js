@@ -1,7 +1,6 @@
 import React from 'react';
 import Sidebar from '../Components/Sidebar';
 import Menu from '../Components/Menu';
-import SearchModal from '../Components/Modal/SearchModal';
 import { Outlet } from 'react-router-dom';
 
 export default function ProjectTemplate() {
@@ -11,8 +10,6 @@ export default function ProjectTemplate() {
             <Menu />
 
             <Outlet />
-
-            <SearchModal />
         </div>
     );
 }

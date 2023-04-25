@@ -1,21 +1,24 @@
 import { call, delay, put, takeLatest } from "redux-saga/effects";
-import { CURRENT_USER_API } from "../constants/JiraCloneConst";
-import { jiraCloneService } from "../../services/JiraCloneService";
+import { USER_SIGNIN_API } from "../constants/JiraCloneConst";
+import { userService } from "../../services/UserService";
 import { STATUS_CODE, TOKEN, CURRENT_USER } from "../../util/constants/settingSystem";
 import { hideLoading, showLoading } from "../reducers/LoadingReducer";
 import { history } from '../../util/history';
-import { userLogin } from "../reducers/UserReducer";
+import { userSignin } from "../reducers/UserReducer";
 
 function* signinApiAction(action) {
     yield put(showLoading());
     yield delay(500);
 
     try {
-        const { data, status } = yield call(() => jiraCloneService.signinApi(action.userSignin));
+        const { data, status } = yield call(() => userService.signinApi(action.userSignin));
         if (status === STATUS_CODE.SUCCESS) {
+            // save token and user info to localStorage
             localStorage.setItem(TOKEN, data.content.accessToken);
             localStorage.setItem(CURRENT_USER, JSON.stringify(data.content));
-            yield put(userLogin(data.content));
+            // save user info to redux store
+            yield put(userSignin(data.content));
+            // navigate to home
             yield history.push("/home");
         }
     } catch (err) {
@@ -25,6 +28,6 @@ function* signinApiAction(action) {
     yield put(hideLoading());
 }
 
-export function* theoDoiSigninApiAction() {
-    yield takeLatest(CURRENT_USER_API, signinApiAction);
+export function* watchSigninApiAction() {
+    yield takeLatest(USER_SIGNIN_API, signinApiAction);
 }

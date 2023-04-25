@@ -1,8 +1,10 @@
 import { all } from 'redux-saga/effects';
-import * as JiraClone from './JiraCloneSaga';
+import * as UserSaga from './UserSaga';
+import * as ProjectCategorySaga from './ProjectCategorySaga';
 
 export function* rootSaga() {
     yield all([
-        JiraClone.theoDoiSigninApiAction()
+        UserSaga.watchSigninApiAction(),
+        ProjectCategorySaga.watchgetProjectCategoryAction()
     ]);
 }

@@ -11,13 +11,13 @@ export default function InfoMain() {
                 </div>
                 <div className="avatar-group" style={{ display: 'flex' }}>
                     <div className="avatar">
-                        <img src="./assets/img/download (1).jfif" alt />
+                        <img src={require("../../assets/img/avatar(1).jfif")} alt="avatar" />
                     </div>
                     <div className="avatar">
-                        <img src="./assets/img/download (2).jfif" alt />
+                        <img src={require("../../assets/img/avatar(2).jfif")} alt="avatar" />
                     </div>
                     <div className="avatar">
-                        <img src="./assets/img/download (3).jfif" alt />
+                        <img src={require("../../assets/img/avatar(3).jfif")} alt="avatar" />
                     </div>
                 </div>
                 <div style={{ marginLeft: 20 }} className="text">Only My Issues</div>

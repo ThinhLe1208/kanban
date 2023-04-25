@@ -72,7 +72,7 @@ export default function InfoModal() {
                                         <h6>Comment</h6>
                                         <div className="block-comment" style={{ display: 'flex' }}>
                                             <div className="avatar">
-                                                <img src="./assets/img/download (1).jfif" alt />
+                                                <img src={require("../../assets/img/avatar(1).jfif")} alt="avatar" />
                                             </div>
                                             <div className="input-comment">
                                                 <input type="text" placeholder="Add a comment ..." />
@@ -88,7 +88,7 @@ export default function InfoModal() {
                                             <div className="comment-item">
                                                 <div className="display-comment" style={{ display: 'flex' }}>
                                                     <div className="avatar">
-                                                        <img src="./assets/img/download (1).jfif" alt />
+                                                        <img src={require("../../assets/img/avatar(1).jfif")} alt="avatar" />
                                                     </div>
                                                     <div>
                                                         <p style={{ marginBottom: 5 }}>
@@ -115,7 +115,7 @@ export default function InfoModal() {
                                     <div className="status">
                                         <h6>STATUS</h6>
                                         <select className="custom-select">
-                                            <option selected>SELECTED FOR DEVELOPMENT</option>
+                                            <option defaultValue>SELECTED FOR DEVELOPMENT</option>
                                             <option value={1}>One</option>
                                             <option value={2}>Two</option>
                                             <option value={3}>Three</option>
@@ -126,7 +126,7 @@ export default function InfoModal() {
                                         <div style={{ display: 'flex' }}>
                                             <div style={{ display: 'flex' }} className="item">
                                                 <div className="avatar">
-                                                    <img src="./assets/img/download (1).jfif" alt />
+                                                    <img src={require("../../assets/img/avatar(1).jfif")} alt="avatar" />
                                                 </div>
                                                 <p className="name">
                                                     Pickle Rick
@@ -142,7 +142,7 @@ export default function InfoModal() {
                                         <h6>REPORTER</h6>
                                         <div style={{ display: 'flex' }} className="item">
                                             <div className="avatar">
-                                                <img src="./assets/img/download (1).jfif" alt />
+                                                <img src={require("../../assets/img/avatar(1).jfif")} alt="avatar" />
                                             </div>
                                             <p className="name">
                                                 Pickle Rick

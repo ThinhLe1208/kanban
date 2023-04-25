@@ -1,8 +1,8 @@
-import { CURRENT_USER_API } from "../constants/JiraCloneConst";
+import { USER_SIGNIN_API } from "../../constants/JiraCloneConst";
 
 export const signinAction = (email, passWord) => {
     return {
-        type: CURRENT_USER_API,
+        type: USER_SIGNIN_API,
         userSignin: {
             email,
             passWord

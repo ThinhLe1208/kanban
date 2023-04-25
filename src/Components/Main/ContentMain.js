@@ -21,10 +21,10 @@ export default function ContentMain() {
                             <div className="block-right">
                                 <div className="avatar-group" style={{ display: 'flex' }}>
                                     <div className="avatar">
-                                        <img src="./assets/img/download (1).jfif" alt />
+                                        <img src={require("../../assets/img/avatar(1).jfif")} alt="avatar" />
                                     </div>
                                     <div className="avatar">
-                                        <img src="./assets/img/download (2).jfif" alt />
+                                        <img src={require("../../assets/img/avatar(2).jfif")} alt="avatar" />
                                     </div>
                                 </div>
                             </div>
@@ -43,10 +43,10 @@ export default function ContentMain() {
                             <div className="block-right">
                                 <div className="avatar-group" style={{ display: 'flex' }}>
                                     <div className="avatar">
-                                        <img src="./assets/img/download (1).jfif" alt />
+                                        <img src={require("../../assets/img/avatar(1).jfif")} alt="avatar" />
                                     </div>
                                     <div className="avatar">
-                                        <img src="./assets/img/download (2).jfif" alt />
+                                        <img src={require("../../assets/img/avatar(2).jfif")} alt="avatar" />
                                     </div>
                                 </div>
                             </div>

@@ -7,26 +7,32 @@ import UserSigninTemplate from './Templates/UserSigninTemplate';
 import Signin from './Pages/Signin';
 import ProjectTemplate from './Templates/ProjectTemplate';
 import ProjectBoard from './Pages/ProjectBoard';
-import ProjectSettings from './Pages/ProjectSettings';
+import ProjectCreate from './Pages/ProjectCreate';
 
 function App() {
   return (
-    // Sử dụng historyRouter để redirect trong redux-saga
+    // Use historyRouter to redirect in redux-saga
     <HistoryRouter history={history}>
       {/* <BrowserRouter> */}
       <Routes>
+
         <Route path='' element={<HomeTemplate />} >
           <Route index element={<Home />} />
           <Route path='home' element={<Home />} />
           <Route path='*' element={<Navigate to='' />} />
         </Route>
+
         <Route path='signin' element={<UserSigninTemplate />} >
           <Route index element={<Signin />} />
         </Route>
+
         <Route path='project' element={<ProjectTemplate />}>
           <Route index element={<ProjectBoard />} />
-          <Route path='settings' element={<ProjectSettings />} />
+          <Route path='board' element={<ProjectBoard />} />
+          <Route path='create' element={<ProjectCreate />} />
+          <Route path='*' element={<Navigate to='board' />} />
         </Route>
+
       </Routes>
       {/* </BrowserRouter> */}
     </HistoryRouter >

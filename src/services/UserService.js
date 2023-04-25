@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import { DOMAIN } from '../util/constants/settingSystem';
 
-class JiraCloneService {
+class UserService {
     signinApi = (userSignin) => {
         return Axios({
             url: `${DOMAIN}/Users/signin`,
@@ -9,6 +9,12 @@ class JiraCloneService {
             data: userSignin
         });
     };
+    getProjectCategory = () => {
+        return Axios({
+            url: `${DOMAIN}/ProjectCategory`,
+            method: 'GET'
+        });
+    };
 }
 
-export const jiraCloneService = new JiraCloneService();
+export const userService = new UserService();
