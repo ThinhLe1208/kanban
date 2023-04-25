@@ -1,0 +1,2 @@
+export const CURRENT_USER_API = 'CURRENT_USER_API';
+export const ADD_NAVIGATE = 'ADD_NAVIGATE';
