@@ -15,15 +15,21 @@ export default function Menu() {
             </div>
             <ul className="control">
                 <li>
-                    <NavLink to='board' className={({ isActive }) => isActive ? 'text-primary' : 'text-dark'}>
+                    <NavLink to='board' className={({ isActive }) => isActive ? 'text-primary' : 'text-dark'} >
                         <i className="fa fa-credit-card" />
-                        <span>Cyber Board</span>
+                        <span>Project Board</span>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink to='create' className={({ isActive }) => isActive ? 'text-primary' : 'text-dark'}>
                         <i className="fa fa-cog" />
                         <span>Create Project</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='management' className={({ isActive }) => isActive ? 'text-primary' : 'text-dark'}>
+                        <i className="fa fa-cog" />
+                        <span>Project Management</span>
                     </NavLink>
                 </li>
             </ul>

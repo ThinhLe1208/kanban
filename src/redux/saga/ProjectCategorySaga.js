@@ -1,19 +1,20 @@
-import { call, takeLatest } from "redux-saga/effects";
-import { projectCategoryService } from "../../services/ProjectCategoryService";
-import { STATUS_CODE } from "../../util/constants/settingSystem";
-import { GET_PROJECT_CATEGORY_API } from "../constants/JiraCloneConst";
+import { call, put, takeLatest } from "redux-saga/effects";
+import { GET_PROJECT_CATEGORY_SAGA } from "redux/constants/JiraCloneConst";
+import { setProjectCategoryArr } from "redux/reducers/ProjectCategoryReducer";
+import { projectCategoryService } from "services/ProjectCategoryService";
+import { STATUS_CODE } from "util/constants/settingSystem";
 
-function* getProjectCategoryAction() {
+function* getProjectCategorySaga() {
     try {
-        const { data, status } = yield call(projectCategoryService.getProjectCategory());
+        const { data, status } = yield call(projectCategoryService.getProjectCategory);
         if (status === STATUS_CODE.SUCCESS) {
-            console.log(data);
+            yield put(setProjectCategoryArr(data.content));
         }
     } catch (err) {
         console.log(err);
     }
 }
 
-export function* watchgetProjectCategoryAction() {
-    yield takeLatest(GET_PROJECT_CATEGORY_API, getProjectCategoryAction);
+export function* watchGetProjectCategorySaga() {
+    yield takeLatest(GET_PROJECT_CATEGORY_SAGA, getProjectCategorySaga);
 }

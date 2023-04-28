@@ -142,7 +142,7 @@ a {
 .jira {
   height: 100vh;
   font-family: "Roboto", sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   display: flex;
 }
 
@@ -230,7 +230,6 @@ a {
 .menu {
   height: 100vh;
   width: 18%;
-  margin-left: 4%;
   background-color: #f4f5f7;
 }
 
@@ -323,9 +322,9 @@ a {
   font-size: 14px;
 }
 
-.main {
+/* .main {
   padding-left: 2%;
-}
+} */
 .main .header .breadcrumb {
   margin-bottom: 0;
   padding-left: 0px;

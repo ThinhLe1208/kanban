@@ -8,34 +8,46 @@ import Signin from './Pages/Signin';
 import ProjectTemplate from './Templates/ProjectTemplate';
 import ProjectBoard from './Pages/ProjectBoard';
 import ProjectCreate from './Pages/ProjectCreate';
+import ProjectManagement from 'Pages/ProjectManagement';
+import CustomDrawer from 'HOC/Drawer/CustomDrawer';
+import { useSelector } from 'react-redux';
+import LoadingComponent from 'Components/GlobalSetting/LoadingComponent/LoadingComponent';
 
 function App() {
+  const { isLoading } = useSelector(state => state.LoadingReducer);
+
   return (
-    // Use historyRouter to redirect in redux-saga
-    <HistoryRouter history={history}>
-      {/* <BrowserRouter> */}
-      <Routes>
+    <>
+      <CustomDrawer />
+      {isLoading && <LoadingComponent />}
 
-        <Route path='' element={<HomeTemplate />} >
-          <Route index element={<Home />} />
-          <Route path='home' element={<Home />} />
-          <Route path='*' element={<Navigate to='' />} />
-        </Route>
+      {/* Use historyRouter to redirect in redux-saga */}
+      <HistoryRouter history={history}>
+        {/* <BrowserRouter> */}
+        <Routes>
 
-        <Route path='signin' element={<UserSigninTemplate />} >
-          <Route index element={<Signin />} />
-        </Route>
+          <Route path='' element={<HomeTemplate />} >
+            <Route index element={<Home />} />
+            <Route path='home' element={<Home />} />
+            <Route path='*' element={<Navigate to='' />} />
+          </Route>
 
-        <Route path='project' element={<ProjectTemplate />}>
-          <Route index element={<ProjectBoard />} />
-          <Route path='board' element={<ProjectBoard />} />
-          <Route path='create' element={<ProjectCreate />} />
-          <Route path='*' element={<Navigate to='board' />} />
-        </Route>
+          <Route path='signin' element={<UserSigninTemplate />} >
+            <Route index element={<Signin />} />
+          </Route>
 
-      </Routes>
-      {/* </BrowserRouter> */}
-    </HistoryRouter >
+          <Route path='project' element={<ProjectTemplate />}>
+            <Route index element={<ProjectBoard />} />
+            <Route path='board' element={<ProjectBoard />} />
+            <Route path='create' element={<ProjectCreate />} />
+            <Route path='management' element={<ProjectManagement />} />
+            <Route path='*' element={<Navigate to='board' />} />
+          </Route>
+
+        </Routes>
+        {/* </BrowserRouter> */}
+      </HistoryRouter >
+    </>
   );
 }
 

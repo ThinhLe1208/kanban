@@ -1,7 +1,8 @@
 import React from 'react';
-import Sidebar from '../Components/Sidebar';
-import Menu from '../Components/Menu';
 import { Outlet } from 'react-router-dom';
+
+import Menu from 'Components/Menu';
+import Sidebar from 'Components/Sidebar';
 
 export default function ProjectTemplate() {
     return (

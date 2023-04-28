@@ -1,81 +1,69 @@
 import React, { useEffect, useState } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Breadcrumb, Button } from 'antd';
-import { FastField, Field, Form, Formik } from 'formik';
+import { FastField, Field, Form, Formik, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 
-import SelectField from 'customFields/SelectField/SelectField';
 import InputField from 'customFields/InputField/InputField';
+import SelectField from 'customFields/SelectField/SelectField';
+import { Editor } from '@tinymce/tinymce-react';
 import { getProjectCategorySagaAction } from 'redux/saga/actions/ProjectCategoryAction';
-import { createProjectSagaAction } from 'redux/saga/actions/ProjectAction';
+import { setHandleSubmitDrawer } from 'redux/reducers/DrawerReducer';
 
-const breadCrumbList = [
-    {
-        href: '/',
-        title: 'Home',
-    },
-    {
-        href: '/project',
-        title: 'Project',
-    },
-    {
-        title: 'Create Project',
-    }
-];
-
-const CreateProjectSchema = Yup.object().shape({
-    email: Yup
-        .string()
-        // .email('Invalid email')
-        .required('Field is required'),
-    password: Yup
+const EditProjectSchema = Yup.object().shape({
+    projectName: Yup
         .string()
         .min(4, 'Too Short!')
         .max(20, 'Too Long!')
         .required('Field is required'),
-    type: Yup
+    description: Yup
+        .string()
+        .min(4, 'Too Short!')
+        .max(100, 'Too Long!')
+        .required('Field is required'),
+    categoryId: Yup
         .number()
         .required('Field is required')
 });
 
-export default function ProjectCreate() {
+export default function EditProjectForm() {
     const dispatch = useDispatch();
-
-    // timmyMCE Editor
-    const initialEditorValue = '';
-    const [valueEditor, setValueEditor] = useState(initialEditorValue);
+    const values = useFormikContext();
+    console.log(values);
 
     // get projectCategoryArr from redux store
     const { projectCategoryArr } = useSelector(state => state.ProjectCategoryReducer);
+    const { editProject } = useSelector(state => state.ProjectReducer);
+
+    // timmyMCE Editor
+    const initialEditorValue = editProject.description;
+    const [valueEditor, setValueEditor] = useState(initialEditorValue);
 
     // Formik
     const initialValues = {
-        projectName: '',
-        description: '',
-        categoryId: null
+        projectName: editProject.projectName,
+        description: editProject.description,
+        categoryId: editProject.categoryId
+    };
+
+    const handleSubmitEditForm = (values, actions) => {
+        console.log('edit');
+        console.log(actions);
     };
 
     useEffect(() => {
         // call api to get projectCategory
         dispatch(getProjectCategorySagaAction());
+        // dispatch submit handler to redux-toolkit store
+        dispatch(setHandleSubmitDrawer(handleSubmitEditForm));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <div className="container py-3">
-            <Breadcrumb
-                items={breadCrumbList}
-            />
-
-            <h1 className='fs-1 mt-3 mb-4'>Create Project</h1>
-
             <Formik
                 initialValues={initialValues}
-                validationSchema={CreateProjectSchema}
-                onSubmit={(values, actions) => {
-                    dispatch(createProjectSagaAction(values));
-                }}
+                validationSchema={EditProjectSchema}
+                onSubmit={handleSubmitEditForm}
             >
                 {formikProps => {
 
@@ -129,9 +117,7 @@ export default function ProjectCreate() {
                                 options={projectCategoryArr.map(p => ({ value: p.id, label: p.projectCategoryName }))}
                             />
 
-                            <Button type="primary" htmlType="submit">
-                                Create project
-                            </Button>
+                            <button>click</button>
 
                         </Form>
                     );

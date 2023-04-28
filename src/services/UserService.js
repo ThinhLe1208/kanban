@@ -1,8 +1,8 @@
 import Axios from 'axios';
-import { DOMAIN } from '../util/constants/settingSystem';
+import { DOMAIN } from 'util/constants/settingSystem';
 
 class UserService {
-    signinApi = (userSignin) => {
+    signin = (userSignin) => {
         return Axios({
             url: `${DOMAIN}/Users/signin`,
             method: 'POST',

@@ -1,6 +1,6 @@
 export const DOMAIN = 'https://casestudy.cyberlearn.vn/api';
 
-export const TOKEN = 'access_token';
+export const ACCESS_TOKEN = 'ACCESS_TOKEN';
 export const CURRENT_USER = 'CURRENT_USER';
 
 export const STATUS_CODE = {

@@ -1,8 +1,8 @@
-import { USER_SIGNIN_API } from "../../constants/JiraCloneConst";
+import { USER_SIGNIN_SAGA } from "redux/constants/JiraCloneConst";
 
-export const signinAction = (email, passWord) => {
+export const signinSagaAction = (email, passWord) => {
     return {
-        type: USER_SIGNIN_API,
+        type: USER_SIGNIN_SAGA,
         userSignin: {
             email,
             passWord

@@ -8,7 +8,7 @@ export default function LoadingComponent() {
     if (isLoading) {
         return (
             <div className={style.bgLoading}>
-                <img src='./assets/img/loading.png' alt="loading" />
+                <img src={require('../../../assets/img/loading.png')} alt="loading" />
             </div>
         );
     }

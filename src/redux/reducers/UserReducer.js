@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CURRENT_USER } from '../../util/constants/settingSystem';
+import { CURRENT_USER } from 'util/constants/settingSystem';
 
 let currentUser = {};
 if (localStorage.getItem(CURRENT_USER)) {

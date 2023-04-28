@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { DOMAIN } from '../util/constants/settingSystem';
+import { DOMAIN } from 'util/constants/settingSystem';
 
 class ProjectCategoryService {
     getProjectCategory = () => {

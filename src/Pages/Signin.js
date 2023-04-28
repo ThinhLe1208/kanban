@@ -1,62 +1,94 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Checkbox, Input, Typography } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { Button, Typography } from 'antd';
+import { FastField, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { signinAction } from '../redux/saga/actions/UserAction';
-import LoadingComponent from '../Components/GlobalSetting/LoadingComponent/LoadingComponent';
+import { signinSagaAction } from 'redux/saga/actions/UserAction';
+import InputField from 'customFields/InputField/InputField';
+import SelectField from 'customFields/SelectField/SelectField';
 
 const { Title } = Typography;
 
 const SigninSchema = Yup.object().shape({
     email: Yup
         .string()
-        .email('Invalid email')
+        // .email('Invalid email')
         .required('Field is required'),
     password: Yup
         .string()
-        .min(6, 'Too Short!')
+        .min(4, 'Too Short!')
         .max(20, 'Too Long!')
         .required('Field is required'),
+    type: Yup
+        .number()
+        .required('Field is required')
 });
 
 export default function Signin() {
-    let { isLoading } = useSelector(state => state.LoadingReducer);
     const dispatch = useDispatch();
 
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        // validationSchema: SigninSchema,
-        onSubmit: values => {
-            dispatch(signinAction(values.email, values.password));
-        },
-    });
+    const initialValues = {
+        email: '',
+        password: '',
+        type: null
+    };
 
     return (
-        <div className='d-flex flex-column justify-content-center h-100'>
-            <Title className='text-center mb-4'>Sign In Jira</Title>
-            <form
-                onSubmit={formik.handleSubmit}
-                className='d-flex flex-column row-gap-3 mx-auto'
-                style={{ width: '80%' }}
+        <div className='d-flex flex-column justify-content-center h-100 px-5'>
+            <Title className='text-center text-primary mb-4'>Jira Clone</Title>
+
+            <Formik
+                initialValues={initialValues}
+                validationSchema={SigninSchema}
+                onSubmit={(values) => {
+                    dispatch(signinSagaAction(values.email, values.password));
+                }}
             >
-                <Input value={formik.values.email} onChange={formik.handleChange} name="email" prefix={<UserOutlined />} />
-                <div className="text-danger">{formik.errors.email}</div>
-                <Input.Password value={formik.values.password} onChange={formik.handleChange} name="password" prefix={<LockOutlined />} />
-                <div className="text-danger">{formik.errors.password}</div>
+                {formikProps => {
 
-                <Checkbox>Remember me</Checkbox>
+                    return (
+                        <Form>
+                            <FastField
+                                name='email'
+                                component={InputField}
 
-                <Button type="primary" htmlType="submit">
-                    Sign In
-                </Button>
+                                // Formik set automatically these props to the InputField compontent
+                                type='text'
+                                label='Email'
+                                placeholder='email@gmail.com'
+                            />
 
-                {isLoading && <LoadingComponent />}
-            </form>
-        </div>
+                            <FastField
+                                name='password'
+                                component={InputField}
+
+                                type='password'
+                                label='Password'
+                                placeholder='password'
+                            />
+
+                            <FastField
+                                name='type'
+                                component={SelectField}
+
+                                type='select'
+                                label='Type'
+                                placeholder='What is your job?'
+                                options={[
+                                    { value: 1, label: 'Developer' },
+                                    { value: 2, label: 'Student' },
+                                    { value: 3, label: 'Designer' },
+                                ]}
+                            />
+
+                            <Button type="primary" htmlType="submit">
+                                Sign In
+                            </Button>
+
+                        </Form>
+                    );
+                }}
+            </Formik>
+        </div >
     );
 }
