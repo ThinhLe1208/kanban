@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -30,11 +30,7 @@ export default function EditProjectForm() {
 
     // get projectCategoryArr from redux store
     const { projectCategoryArr } = useSelector(state => state.ProjectCategoryReducer);
-    const { editProject } = useSelector(state => state.ProjectReducer);
-
-    // timmyMCE Editor
-    const initialEditorValue = editProject.description;
-    const [valueEditor, setValueEditor] = useState(initialEditorValue);
+    const { projectEdit } = useSelector(state => state.ProjectReducer);
 
     // Formik
     const {
@@ -43,20 +39,19 @@ export default function EditProjectForm() {
         touched,
         handleSubmit,
         handleChange,
-        handleBlur,
-        setFieldValue
+        handleBlur
     } = useFormik({
         enableReinitialize: true,
         initialValues: {
-            projectName: editProject.projectName,
-            description: editProject.description,
-            categoryId: editProject.categoryId
+            projectName: projectEdit.projectName,
+            description: projectEdit.description,
+            categoryId: projectEdit.categoryId
         },
         validationSchema: EditProjectSchema,
         onSubmit: (values) => {
             const { projectName, description, categoryId } = values;
             const updatedProject = {
-                id: editProject.id,
+                id: projectEdit.id,
                 projectName,
                 creator: 0,
                 description,
@@ -94,15 +89,14 @@ export default function EditProjectForm() {
                     {errors.projectName && touched.projectName && <FormFeedback >{errors.projectName}</FormFeedback>}
                 </FormGroup>
 
+                <p>Desciption</p>
                 <Editor
                     name='description'
 
                     apiKey='64iv1bamj3ly5fr482iq34ud6xb2ebvhmf30hyzbx11eauzq'
-                    initialValue={initialEditorValue}
-                    value={valueEditor}
-                    onEditorChange={(newValue) => {
-                        setFieldValue('description', newValue);
-                        setValueEditor(newValue);
+                    value={values.description}
+                    onEditorChange={(value) => {
+                        handleChange({ target: { name: 'description', value: value } });
                     }}
                     init={{
                         height: 300,

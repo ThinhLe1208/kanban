@@ -2,9 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     isOpen: false,
+    title: 'Default',
     drawerContent: <p>Empty</p>,
     handleSubmitDrawer: () => {
-        console.log('default');
+        console.warning('Default handleSubmitDrawer');
     }
 };
 
@@ -19,7 +20,8 @@ const DrawerReducer = createSlice({
             state.isOpen = false;
         },
         setDrawer: (state, { payload }) => {
-            state.drawerContent = payload;
+            state.title = payload.title;
+            state.drawerContent = payload.drawerContent;
             state.isOpen = true;
         },
         setHandleSubmitDrawer: (state, { payload }) => {

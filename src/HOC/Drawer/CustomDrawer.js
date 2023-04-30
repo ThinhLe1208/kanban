@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideDrawer } from 'redux/reducers/DrawerReducer';
 
 export default function CustomDrawer() {
-    const { isOpen, drawerContent, handleSubmitDrawer } = useSelector(state => state.DrawerReducer);
+    const { isOpen, drawerContent, handleSubmitDrawer, title } = useSelector(state => state.DrawerReducer);
     const dispatch = useDispatch();
 
     const handleHideDrawer = () => {
@@ -14,7 +14,7 @@ export default function CustomDrawer() {
     return (
         <>
             <Drawer
-                title="Edit project"
+                title={title}
                 width={720}
                 onClose={handleHideDrawer}
                 open={isOpen}

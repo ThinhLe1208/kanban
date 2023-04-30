@@ -7,7 +7,9 @@ if (localStorage.getItem(CURRENT_USER)) {
 }
 
 const initialState = {
-    currentUser
+    currentUser,
+    getUser: [],
+    getUserByProjectId: []
 };
 
 const UserReducer = createSlice({
@@ -16,10 +18,20 @@ const UserReducer = createSlice({
     reducers: {
         userSignin: (state, { payload }) => {
             state.currentUser = payload;
+        },
+        getUser: (state, { payload }) => {
+            state.getUser = payload;
+        },
+        getUserByProjectId: (state, { payload }) => {
+            state.getUserByProjectId = payload;
         }
     }
 });
 
-export const { userSignin } = UserReducer.actions;
+export const {
+    userSignin,
+    getUser,
+    getUserByProjectId
+} = UserReducer.actions;
 
 export default UserReducer.reducer;

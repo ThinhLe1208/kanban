@@ -3,6 +3,10 @@ import ContentMain from 'Components/Main/ContentMain';
 import InfoMain from 'Components/Main/InfoMain';
 import InfoModal from 'Components/Modal/InfoModal';
 import { Breadcrumb } from 'antd';
+import { useEffect } from 'react';
+import { getProjectDetailSagaAction } from 'redux/saga/actions/ProjectAction';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const breadCrumbList = [
     {
@@ -19,14 +23,21 @@ const breadCrumbList = [
 ];
 
 export default function ProjectBoard() {
+    const dispatch = useDispatch();
+    const { projectId } = useParams();
+
+    useEffect(() => {
+        // call api and save projectDetail data to redux store by using projectId dinamic param
+        dispatch(getProjectDetailSagaAction(projectId));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
             <div className="main container py-3">
                 <Breadcrumb
                     items={breadCrumbList}
                 />
-
-                <h1 className='fs-1 mt-3 mb-4'>Project Board</h1>
 
                 <InfoMain />
                 <ContentMain />

@@ -2,13 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     projectList: [],
-    editProject: {
+    projectEdit: {
         "id": 0,
-        "projectName": "",
+        "projectName": "default",
         "creator": 0,
-        "description": "<p>hello</p>",
-        "categoryId": 2
-    }
+        "description": "<p>default</p>",
+        "categoryId": 1
+    },
+    projectDetail: []
+
 };
 
 const ProjectReducer = createSlice({
@@ -18,15 +20,19 @@ const ProjectReducer = createSlice({
         getProjectList: (state, { payload }) => {
             state.projectList = payload;
         },
-        setEditProject: (state, { payload }) => {
-            state.editProject = payload;
+        setProjectEdit: (state, { payload }) => {
+            state.projectEdit = payload;
+        },
+        setProjectDetail: (state, { payload }) => {
+            state.projectDetail = payload;
         }
     }
 });
 
 export const {
     getProjectList,
-    setEditProject
+    setProjectEdit,
+    setProjectDetail
 } = ProjectReducer.actions;
 
 export default ProjectReducer.reducer;

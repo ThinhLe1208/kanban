@@ -1,25 +1,21 @@
 import BaseService from './BaseService';
 
 class ProjectService extends BaseService {
-    createProject = (newProject) => {
-        return this.post('Project/createProject', newProject);
-    };
+    createProject = newProject => this.post('Project/createProject', newProject);
 
-    createProjectAuthorization = (newProject) => {
-        return this.post('Project/createProjectAuthorize', newProject);
-    };
+    createProjectAuthorization = newProject => this.post('Project/createProjectAuthorize', newProject);
 
-    getAllProject = () => {
-        return this.get('Project/getAllProject');
-    };
+    getAllProject = () => this.get('Project/getAllProject');
 
-    updateProject = (updatedProject) => {
-        return this.put(`Project/updateProject?projectId=${updatedProject.id}`, updatedProject);
-    };
+    getProjectDetail = projectId => this.get(`Project/getProjectDetail?id=${projectId}`);
 
-    deleteProject = (id) => {
-        return this.delete(`Project/deleteProject?projectId=${id}`);
-    };
+    updateProject = updatedProject => this.put(`Project/updateProject?projectId=${updatedProject.id}`, updatedProject);
+
+    deleteProject = id => this.delete(`Project/deleteProject?projectId=${id}`);
+
+    assignUserProject = projectAssign => this.post('Project/assignUserProject', projectAssign);
+
+    removeUserProject = projectAssign => this.post('Project/removeUserFromProject', projectAssign);
 }
 
 export const projectService = new ProjectService();

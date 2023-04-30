@@ -11,7 +11,7 @@ function* getProjectCategorySaga() {
             yield put(setProjectCategoryArr(data.content));
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 

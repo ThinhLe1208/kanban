@@ -1,13 +1,7 @@
-import Axios from 'axios';
-import { DOMAIN } from 'util/constants/settingSystem';
+import BaseService from 'services/BaseService';
 
-class ProjectCategoryService {
-    getProjectCategory = () => {
-        return Axios({
-            url: `${DOMAIN}/ProjectCategory`,
-            method: 'GET'
-        });
-    };
+class ProjectCategoryService extends BaseService {
+    getProjectCategory = () => this.get('ProjectCategory');
 }
 
 export const projectCategoryService = new ProjectCategoryService();

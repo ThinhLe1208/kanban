@@ -38,7 +38,7 @@ function App() {
 
           <Route path='project' element={<ProjectTemplate />}>
             <Route index element={<ProjectBoard />} />
-            <Route path='board' element={<ProjectBoard />} />
+            <Route path='board/:projectId' element={<ProjectBoard />} />
             <Route path='create' element={<ProjectCreate />} />
             <Route path='management' element={<ProjectManagement />} />
             <Route path='*' element={<Navigate to='board' />} />

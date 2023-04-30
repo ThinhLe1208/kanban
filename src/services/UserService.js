@@ -1,20 +1,11 @@
-import Axios from 'axios';
-import { DOMAIN } from 'util/constants/settingSystem';
+import BaseService from './BaseService';
 
-class UserService {
-    signin = (userSignin) => {
-        return Axios({
-            url: `${DOMAIN}/Users/signin`,
-            method: 'POST',
-            data: userSignin
-        });
-    };
-    getProjectCategory = () => {
-        return Axios({
-            url: `${DOMAIN}/ProjectCategory`,
-            method: 'GET'
-        });
-    };
+class UserService extends BaseService {
+    signin = userSignin => this.post('Users/signin', userSignin);
+
+    getUser = keyword => this.get(`Users/getUser?keyword=${keyword}`);
+
+    getUserByProjectId = projectId => this.get(`Users/getUserByProjectId?idProject=${projectId}`);
 }
 
 export const userService = new UserService();

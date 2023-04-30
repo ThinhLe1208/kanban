@@ -1,7 +1,7 @@
 import { call, delay, put, takeLatest } from "redux-saga/effects";
-import { CREATE_PROJECT_SAGA, DELETE_PROJECT_SAGA, GET_ALL_PROJECT_SAGA, UPDATE_PROJECT_SAGA } from "redux/constants/JiraCloneConst";
+import { ASSIGN_USER_PROJECT_SAGA, CREATE_PROJECT_SAGA, DELETE_PROJECT_SAGA, GET_ALL_PROJECT_SAGA, GET_PROJECT_DETAIL_SAGA, REMOVE_USER_PROJECT_SAGA, UPDATE_PROJECT_SAGA } from "redux/constants/JiraCloneConst";
 import { hideLoading, showLoading } from "redux/reducers/LoadingReducer";
-import { getProjectList } from "redux/reducers/ProjectReducer";
+import { getProjectList, setProjectDetail } from "redux/reducers/ProjectReducer";
 import { projectService } from "services/ProjectService";
 import { STATUS_CODE } from "util/constants/settingSystem";
 import { history } from "util/history";
@@ -19,7 +19,7 @@ function* createProjectSaga(action) {
             yield history.push('/project/management');
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 
     yield put(hideLoading());
@@ -36,7 +36,7 @@ function* getAllProjectSaga() {
             yield put(getProjectList(data.content));
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 }
 
@@ -44,19 +44,33 @@ export function* watchGetAllProjectSaga() {
     yield takeLatest(GET_ALL_PROJECT_SAGA, getAllProjectSaga);
 }
 
+function* getProjectDetailSaga(action) {
+    try {
+        const { data, status } = yield call(projectService.getProjectDetail, action.projectId);
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put(setProjectDetail(data.content));
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export function* watchGetProjectDetailSaga() {
+    yield takeLatest(GET_PROJECT_DETAIL_SAGA, getProjectDetailSaga);
+}
+
 function* updateProjectSaga(action) {
     yield put(showLoading());
     yield delay(500);
 
     try {
-        // const { status } = yield call(() => projectService.updateProject(action.updatedProject));
         const { status } = yield call(projectService.updateProject, action.updatedProject);
         if (status === STATUS_CODE.SUCCESS) {
             yield put(getAllProjectSagaAction());
             yield put(hideDrawer());
         }
     } catch (err) {
-        console.log(err);
+        console.error(err);
     }
 
     yield put(hideLoading());
@@ -78,7 +92,7 @@ function* deleteProjectSaga(action) {
         }
     } catch (err) {
         showNotification('error', 'Error', 'Delete project fail !');
-        console.log(err);
+        console.error(err);
     }
 
     yield put(hideLoading());
@@ -86,4 +100,48 @@ function* deleteProjectSaga(action) {
 
 export function* watchDeleteProjectSaga() {
     yield takeLatest(DELETE_PROJECT_SAGA, deleteProjectSaga);
+}
+
+function* assignUserProjectSaga(action) {
+    yield put(showLoading());
+    yield delay(500);
+
+    try {
+        const { status } = yield call(projectService.assignUserProject, action.userProject);
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put(getAllProjectSagaAction());
+            showNotification('success', 'Success', 'Add a member successfully !');
+        }
+    } catch (err) {
+        showNotification('error', 'Error', 'Add a member fail !');
+        console.error(err);
+    }
+
+    yield put(hideLoading());
+}
+
+export function* watchAssignUserProjectSaga() {
+    yield takeLatest(ASSIGN_USER_PROJECT_SAGA, assignUserProjectSaga);
+}
+
+function* removeUserProjectSaga(action) {
+    yield put(showLoading());
+    yield delay(500);
+
+    try {
+        const { status } = yield call(projectService.removeUserProject, action.userProject);
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put(getAllProjectSagaAction());
+            showNotification('success', 'Success', 'Remove a member successfully !');
+        }
+    } catch (err) {
+        showNotification('error', 'Error', 'Remove a member fail !');
+        console.error(err);
+    }
+
+    yield put(hideLoading());
+}
+
+export function* watchRemoveUserProjectSaga() {
+    yield takeLatest(REMOVE_USER_PROJECT_SAGA, removeUserProjectSaga);
 }

@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Input, Popconfirm, Space, Table, Tag } from 'antd';
-import { useRef, useState } from 'react';
+import { AutoComplete, Avatar, Breadcrumb, Button, Input, Popconfirm, Popover, Space, Table, Tag, Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
 import parse from 'html-react-parser';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteProjectSagaAction, getAllProjectSagaAction } from 'redux/saga/actions/ProjectAction';
+import { assignUserProjectSagaAction, deleteProjectSagaAction, getAllProjectSagaAction, removeUserProjectSagaAction } from 'redux/saga/actions/ProjectAction';
+
 import { setDrawer } from 'redux/reducers/DrawerReducer';
-import EditProjectForm from 'Components/EditProjectForm/EditProjectForm';
-import { setEditProject } from 'redux/reducers/ProjectReducer';
+import { setProjectEdit } from 'redux/reducers/ProjectReducer';
+import { getUserSagaAction } from 'redux/saga/actions/UserAction';
+import { NavLink } from 'react-router-dom';
+import EditProjectForm from 'Components/Form/EditProjectForm/EditProjectForm';
 
 const breadCrumbList = [
     {
@@ -26,7 +28,13 @@ const breadCrumbList = [
 
 export default function ProjectManagement() {
     const dispatch = useDispatch();
+    const searchRef = useRef(null);
+
+    const { getUser } = useSelector(state => state.UserReducer);
     const { projectList } = useSelector(state => state.ProjectReducer);
+
+    // state of feature which searches and adds a member
+    const [searchValue, setSearchValue] = useState('');
 
     // table antd library
     const [searchText, setSearchText] = useState('');
@@ -148,7 +156,7 @@ export default function ProjectManagement() {
             dataIndex: 'id',
             key: 'id',
             width: '10%',
-            ...getColumnSearchProps('name'),
+            ...getColumnSearchProps('id'),
             sorter: (a, b) => a?.id - b?.id,
             sortDirections: ['descend', 'ascend'],
         },
@@ -157,7 +165,7 @@ export default function ProjectManagement() {
             dataIndex: 'projectName',
             key: 'projectName',
             width: '20%',
-            ...getColumnSearchProps('age'),
+            ...getColumnSearchProps('projectName'),
             sorter: (a, b) => {
                 const n1 = a?.projectName.trim().toLowerCase();
                 const n2 = b?.projectName.trim().toLowerCase();
@@ -168,12 +176,15 @@ export default function ProjectManagement() {
                 }
             },
             sortDirections: ['descend', 'ascend'],
+            render: (text, record, index) => {
+                return <NavLink to={`/project/board/${record.id}`} >{text}</NavLink>;
+            }
         },
         {
             title: 'Category Name',
             dataIndex: 'categoryName',
             key: 'categoryName',
-            ...getColumnSearchProps('address'),
+            ...getColumnSearchProps('categoryName'),
             sorter: (a, b) => {
                 const n1 = a?.categoryName.trim().toLowerCase();
                 const n2 = b?.categoryName.trim().toLowerCase();
@@ -192,7 +203,7 @@ export default function ProjectManagement() {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            ...getColumnSearchProps('address'),
+            ...getColumnSearchProps('description'),
             sorter: (a, b) => {
                 const n1 = a?.description.trim().toLowerCase();
                 const n2 = b?.description.trim().toLowerCase();
@@ -203,9 +214,92 @@ export default function ProjectManagement() {
                 }
             },
             sortDirections: ['descend', 'ascend'],
-            // description received from Editor tinyMCE is html 
             render: (text) => {
+                // description received from Editor tinyMCE is html 
                 return parse(text);
+            }
+        },
+        {
+            title: 'Members',
+            dataIndex: 'members',
+            key: 'members',
+            ...getColumnSearchProps('members'),
+            render: (text, record, index) => {
+                return (
+                    <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}>
+                        {/* member avatar list */}
+                        <Avatar.Group maxCount={2}>
+                            {record.members?.map(m => (
+                                <Tooltip key={m.userId} title={m.name} placement="top">
+                                    <Avatar src={m.avatar} />
+                                </Tooltip>
+                            ))}
+                        </Avatar.Group>
+                        {/* add member button */}
+                        <Popover
+                            content={() => <AutoComplete
+                                style={{
+                                    width: '100%',
+                                }}
+                                options={getUser.map(u => ({ label: u.name, value: u.userId.toString() }))}
+                                value={searchValue}
+                                onChange={keyword => setSearchValue(keyword)}
+                                onSearch={value => {
+                                    if (searchRef.current) {
+                                        clearTimeout(searchRef.current);
+                                    }
+                                    searchRef.current = setTimeout(() => {
+                                        dispatch(getUserSagaAction(value));
+                                    }, 500);
+
+                                }}
+                                onSelect={(value, option) => {
+                                    setSearchValue(option.label);
+                                    dispatch(assignUserProjectSagaAction(record.id, Number(value)));
+                                }}
+                            />}
+                            title="Add member"
+                            trigger="click"
+                        >
+                            <Button>+</Button>
+                        </Popover>
+                        {/* remove member button */}
+                        <Popover
+                            content={() => (
+                                <table className='table'>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Avatar</th>
+                                            <th>Name</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {record.members.map((m, i) => (
+                                            <tr key={i}>
+                                                <td>{m.userId}</td>
+                                                <td><Avatar src={m.avatar} /></td>
+                                                <td>{m.name}</td>
+                                                <td>
+                                                    <Button
+                                                        onClick={() => {
+                                                            dispatch(removeUserProjectSagaAction(record.id, m.userId));
+                                                        }}
+                                                    >x</Button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                            title="Member List"
+                            trigger="click"
+                        >
+                            <Button>-</Button>
+                        </Popover>
+                    </div>
+                );
             }
         },
         {
@@ -219,8 +313,8 @@ export default function ProjectManagement() {
                         style={{ cursor: 'pointer' }}
                         onClick={() => {
                             // open drawer with edit content
-                            dispatch(setDrawer(<EditProjectForm />));
-                            dispatch(setEditProject(record));
+                            dispatch(setDrawer({ title: 'Edit Project', drawerContent: <EditProjectForm /> }));
+                            dispatch(setProjectEdit(record));
                         }}
                     >
                         <EditOutlined />
