@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Button, Typography } from 'antd';
 import { FastField, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { signinSagaAction } from 'redux/saga/actions/UserAction';
+import { signinSagaAction } from 'redux/saga/actions/userAction';
 import InputField from 'customFields/InputField/InputField';
 import SelectField from 'customFields/SelectField/SelectField';
 

@@ -3,7 +3,7 @@ import style from './LoadingComponent.module.css';
 import { useSelector } from 'react-redux';
 
 export default function LoadingComponent() {
-    const { isLoading } = useSelector(state => state.LoadingReducer);
+    const { isLoading } = useSelector(state => state.loadingReducer);
 
     if (isLoading) {
         return (

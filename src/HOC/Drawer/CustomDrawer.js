@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Drawer, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideDrawer } from 'redux/reducers/DrawerReducer';
+import { hideDrawer } from 'redux/reducers/drawerReducer';
 
 export default function CustomDrawer() {
-    const { isOpen, drawerContent, handleSubmitDrawer, title } = useSelector(state => state.DrawerReducer);
+    const { isOpen, drawerContent, handleSubmitDrawer, title } = useSelector(state => state.drawerReducer);
     const dispatch = useDispatch();
 
     const handleHideDrawer = () => {

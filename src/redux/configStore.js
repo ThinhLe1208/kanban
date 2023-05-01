@@ -2,14 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './saga/rootSaga';
 
-import LoadingReducer from './reducers/LoadingReducer';
-import UserReducer from './reducers/UserReducer';
-import ProjectCategoryReducer from './reducers/ProjectCategoryReducer';
-import ProjectReducer from './reducers/ProjectReducer';
-import DrawerReducer from './reducers/DrawerReducer';
-import TaskTypeReducer from './reducers/TaskTypeReducer';
-import PriorityReducer from './reducers/PriorityReducer';
-import StatusReducer from './reducers/StatusReducer';
+import loadingReducer from './reducers/loadingReducer';
+import userReducer from './reducers/userReducer';
+import projectCategoryReducer from './reducers/projectCategoryReducer';
+import projectReducer from './reducers/projectReducer';
+import drawerReducer from './reducers/drawerReducer';
+import taskTypeReducer from './reducers/taskTypeReducer';
+import priorityReducer from './reducers/priorityReducer';
+import statusReducer from './reducers/statusReducer';
 
 // create the saga middleware
 const sagaMiddleware = createSagaMiddleware();
@@ -17,14 +17,14 @@ const sagaMiddleware = createSagaMiddleware();
 // mount it on the Store
 export const store = configureStore({
     reducer: {
-        LoadingReducer,
-        UserReducer,
-        ProjectCategoryReducer,
-        ProjectReducer,
-        DrawerReducer,
-        TaskTypeReducer,
-        PriorityReducer,
-        StatusReducer
+        loadingReducer,
+        userReducer,
+        projectCategoryReducer,
+        projectReducer,
+        drawerReducer,
+        taskTypeReducer,
+        priorityReducer,
+        statusReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         // hide an error when states are components or functions in redux-toolkit store

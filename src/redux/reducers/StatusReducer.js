@@ -4,8 +4,8 @@ const initialState = {
     statusList: []
 };
 
-const StatusReducer = createSlice({
-    name: 'StatusReducer',
+const statusReducer = createSlice({
+    name: 'statusReducer',
     initialState,
     reducers: {
         setStatusList: (state, { payload }) => {
@@ -16,6 +16,6 @@ const StatusReducer = createSlice({
 
 export const {
     setStatusList
-} = StatusReducer.actions;
+} = statusReducer.actions;
 
-export default StatusReducer.reducer;
+export default statusReducer.reducer;

@@ -7,8 +7,8 @@ import * as Yup from 'yup';
 
 import SelectField from 'customFields/SelectField/SelectField';
 import InputField from 'customFields/InputField/InputField';
-import { getProjectCategorySagaAction } from 'redux/saga/actions/ProjectCategoryAction';
-import { createProjectSagaAction } from 'redux/saga/actions/ProjectAction';
+import { getProjectCategorySagaAction } from 'redux/saga/actions/projectCategoryAction';
+import { createProjectSagaAction } from 'redux/saga/actions/projectAction';
 
 const breadCrumbList = [
     {
@@ -47,7 +47,7 @@ export default function ProjectCreate() {
     const [valueEditor, setValueEditor] = useState(initialEditorValue);
 
     // get projectCategoryArr from redux store
-    const { projectCategoryArr } = useSelector(state => state.ProjectCategoryReducer);
+    const { projectCategoryArr } = useSelector(state => state.projectCategoryReducer);
 
     // Formik
     const initialValues = {

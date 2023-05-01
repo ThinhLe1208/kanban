@@ -4,8 +4,8 @@ const initialState = {
     isLoading: false
 };
 
-const LoadingReducer = createSlice({
-    name: 'LoadingReducer',
+const loadingReducer = createSlice({
+    name: 'loadingReducer',
     initialState,
     reducers: {
         showLoading: (state) => {
@@ -17,6 +17,6 @@ const LoadingReducer = createSlice({
     }
 });
 
-export const { showLoading, hideLoading } = LoadingReducer.actions;
+export const { showLoading, hideLoading } = loadingReducer.actions;
 
-export default LoadingReducer.reducer;
+export default loadingReducer.reducer;

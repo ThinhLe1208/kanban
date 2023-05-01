@@ -1,8 +1,8 @@
 import { call, delay, put, takeLatest } from "redux-saga/effects";
 import { GET_USER_BY_PROJECT_ID_SAGA, GET_USER_SAGA, USER_SIGNIN_SAGA } from "redux/constants/JiraCloneConst";
-import { hideLoading, showLoading } from "redux/reducers/LoadingReducer";
-import { getUser, getUserByProjectId, userSignin } from "redux/reducers/UserReducer";
-import { userService } from "services/UserService";
+import { hideLoading, showLoading } from "redux/reducers/loadingReducer";
+import { getUser, getUserByProjectId, userSignin } from "redux/reducers/userReducer";
+import { userService } from "services/userService";
 import { ACCESS_TOKEN, CURRENT_USER, STATUS_CODE } from "util/constants/settingSystem";
 import { history } from "util/history";
 

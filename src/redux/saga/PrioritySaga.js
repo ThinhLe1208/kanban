@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { GET_ALL_PRIORITY_SAGA } from "redux/constants/JiraCloneConst";
-import { setPriorityList } from "redux/reducers/PriorityReducer";
-import { priorityService } from "services/PriorityService";
+import { setPriorityList } from "redux/reducers/priorityReducer";
+import { priorityService } from "services/priorityService";
 import { STATUS_CODE } from "util/constants/settingSystem";
 
 function* getAllPriority(action) {

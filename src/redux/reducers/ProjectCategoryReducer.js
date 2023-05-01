@@ -4,8 +4,8 @@ const initialState = {
     projectCategoryArr: []
 };
 
-const ProjectCategoryReducer = createSlice({
-    name: 'ProjectCategoryReducer',
+const projectCategoryReducer = createSlice({
+    name: 'projectCategoryReducer',
     initialState,
     reducers: {
         setProjectCategoryArr: (state, { payload }) => {
@@ -14,6 +14,6 @@ const ProjectCategoryReducer = createSlice({
     }
 });
 
-export const { setProjectCategoryArr } = ProjectCategoryReducer.actions;
+export const { setProjectCategoryArr } = projectCategoryReducer.actions;
 
-export default ProjectCategoryReducer.reducer;
+export default projectCategoryReducer.reducer;

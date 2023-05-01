@@ -4,12 +4,12 @@ import { useFormik } from 'formik';
 import React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHandleSubmitDrawer } from 'redux/reducers/DrawerReducer';
-import { getAllPrioritySagaAction } from 'redux/saga/actions/PriorityAction';
-import { getAllStatusSagaAction } from 'redux/saga/actions/StatusAction';
-import { createTaskSaga } from 'redux/saga/actions/TaskAction';
-import { getAllTaskTypeSagaAction } from 'redux/saga/actions/TaskTypeAction';
-import { getUserByProjectIdSagaAction } from 'redux/saga/actions/UserAction';
+import { setHandleSubmitDrawer } from 'redux/reducers/drawerReducer';
+import { getAllPrioritySagaAction } from 'redux/saga/actions/priorityAction';
+import { getAllStatusSagaAction } from 'redux/saga/actions/statusAction';
+import { createTaskSaga } from 'redux/saga/actions/taskAction';
+import { getAllTaskTypeSagaAction } from 'redux/saga/actions/taskTypeAction';
+import { getUserByProjectIdSagaAction } from 'redux/saga/actions/userAction';
 import * as Yup from 'yup';
 
 const CreateTaskSchema = Yup.object().shape({
@@ -24,11 +24,11 @@ export default function CreateTaskForm() {
     const dispatch = useDispatch();
 
     // connect to redux-toolkit store
-    const { projectList } = useSelector(state => state.ProjectReducer);
-    const { taskTypeList } = useSelector(state => state.TaskTypeReducer);
-    const { priorityList } = useSelector(state => state.PriorityReducer);
-    const { getUserByProjectId } = useSelector(state => state.UserReducer);
-    const { statusList } = useSelector(state => state.StatusReducer);
+    const { projectList } = useSelector(state => state.projectReducer);
+    const { taskTypeList } = useSelector(state => state.taskTypeReducer);
+    const { priorityList } = useSelector(state => state.priorityReducer);
+    const { getUserByProjectId } = useSelector(state => state.userReducer);
+    const { statusList } = useSelector(state => state.statusReducer);
 
     const customHandleChangeAntd = (value, name) => {
         const changeEvent = {

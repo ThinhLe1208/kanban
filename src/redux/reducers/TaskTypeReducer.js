@@ -4,8 +4,8 @@ const initialState = {
     taskTypeList: []
 };
 
-const TaskTypeReducer = createSlice({
-    name: 'TaskTypeReducer',
+const taskTypeReducer = createSlice({
+    name: 'taskTypeReducer',
     initialState,
     reducers: {
         setAllTaskType: (state, { payload }) => {
@@ -14,6 +14,6 @@ const TaskTypeReducer = createSlice({
     }
 });
 
-export const { setAllTaskType } = TaskTypeReducer.actions;
+export const { setAllTaskType } = taskTypeReducer.actions;
 
-export default TaskTypeReducer.reducer;
+export default taskTypeReducer.reducer;

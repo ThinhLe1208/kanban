@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { GET_PROJECT_CATEGORY_SAGA } from "redux/constants/JiraCloneConst";
-import { setProjectCategoryArr } from "redux/reducers/ProjectCategoryReducer";
-import { projectCategoryService } from "services/ProjectCategoryService";
+import { setProjectCategoryArr } from "redux/reducers/projectCategoryReducer";
+import { projectCategoryService } from "services/projectCategoryService";
 import { STATUS_CODE } from "util/constants/settingSystem";
 
 function* getProjectCategorySaga() {

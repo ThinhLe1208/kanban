@@ -1,31 +1,31 @@
 import { all } from 'redux-saga/effects';
-import * as UserSaga from './UserSaga';
-import * as ProjectCategorySaga from './ProjectCategorySaga';
-import * as TaskTypeSaga from './TaskTypeSaga';
-import * as PrioritySaga from './PrioritySaga';
-import * as ProjectSaga from './ProjectSaga';
-import * as StatusSaga from './StatusSaga';
-import * as TaskSaga from './TaskSaga';
+import * as userSaga from './userSaga';
+import * as projectCategorySaga from './projectCategorySaga';
+import * as taskTypeSaga from './taskTypeSaga';
+import * as prioritySaga from './prioritySaga';
+import * as projectSaga from './projectSaga';
+import * as statusSaga from './statusSaga';
+import * as taskSaga from './taskSaga';
 
 export function* rootSaga() {
     yield all([
-        UserSaga.watchSigninSaga(),
-        UserSaga.watchGetUserSaga(),
-        UserSaga.watchGetUserByProjectIdSaga(),
+        userSaga.watchSigninSaga(),
+        userSaga.watchGetUserSaga(),
+        userSaga.watchGetUserByProjectIdSaga(),
 
-        ProjectCategorySaga.watchGetProjectCategorySaga(),
-        TaskTypeSaga.watchGetAllTaskType(),
-        PrioritySaga.watchGetAllPrioritySaga(),
-        StatusSaga.watchGetAllStatusSaga(),
+        projectCategorySaga.watchGetProjectCategorySaga(),
+        taskTypeSaga.watchGetAllTaskType(),
+        prioritySaga.watchGetAllPrioritySaga(),
+        statusSaga.watchGetAllStatusSaga(),
 
-        ProjectSaga.watchCreateProjectSaga(),
-        ProjectSaga.watchGetAllProjectSaga(),
-        ProjectSaga.watchGetProjectDetailSaga(),
-        ProjectSaga.watchUpdateProjectSaga(),
-        ProjectSaga.watchDeleteProjectSaga(),
-        ProjectSaga.watchAssignUserProjectSaga(),
-        ProjectSaga.watchRemoveUserProjectSaga(),
+        projectSaga.watchCreateProjectSaga(),
+        projectSaga.watchGetAllProjectSaga(),
+        projectSaga.watchGetProjectDetailSaga(),
+        projectSaga.watchUpdateProjectSaga(),
+        projectSaga.watchDeleteProjectSaga(),
+        projectSaga.watchAssignUserProjectSaga(),
+        projectSaga.watchRemoveUserProjectSaga(),
 
-        TaskSaga.watchCreateTaskSaga(),
+        taskSaga.watchCreateTaskSaga(),
     ]);
 }

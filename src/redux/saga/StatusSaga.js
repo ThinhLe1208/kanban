@@ -1,8 +1,8 @@
-import { statusService } from "services/StatusService";
+import { statusService } from "services/statusService";
 import { STATUS_CODE } from "util/constants/settingSystem";
 import { takeLatest, call, put } from "redux-saga/effects";
 import { GET_ALL_STATUS_SAGA } from "redux/constants/JiraCloneConst";
-import { setStatusList } from "redux/reducers/StatusReducer";
+import { setStatusList } from "redux/reducers/statusReducer";
 
 function* getAllStatusSaga() {
     try {

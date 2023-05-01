@@ -1,10 +1,10 @@
 import React from 'react';
-import ContentMain from 'Components/Main/ContentMain';
-import InfoMain from 'Components/Main/InfoMain';
-import InfoModal from 'Components/Modal/InfoModal';
+import ContentMain from 'components/Main/ContentMain';
+import InfoMain from 'components/Main/InfoMain';
+import InfoModal from 'components/Modal/InfoModal';
 import { Breadcrumb } from 'antd';
 import { useEffect } from 'react';
-import { getProjectDetailSagaAction } from 'redux/saga/actions/ProjectAction';
+import { getProjectDetailSagaAction } from 'redux/saga/actions/projectAction';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 

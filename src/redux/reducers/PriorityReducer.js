@@ -4,8 +4,8 @@ const initialState = {
     priorityList: []
 };
 
-const PriorityReducer = createSlice({
-    name: 'PriorityReducer',
+const priorityReducer = createSlice({
+    name: 'priorityReducer',
     initialState,
     reducers: {
         setPriorityList: (state, { payload }) => {
@@ -14,6 +14,6 @@ const PriorityReducer = createSlice({
     }
 });
 
-export const { setPriorityList } = PriorityReducer.actions;
+export const { setPriorityList } = priorityReducer.actions;
 
-export default PriorityReducer.reducer;
+export default priorityReducer.reducer;

@@ -5,9 +5,9 @@ import * as Yup from 'yup';
 import { FormGroup, Input, Label, FormFeedback } from 'reactstrap';
 import { Editor } from '@tinymce/tinymce-react';
 
-import { getProjectCategorySagaAction } from 'redux/saga/actions/ProjectCategoryAction';
-import { setHandleSubmitDrawer } from 'redux/reducers/DrawerReducer';
-import { updateProjectSagaAction } from 'redux/saga/actions/ProjectAction';
+import { getProjectCategorySagaAction } from 'redux/saga/actions/projectCategoryAction';
+import { setHandleSubmitDrawer } from 'redux/reducers/drawerReducer';
+import { updateProjectSagaAction } from 'redux/saga/actions/projectAction';
 
 const EditProjectSchema = Yup.object().shape({
     projectName: Yup
@@ -29,8 +29,8 @@ export default function EditProjectForm() {
     const dispatch = useDispatch();
 
     // get projectCategoryArr from redux store
-    const { projectCategoryArr } = useSelector(state => state.ProjectCategoryReducer);
-    const { projectEdit } = useSelector(state => state.ProjectReducer);
+    const { projectCategoryArr } = useSelector(state => state.projectCategoryReducer);
+    const { projectEdit } = useSelector(state => state.projectReducer);
 
     // Formik
     const {

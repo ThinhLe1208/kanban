@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { GET_ALL_TASK_TYPE_SAGA } from "redux/constants/JiraCloneConst";
-import { setAllTaskType } from "redux/reducers/TaskTypeReducer";
-import { taskTypeService } from "services/TaskTypeService";
+import { setAllTaskType } from "redux/reducers/taskTypeReducer";
+import { taskTypeService } from "services/taskTypeService";
 import { STATUS_CODE } from "util/constants/settingSystem";
 
 function* getAllTaskType(action) {

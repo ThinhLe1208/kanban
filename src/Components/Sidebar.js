@@ -3,7 +3,7 @@ import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { useDispatch } from 'react-redux';
 import CreateTaskForm from './Form/CreateTaskForm/CreateTaskForm';
-import { setDrawer } from 'redux/reducers/DrawerReducer';
+import { setDrawer } from 'redux/reducers/drawerReducer';
 
 const { Sider } = Layout;
 

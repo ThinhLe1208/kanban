@@ -9,8 +9,8 @@ const initialState = {
     }
 };
 
-const DrawerReducer = createSlice({
-    name: 'DrawerReducer',
+const drawerReducer = createSlice({
+    name: 'drawerReducer',
     initialState,
     reducers: {
         showDrawer: (state) => {
@@ -35,6 +35,6 @@ export const {
     hideDrawer,
     setDrawer,
     setHandleSubmitDrawer
-} = DrawerReducer.actions;
+} = drawerReducer.actions;
 
-export default DrawerReducer.reducer;
+export default drawerReducer.reducer;

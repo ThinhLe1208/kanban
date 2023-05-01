@@ -4,13 +4,13 @@ import { AutoComplete, Avatar, Breadcrumb, Button, Input, Popconfirm, Popover, S
 import Highlighter from 'react-highlight-words';
 import parse from 'html-react-parser';
 import { useDispatch, useSelector } from 'react-redux';
-import { assignUserProjectSagaAction, deleteProjectSagaAction, getAllProjectSagaAction, removeUserProjectSagaAction } from 'redux/saga/actions/ProjectAction';
+import { assignUserProjectSagaAction, deleteProjectSagaAction, getAllProjectSagaAction, removeUserProjectSagaAction } from 'redux/saga/actions/projectAction';
 
-import { setDrawer } from 'redux/reducers/DrawerReducer';
-import { setProjectEdit } from 'redux/reducers/ProjectReducer';
-import { getUserSagaAction } from 'redux/saga/actions/UserAction';
+import { setDrawer } from 'redux/reducers/drawerReducer';
+import { setProjectEdit } from 'redux/reducers/projectReducer';
+import { getUserSagaAction } from 'redux/saga/actions/userAction';
 import { NavLink } from 'react-router-dom';
-import EditProjectForm from 'Components/Form/EditProjectForm/EditProjectForm';
+import EditProjectForm from 'components/Form/EditProjectForm/EditProjectForm';
 
 const breadCrumbList = [
     {
@@ -30,8 +30,8 @@ export default function ProjectManagement() {
     const dispatch = useDispatch();
     const searchRef = useRef(null);
 
-    const { getUser } = useSelector(state => state.UserReducer);
-    const { projectList } = useSelector(state => state.ProjectReducer);
+    const { getUser } = useSelector(state => state.userReducer);
+    const { projectList } = useSelector(state => state.projectReducer);
 
     // state of feature which searches and adds a member
     const [searchValue, setSearchValue] = useState('');

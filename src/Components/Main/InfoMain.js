@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import parse from 'html-react-parser';
 
 export default function InfoMain() {
-    const { projectDetail } = useSelector(state => state.ProjectReducer);
+    const { projectDetail } = useSelector(state => state.projectReducer);
     const { projectName = '', members = [], description = '' } = projectDetail;
 
     const renderAvatarGroup = () => {

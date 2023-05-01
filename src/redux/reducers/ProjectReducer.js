@@ -13,8 +13,8 @@ const initialState = {
 
 };
 
-const ProjectReducer = createSlice({
-    name: 'ProjectReducer',
+const projectReducer = createSlice({
+    name: 'projectReducer',
     initialState,
     reducers: {
         getProjectList: (state, { payload }) => {
@@ -33,6 +33,6 @@ export const {
     getProjectList,
     setProjectEdit,
     setProjectDetail
-} = ProjectReducer.actions;
+} = projectReducer.actions;
 
-export default ProjectReducer.reducer;
+export default projectReducer.reducer;
