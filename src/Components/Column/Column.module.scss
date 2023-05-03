@@ -1,0 +1,51 @@
+.wrapper {
+  width: 324px;
+  background-color: var(--bg-dark-3);
+  padding: 16px;
+
+  .header {
+    height: 38px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .name {
+      font-family: var(--sub-font-family);
+      font-size: 16px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    .qty {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
+      font-weight: 700;
+      background-color: var(--bg-dark-2);
+      border-radius: 100%;
+    }
+  }
+
+  .addIssueBtn {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--bg-blue-3);
+    background-color: var(--bg-blue-2);
+    border-radius: 4px;
+
+    margin-top: 12px;
+    transition: all linear 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 2px 0px;
+    }
+  }
+}

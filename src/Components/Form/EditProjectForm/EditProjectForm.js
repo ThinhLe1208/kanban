@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { FormGroup, Input, Label, FormFeedback } from 'reactstrap';
 import { Editor } from '@tinymce/tinymce-react';
 
 import { getProjectCategorySagaAction } from 'redux/saga/actions/projectCategoryAction';
@@ -72,7 +71,7 @@ export default function EditProjectForm() {
     return (
         <div className="container py-3">
             <form onSubmit={handleSubmit}>
-                <FormGroup>
+                {/* <FormGroup>
                     <Label for='projectName'>Name</Label>
 
                     <Input
@@ -131,7 +130,7 @@ export default function EditProjectForm() {
                     </Input>
 
                     {errors.categoryId && <FormFeedback >{errors.categoryId}</FormFeedback>}
-                </FormGroup>
+                </FormGroup> */}
             </form>
         </div>
     );

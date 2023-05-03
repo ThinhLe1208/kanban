@@ -1,14 +1,14 @@
 import React from 'react';
-import style from './LoadingComponent.module.css';
+import style from './Loading.module.css';
 import { useSelector } from 'react-redux';
 
-export default function LoadingComponent() {
+export default function Loading() {
     const { isLoading } = useSelector(state => state.loadingReducer);
 
     if (isLoading) {
         return (
             <div className={style.bgLoading}>
-                <img src={require('../../../assets/img/loading.png')} alt="loading" />
+                <img src={require('../../assets/img/loading.png')} alt="loading" />
             </div>
         );
     }

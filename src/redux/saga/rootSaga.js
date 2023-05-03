@@ -27,5 +27,11 @@ export function* rootSaga() {
         projectSaga.watchRemoveUserProjectSaga(),
 
         taskSaga.watchCreateTaskSaga(),
+        taskSaga.watchGetTaskDetailSaga(),
+        taskSaga.watchUpdateTaskSaga(),
+        taskSaga.watchUpdateTaskDescriptionSaga(),
+        taskSaga.watchUpdateStatusSaga(),
+        taskSaga.watchUpdatePrioritySaga(),
+        taskSaga.watchUpdateOriginalEstimateSaga(),
     ]);
 }

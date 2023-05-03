@@ -4,8 +4,6 @@ import { Button, Typography } from 'antd';
 import { FastField, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { signinSagaAction } from 'redux/saga/actions/userAction';
-import InputField from 'customFields/InputField/InputField';
-import SelectField from 'customFields/SelectField/SelectField';
 
 const { Title } = Typography;
 
@@ -37,7 +35,7 @@ export default function Signin() {
         <div className='d-flex flex-column justify-content-center h-100 px-5'>
             <Title className='text-center text-primary mb-4'>Jira Clone</Title>
 
-            <Formik
+            {/* <Formik
                 initialValues={initialValues}
                 validationSchema={SigninSchema}
                 onSubmit={(values) => {
@@ -88,7 +86,7 @@ export default function Signin() {
                         </Form>
                     );
                 }}
-            </Formik>
+            </Formik> */}
         </div >
     );
 }

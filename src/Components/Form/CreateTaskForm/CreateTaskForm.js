@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setHandleSubmitDrawer } from 'redux/reducers/drawerReducer';
 import { getAllPrioritySagaAction } from 'redux/saga/actions/priorityAction';
 import { getAllStatusSagaAction } from 'redux/saga/actions/statusAction';
-import { createTaskSaga } from 'redux/saga/actions/taskAction';
+import { createTaskSagaAction } from 'redux/saga/actions/taskAction';
 import { getAllTaskTypeSagaAction } from 'redux/saga/actions/taskTypeAction';
 import { getUserByProjectIdSagaAction } from 'redux/saga/actions/userAction';
 import * as Yup from 'yup';
@@ -69,7 +69,7 @@ export default function CreateTaskForm() {
                 ...values,
                 originalEstimate: values.timeTrackingSpent + values.timeTrackingRemaining
             };
-            dispatch(createTaskSaga(updatedValues));
+            dispatch(createTaskSagaAction(updatedValues));
         },
     });
 

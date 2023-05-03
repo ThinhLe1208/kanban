@@ -1,17 +1,17 @@
 import { Routes, Route, unstable_HistoryRouter as HistoryRouter, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import { history } from 'util/history';
-import 'App.css';
-import HomeTemplate from 'templates/HomeTemplate';
+import HomeTemplate from 'templates/HomeTemplate/HomeTemplate';
+import UserSigninTemplate from 'templates/UserSigninTemplate/UserSigninTemplate';
+import ProjectTemplate from 'templates/ProjectTemplate/ProjectTemplate';
 import Home from 'pages/Home';
-import UserSigninTemplate from 'templates/UserSigninTemplate';
 import Signin from 'pages/Signin';
-import ProjectTemplate from 'templates/ProjectTemplate';
-import ProjectBoard from 'pages/ProjectBoard';
+import ProjectBoard from 'pages/ProjectBoard/ProjectBoard';
 import ProjectCreate from 'pages/ProjectCreate';
 import ProjectManagement from 'pages/ProjectManagement';
 import CustomDrawer from 'HOC/Drawer/CustomDrawer';
-import { useSelector } from 'react-redux';
-import LoadingComponent from 'components/GlobalSetting/LoadingComponent/LoadingComponent';
+import Loading from 'components/Loading/Loading';
 
 function App() {
   const { isLoading } = useSelector(state => state.loadingReducer);
@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <CustomDrawer />
-      {isLoading && <LoadingComponent />}
+      {isLoading && <Loading />}
 
       {/* Use historyRouter to redirect in redux-saga */}
       <HistoryRouter history={history}>
