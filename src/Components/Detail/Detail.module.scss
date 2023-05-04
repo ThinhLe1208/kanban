@@ -1,5 +1,5 @@
 .wrapper {
-  display: flex;
+  row-gap: var(--row-gap);
 
   .item {
     display: flex;

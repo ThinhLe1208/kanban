@@ -1,45 +1,58 @@
 .wrapper {
   width: 100%;
-  background-color: var(--white);
-  padding: 12px;
   margin-bottom: 16px;
-  border-radius: 6px;
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 2px 0px;
+  transition: all linear 0.2s;
   cursor: pointer;
 
-  .priority {
-    margin-bottom: 12px;
+  &:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
   }
 
-  .name {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 8px;
+  &:hover .tag {
+    transform: translateY(-4px);
+  }
 
-    span {
-      color: var(--sub-text-color);
-      font-weight: 400;
-      margin-right: 6px;
+  .tag {
+    box-shadow: -4px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all linear 0.2s;
+  }
+
+  .issue {
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 12px;
+
+    .type {
+      margin-bottom: 8px;
     }
-  }
 
-  .desciption {
-    font-size: 14px;
-    margin-bottom: 8px;
-  }
+    .name {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
 
-  .content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--sub-text-color);
+      span {
+        color: var(--sub-text-color);
+        font-weight: 400;
+        margin-right: 6px;
+      }
+    }
 
-    .time {
+    .content {
       display: flex;
+      justify-content: space-between;
       align-items: center;
+      color: var(--sub-text-color);
 
-      span:nth-child(2) {
-        margin-left: 6px;
+      .time {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+
+        span:nth-child(2) {
+          margin-left: 6px;
+        }
       }
     }
   }

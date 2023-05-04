@@ -10,7 +10,7 @@ import { getProjectDetailSagaAction } from 'redux/saga/actions/projectAction';
 import InfoModal from 'components/Modal/InfoModal';
 import Column from 'components/Column/Column';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
-import { Avatar, Button, Input } from 'antd';
+import { Avatar, Button, Col, Input, Row } from 'antd';
 import Detail from 'components/Detail/Detail';
 
 const cx = classNames.bind(styles);
@@ -34,9 +34,9 @@ export default function ProjectBoard() {
 
     const renderColumns = () => {
         return lstTask?.map((task, index) => (
-            <div key={index} className={cx("col")}>
+            <Col key={index} >
                 <Column task={task} />
-            </div>
+            </Col>
         ));
     };
 
@@ -50,13 +50,13 @@ export default function ProjectBoard() {
         <div className={cx("wrapper")}>
             <Breadcrumbs items={breadCrumbList} />
 
-            <div className={cx("header")}>
-                <div className={cx("headerLeft")}>
+            <Row className={cx("header")} >
+                <Col className={cx("headerLeft")} xs={24} md={12} >
                     <LayoutOutlined className={cx("icon")} />
                     <h3 className={cx("projectName")}>{projectName}</h3>
-                </div>
+                </Col>
 
-                <div className={cx("headerRight")}>
+                <Col className={cx("headerRight")} xs={24} md={12}>
                     <Input
                         className={cx("search")}
                         placeholder="Search..."
@@ -64,36 +64,37 @@ export default function ProjectBoard() {
                     />
                     <SettingOutlined className={cx("icon")} />
                     <BellOutlined className={cx("icon")} />
-                    <Avatar src="https://xsgames.co/randomusers/avatar.php?g=pixel&key=3" />
-                </div>
-            </div>
+                    <Avatar className={cx("avatar")} src="https://api.multiavatar.com/Binx.png" />
+                </Col>
+            </Row>
 
             <div className={cx("detail")}>
                 <Detail />
             </div>
 
-            <div className={cx("filter")}>
-                <div className={cx("filterLeft")}>
-                    <Button>Only my issues</Button>
-                    <Button>Recently updated</Button>
-                </div>
-                <div className={cx("filterRight")}>
+            <Row className={cx("filter")} >
+                <Col className={cx("filterLeft")} >
+                    <Button className={cx("filterItem")}>Only my issues</Button>
+                    <Button className={cx("filterItem")}>Recently updated</Button>
+                </Col>
+
+                <Col className={cx("filterRight")} >
                     <button className={cx("filterItem", "boardBtn")}>
                         <LayoutOutlined style={{ color: 'var(--bg-blue-3)' }} />
                     </button>
-                    <button className={cx("filterItem")} >
+                    <button className={cx("filterItem")}>
                         <BarsOutlined />
                     </button>
                     <button className={cx("filterItem", "shareBtn")}>
                         <ShareAltOutlined style={{ color: 'var(--white)', marginRight: '6px' }} />
                         Share
                     </button>
-                </div>
-            </div>
+                </Col>
+            </Row>
 
-            <div className={cx("row")} >
+            <Row className={cx("columns")} wrap={false}>
                 {renderColumns()}
-            </div>
+            </Row>
 
 
             <InfoModal />

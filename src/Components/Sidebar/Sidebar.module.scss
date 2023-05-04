@@ -2,32 +2,27 @@ $logo-height: 32px;
 $logo-margin-y: 20px;
 
 .wrapper {
-  position: fixed;
   height: 100vh;
-  z-index: 999;
 
-  .layout {
+  .sidebar {
     height: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 
-    .sidebar {
-      height: 100%;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    .logo {
+      height: $logo-height;
+      object-fit: contain;
+      margin: $logo-margin-y auto;
+    }
 
-      .logo {
-        width: $logo-height;
-        margin: $logo-margin-y auto;
-      }
+    .icon {
+      // font-size: 40px;
+    }
 
-      .icon {
-        // font-size: 40px;
-      }
-
-      .menu {
-        height: calc(100% - $logo-height - $logo-margin-y * 2);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
+    .menu {
+      height: calc(100% - $logo-height - $logo-margin-y * 2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames/bind';
-import { Avatar, Tooltip } from 'antd';
+import { Avatar, Col, Row, Tooltip } from 'antd';
 import { useSelector } from 'react-redux';
 
 import styles from './Detail.module.scss';
@@ -18,25 +18,23 @@ export default function Detail() {
     ));
 
     return (
-        <div className={cx("wrapper")}>
-            <div className={cx("item")}>
+        <Row className={cx("wrapper")}>
+            <Col className={cx("item")}>
                 <span className={cx("subDetail")}>Create on:</span>
                 <span className={cx("detail")}>May 14,2022</span>
-            </div>
+            </Col>
 
-            <div className={cx("item")}>
+            <Col className={cx("item")}>
                 <span className={cx("subDetail")}>Location:</span>
                 <span className={cx("detail")}>Viet Nam</span>
-            </div>
+            </Col>
 
-            <div className={cx("item")}>
+            <Col className={cx("item")}>
                 <span className={cx("subDetail")}>Team:</span>
                 <Avatar.Group className={cx("avatarGroup")}>
                     {renderAvatars()}
                 </Avatar.Group>
-            </div>
-
-
-        </div>
+            </Col>
+        </Row>
     );
 }

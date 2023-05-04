@@ -5,7 +5,7 @@ export default function Header() {
     return (
         <>
             <NavLink to='/signin'>Sign in</NavLink>
-            <NavLink to='/project/board/12445'>Project</NavLink>
+            <NavLink to='/project/board/12464'>Project</NavLink>
         </>
     );
 }

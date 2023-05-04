@@ -13,7 +13,11 @@
 
   --bg-dark-1: #f8f9faff; // neutral-150
   --bg-dark-2: #dee1e6ff; // neutral-300
-  --bg-dark-3: #f4f5f7ff; // neutral-300
+  --bg-dark-3: #f4f5f7ff; // neutral-400
+
+  --row-gap: 12px;
+  --row-space: 10px;
+  --button-space: 16px;
 
   --font-family: "Inter", sans-serif;
   --sub-font-family: "Epilogue", sans-serif;
@@ -113,7 +117,7 @@ html ::-webkit-scrollbar {
 
 html ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: rgba(22, 24, 35, 0.3);
+  background-color: rgba(22, 24, 35, 0.2);
 }
 
 html ::-webkit-scrollbar-track {

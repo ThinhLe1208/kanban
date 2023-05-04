@@ -1,9 +1,14 @@
 .wrapper {
   width: 324px;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg-dark-3);
+  border-radius: 8px;
   padding: 16px;
 
   .header {
+    width: 100%;
     height: 38px;
     display: flex;
     justify-content: flex-start;
@@ -30,22 +35,34 @@
     }
   }
 
+  .issues {
+    height: 100%;
+    padding-right: 12px;
+    margin-right: -6px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   .addIssueBtn {
     width: 100%;
-    height: 36px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: var(--bg-blue-3);
-    background-color: var(--bg-blue-2);
-    border-radius: 4px;
+    background-color: transparent;
+    border-radius: 8px;
 
+    padding: 8px 0;
     margin-top: 12px;
     transition: all linear 0.2s;
 
+    opacity: 0.7;
+    font-weight: 500;
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 2px 0px;
+      transform: translateY(-1px);
+      // box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 2px 0px;
+      background-color: var(--bg-blue-2);
+      opacity: 1;
     }
   }
 }

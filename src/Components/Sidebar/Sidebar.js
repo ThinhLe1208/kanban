@@ -64,36 +64,35 @@ export default function Sidebar() {
 
     return (
         <div className={cx('wrapper')}>
-            <Layout className={cx("layout")} hasSider>
-                <Layout.Sider
-                    className={cx("sidebar")}
-                    onMouseEnter={() => setCollapsed(false)}
-                    onMouseLeave={() => setCollapsed(true)}
-                    collapsedWidth={80}
-                    trigger={null}
-                    collapsible
-                    collapsed={collapsed}
-                    theme='light'
-                >
-                    <img className={cx("logo")} src={require('../../assets/img/logo_jira.png')} alt="logo_jira" />
+            <Layout.Sider
+                className={cx("sidebar")}
+                onMouseEnter={() => setCollapsed(false)}
+                onMouseLeave={() => setCollapsed(true)}
+                collapsedWidth={80}
+                width={210}
+                trigger={null}
+                collapsible
+                collapsed={collapsed}
+                theme='dark'
+            >
+                <img className={cx("logo")} src={require('../../assets/img/logo_jira.png')} alt="logo_jira" />
 
-                    <div className={cx("menu")}>
-                        <Menu
-                            theme="light"
-                            mode="inline"
-                            items={itemsTop}
-                            onClick={handleClickMenuItem}
-                        />
+                <div className={cx("menu")}>
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        items={itemsTop}
+                        onClick={handleClickMenuItem}
+                    />
 
-                        <Menu
-                            theme="light"
-                            mode="inline"
-                            items={itemsBottom}
-                            onClick={handleClickMenuItem}
-                        />
-                    </div>
-                </Layout.Sider>
-            </Layout>
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        items={itemsBottom}
+                        onClick={handleClickMenuItem}
+                    />
+                </div>
+            </Layout.Sider>
         </div>
     );
 }
