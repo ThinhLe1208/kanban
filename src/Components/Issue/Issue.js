@@ -6,13 +6,14 @@ import styles from './Issue.module.scss';
 import { getTaskDetailSagaAction } from 'redux/saga/actions/taskAction';
 import { Avatar, Badge, Tag, Tooltip } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
+import { Draggable } from 'react-beautiful-dnd';
 
 const cx = classNames.bind(styles);
 
-export default function Issue({ issue }) {
+export default function Issue({ issue, index }) {
     const { taskName, priorityTask, assigness, taskId } = issue;
     const dispatch = useDispatch();
-    console.log(issue);
+
     const renderAssigness = () => assigness.map((assignee, index) => (
         <Tooltip key={index} title={assignee.name} placement="top">
             <Avatar className={cx("avatar")} src={assignee.avatar} />
@@ -34,31 +35,53 @@ export default function Issue({ issue }) {
     };
 
     return (
-        <div className={cx("wrapper")} onClick={handleClickIssue} data-toggle="modal" data-target="#infoModal">
-            <Badge.Ribbon className={cx("tag")} text={priorityTask.priority} color={priority()}>
-                <div className={cx("issue")}>
-                    <Tag className={cx("type")} color={issue.taskTypeDetail?.id === 1 ? 'red' : 'geekblue'}>
-                        {issue.taskTypeDetail?.taskType}
-                    </Tag>
+        <Draggable
+            // props of beautiful-dnd
+            key={taskId}
+            draggableId={taskId.toString()}
+            index={index}
+        >
+            {(provided) => {
+                return (
+                    <li
+                        className={cx("wrapper")}
+                        onClick={handleClickIssue}
 
-                    <p className={cx("name")}>
-                        <span>Issue:</span>
-                        {taskName}
-                    </p>
+                        data-toggle="modal"
+                        data-target="#infoModal"
 
-                    <div className={cx("content")}>
-                        <p className={cx("time")}>
-                            <ClockCircleOutlined />
-                            <span>{Math.floor(Math.random() * 24 + 1)}</span>
-                            <span>h ago</span>
-                        </p>
+                        // props of beautiful-dnd
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                    >
+                        <Badge.Ribbon className={cx("tag")} text={priorityTask.priority} color={priority()}>
+                            <div className={cx("issue")}>
+                                <Tag className={cx("type")} color={issue.taskTypeDetail?.id === 1 ? 'red' : 'geekblue'}>
+                                    {issue.taskTypeDetail?.taskType}
+                                </Tag>
 
-                        <Avatar.Group className={cx("assigneeGroup")} maxCount={3}>
-                            {renderAssigness()}
-                        </Avatar.Group>
-                    </div>
-                </div>
-            </Badge.Ribbon >
-        </div>
+                                <p className={cx("name")}>
+                                    <span>Issue:</span>
+                                    {taskName}
+                                </p>
+
+                                <div className={cx("content")}>
+                                    <p className={cx("time")}>
+                                        <ClockCircleOutlined />
+                                        <span>{Math.floor(Math.random() * 24 + 1)}</span>
+                                        <span>h ago</span>
+                                    </p>
+
+                                    <Avatar.Group className={cx("assigneeGroup")} maxCount={3}>
+                                        {renderAssigness()}
+                                    </Avatar.Group>
+                                </div>
+                            </div>
+                        </Badge.Ribbon >
+                    </li>
+                );
+            }}
+        </Draggable>
     );
 }

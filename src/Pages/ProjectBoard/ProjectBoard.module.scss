@@ -117,11 +117,7 @@
     }
   }
 
-  .columns {
-    height: 94%;
-    flex-grow: 1;
-    gap: var(--row-gap);
-    overflow-x: auto;
-    overflow-y: hidden;
+  .board {
+    min-height: 0;
   }
 }

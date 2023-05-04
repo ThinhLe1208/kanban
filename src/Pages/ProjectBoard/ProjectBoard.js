@@ -3,26 +3,24 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ShareAltOutlined, SettingOutlined, BellOutlined, SearchOutlined, LayoutOutlined, BarsOutlined } from '@ant-design/icons';
+import { Avatar, Button, Col, Input, Row } from 'antd';
 import classNames from 'classnames/bind';
 
 import styles from './ProjectBoard.module.scss';
 import { getProjectDetailSagaAction } from 'redux/saga/actions/projectAction';
 import InfoModal from 'components/Modal/InfoModal';
-import Column from 'components/Column/Column';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
-import { Avatar, Button, Col, Input, Row } from 'antd';
 import Detail from 'components/Detail/Detail';
+import Board from 'components/Board/Board';
 
 const cx = classNames.bind(styles);
 
 export default function ProjectBoard() {
     const dispatch = useDispatch();
-
     // get porjectId form url
     const { projectId } = useParams();
-
     const { projectDetail } = useSelector(state => state.projectReducer);
-    const { lstTask, projectName } = projectDetail;
+    const { projectName } = projectDetail;
 
     const breadCrumbList = [
         { href: '/', title: 'Home' },
@@ -31,14 +29,6 @@ export default function ProjectBoard() {
     ];
 
     console.log('projectDetail', projectDetail);
-
-    const renderColumns = () => {
-        return lstTask?.map((task, index) => (
-            <Col key={index} >
-                <Column task={task} />
-            </Col>
-        ));
-    };
 
     useEffect(() => {
         // call api and save projectDetail data to redux store by using projectId dinamic param
@@ -92,10 +82,9 @@ export default function ProjectBoard() {
                 </Col>
             </Row>
 
-            <Row className={cx("columns")} wrap={false}>
-                {renderColumns()}
-            </Row>
-
+            <div className={cx("board")}>
+                <Board projectDetail={projectDetail} />
+            </div>
 
             <InfoModal />
         </div>

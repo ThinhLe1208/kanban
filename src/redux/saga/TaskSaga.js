@@ -86,7 +86,6 @@ export function* watchUpdateTaskDescriptionSaga() {
 }
 
 function* updateStatusSaga(action) {
-    console.log(action);
     try {
         const { status } = yield call(taskService.updateStatus, action.data);
         if (status === STATUS_CODE.SUCCESS) {

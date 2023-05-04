@@ -1,5 +1,6 @@
 import React from 'react';
 import { PlusCircleOutlined } from '@ant-design/icons';
+import { Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames/bind';
 
 import styles from './Column.module.scss';
@@ -7,26 +8,48 @@ import Issue from 'components/Issue/Issue';
 
 const cx = classNames.bind(styles);
 
-export default function Column({ task }) {
-    const { statusName } = task;
-
-    const renderIssues = () => task.lstTaskDeTail?.map((issue, index) => <Issue key={index} issue={issue} />);
+export default function Column({ colDetail, index }) {
+    const { statusId, statusName, lstTaskDeTail } = colDetail;
+    const renderIssues = () => lstTaskDeTail?.map((issue, index) => <Issue key={index} issue={issue} index={index} />);
 
     return (
-        <div className={cx("wrapper")}>
-            <div className={cx("header")}>
-                <span className={cx("name")}>{statusName}</span>
-                <span className={cx("qty")}>{task.lstTaskDeTail?.length}</span>
-            </div>
+        <Droppable
+            // props of beautiful-dnd
+            droppableId={statusId.toString()}
+            key={statusId}
+            index={index}
 
-            <div className={cx("issues")}>
-                {renderIssues()}
-            </div>
+            className="bg-primary p-2"
+            style={{ minHeight: '500px' }
+            }
+        >
+            {(provided) => {
+                return (
+                    <div className={cx("wrapper")}>
+                        <div className={cx("header")}>
+                            <span className={cx("name")}>{statusName}</span>
+                            <span className={cx("qty")}>{lstTaskDeTail?.length}</span>
+                        </div>
 
-            <button className={cx("addIssueBtn")}>
-                <PlusCircleOutlined style={{ marginRight: '6px' }} />
-                Add another issue
-            </button>
-        </div>
+                        <ul
+                            className={cx("issues")}
+
+                            // props of beautiful-dnd
+                            key={statusId}
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                        >
+                            {renderIssues()}
+                            {provided.placeholder}
+                        </ul>
+
+                        <button className={cx("addIssueBtn")}>
+                            <PlusCircleOutlined style={{ marginRight: '6px' }} />
+                            Add another issue
+                        </button>
+                    </div>
+                );
+            }}
+        </Droppable >
     );
 }
