@@ -1,0 +1,11 @@
+.wrapper {
+  border-top-left-radius: var(--border-rad-2);
+  border-bottom-left-radius: var(--border-rad-2);
+
+  .closeBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+}

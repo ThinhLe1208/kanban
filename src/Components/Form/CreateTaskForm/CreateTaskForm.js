@@ -1,44 +1,37 @@
-import { Editor } from '@tinymce/tinymce-react';
-import { Col, InputNumber, Row, Select, Slider, Form, Input } from 'antd';
-import { useFormik } from 'formik';
 import React from 'react';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setHandleSubmitDrawer } from 'redux/reducers/drawerReducer';
-import { getAllPrioritySagaAction } from 'redux/saga/actions/priorityAction';
-import { getAllStatusSagaAction } from 'redux/saga/actions/statusAction';
-import { createTaskSagaAction } from 'redux/saga/actions/taskAction';
-import { getAllTaskTypeSagaAction } from 'redux/saga/actions/taskTypeAction';
-import { getUserByProjectIdSagaAction } from 'redux/saga/actions/userAction';
+import { Col, Row } from 'antd';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames/bind';
+
+import styles from './CreateTaskForm.module.scss';
+import { setHandleSubmitOffcanvas } from 'redux/reducers/offcanvasReducer';
+import { createTaskSagaAction } from 'redux/saga/actions/taskAction';
+import InputField from 'components/InputField/InputField';
+import SelectField from 'components/SelectField/SelectField';
+import EditorField from 'components/EditorField/EditorField';
+import SliderField from 'components/SliderField/SliderField';
+
+
+const cx = classNames.bind(styles);
 
 const CreateTaskSchema = Yup.object().shape({
-    taskName: Yup.string().required('Field is required'),
-    projectId: Yup.number().required('Field is required'),
-    priorityId: Yup.number().required('Field is required'),
-    typeId: Yup.number().required('Field is required'),
-    statusId: Yup.number().required('Field is required'),
+    taskName: Yup.string().required('Please provide an issue name.'),
+    priorityId: Yup.number().required('Please select a priority.'),
+    typeId: Yup.number().required('Please select a type.'),
+    statusId: Yup.number().required('Please select a status.'),
 });
 
 export default function CreateTaskForm() {
     const dispatch = useDispatch();
 
     // connect to redux-toolkit store
-    const { projectList } = useSelector(state => state.projectReducer);
+    const { projectDetail } = useSelector(state => state.projectReducer);
     const { taskTypeList } = useSelector(state => state.taskTypeReducer);
     const { priorityList } = useSelector(state => state.priorityReducer);
-    const { getUserByProjectId } = useSelector(state => state.userReducer);
     const { statusList } = useSelector(state => state.statusReducer);
-
-    const customHandleChangeAntd = (value, name) => {
-        const changeEvent = {
-            target: {
-                name,
-                value
-            }
-        };
-        handleChange(changeEvent);
-    };
 
     // Formik
     const {
@@ -54,14 +47,14 @@ export default function CreateTaskForm() {
         initialValues: {
             taskName: '',
             statusId: null,
-            projectId: null,
+            projectId: projectDetail.id,
             priorityId: null,
+            description: '',
             typeId: null,
             originalEstimate: 0,
             timeTrackingSpent: 0,
             timeTrackingRemaining: 0,
             listUserAsign: [],
-
         },
         validationSchema: CreateTaskSchema,
         onSubmit: (values) => {
@@ -75,188 +68,152 @@ export default function CreateTaskForm() {
 
     useEffect(() => {
         // save the submit handler form to redux-toolkit store
-        dispatch(setHandleSubmitDrawer(handleSubmit));
-        // call api to get all task types
-        dispatch(getAllTaskTypeSagaAction());
-        // call api to get all priorities
-        dispatch(getAllPrioritySagaAction());
-        // call api to get all statuses
-        dispatch(getAllStatusSagaAction());
+        dispatch(setHandleSubmitOffcanvas(handleSubmit));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="container">
-            <Form onFinish={handleSubmit} layout="vertical">
-                <Form.Item label='Project Name' name='projectId' rules={[{ required: errors.projectId && touched.projectId, message: errors.projectId }]}>
-                    <Select
-                        name="projectId"
-                        value={values.projectId}
-                        style={{ width: '100%' }}
-                        placeholder="Select project"
-                        optionFilterProp="label"
-                        showSearch
-                        onChange={(value) => customHandleChangeAntd(value, "projectId")}
+        <div className={cx("wrapper")}>
+            <form onSubmit={handleSubmit}>
+
+                <Row className={cx("row")} gutter={[18, 18]}>
+                    <Col xs={24} md={12}>
+                        <InputField
+                            label='Issue name'
+                            name="taskName"
+                            value={values.taskName}
+                            error={errors.taskName}
+                            touched={touched.taskName}
+                            placeholder="Insert task name"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                    </Col>
+
+                    <Col xs={24} md={12}>
+                        <SelectField
+                            label='Status'
+                            name="statusId"
+                            value={values.statusId}
+                            error={errors.statusId}
+                            touched={touched.statusId}
+                            placeholder="Select status"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            list={statusList}
+                            listLabel='statusName'
+                            listValue='statusId'
+                        />
+                    </Col>
+                </Row>
+
+                <Row className={cx("row")} gutter={[18, 18]}>
+                    <Col xs={24} md={12}>
+                        <SelectField
+                            label='Priority'
+                            name="priorityId"
+                            value={values.priorityId}
+                            error={errors.priorityId}
+                            touched={touched.priorityId}
+                            placeholder="Select priority"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            list={priorityList}
+                            listLabel='priority'
+                            listValue='priorityId'
+                        />
+                    </Col>
+                    <Col xs={24} md={12}>
+                        <SelectField
+                            label='Type'
+                            name="typeId"
+                            value={values.typeId}
+                            error={errors.typeId}
+                            touched={touched.typeId}
+                            placeholder="Select type"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            list={taskTypeList}
+                            listLabel='taskType'
+                            listValue='id'
+                        />
+                    </Col>
+                </Row>
+
+                <div className={cx("row")}>
+                    <EditorField
+                        label='Desciption'
+                        name='description'
+                        height={250}
+                        value={values.description}
+                        onEditorChange={setFieldValue}
+                    />
+                </div>
+
+                <div className={cx("row")}>
+                    <SelectField
+                        label='Assign user'
+                        name="listUserAsign"
+                        value={values.listUserAsign}
+                        error={errors.listUserAsign}
+                        touched={touched.listUserAsign}
+                        onChange={handleChange}
                         onBlur={handleBlur}
-                        onSelect={(value) => dispatch(getUserByProjectIdSagaAction(value))}
+                        list={projectDetail.members}
+                        listLabel='name'
+                        listValue='userId'
+
                         filterOption={(input, option) =>
                             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                         }
-                        options={projectList.map(p => ({ label: p.projectName, value: p.id }))}
-                        status={errors.projectId && touched.projectId ? "error" : ""}
-                    />
-                </Form.Item>
-
-                <Row gutter={12}>
-                    <Col span={12}>
-                        <Form.Item label='Task Name' name='taskName' rules={[{ required: errors.taskName && touched.taskName, message: errors.taskName }]}>
-                            <Input
-                                name="taskName"
-                                value={values.taskName}
-                                style={{ width: '100%' }}
-                                placeholder="Insert task name"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                status={errors.taskName && touched.taskName ? "error" : ""}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label='Status' name='statusId' rules={[{ required: errors.statusId && touched.statusId, message: errors.statusId }]}>
-                            <Select
-                                name="statusId"
-                                value={values.statusId}
-                                placeholder='Select status'
-                                onChange={(value) => customHandleChangeAntd(value, "statusId")}
-                                onBlur={handleBlur}
-                                options={statusList.map(p => ({ label: p.statusName, value: p.statusId }))}
-                                status={errors.statusId && touched.statusId ? "error" : ""}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <Row gutter={12}>
-                    <Col span={12}>
-                        <Form.Item label='Priority' name='priorityId' labelAlign='left' rules={[{ required: errors.priorityId && touched.priorityId, message: errors.priorityId }]}>
-                            <Select
-                                name="priorityId"
-                                value={values.priorityId}
-                                placeholder='Select priority'
-                                onChange={(value) => customHandleChangeAntd(value, "priorityId")}
-                                onBlur={handleBlur}
-                                options={priorityList.map(p => ({ label: p.priority, value: p.priorityId }))}
-                                status={errors.priorityId && touched.priorityId ? "error" : ""}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label='Task type' name='typeId' labelAlign='left' rules={[{ required: errors.typeId && touched.typeId, message: errors.typeId }]}>
-                            <Select
-                                name="typeId"
-                                value={values.typeId}
-                                placeholder='Select task type'
-                                onChange={(value) => customHandleChangeAntd(value, "typeId")}
-                                onBlur={handleBlur}
-                                options={taskTypeList.map(p => ({ label: p.taskType, value: p.id }))}
-                                status={errors.typeId && touched.typeId ? "error" : ""}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-                <p>Desciption</p>
-                <Editor
-                    name='description'
-
-                    apiKey='64iv1bamj3ly5fr482iq34ud6xb2ebvhmf30hyzbx11eauzq'
-                    value={values.description}
-                    onEditorChange={(value) => {
-                        setFieldValue('description', value);
-                    }}
-                    init={{
-                        height: 200,
-                        menubar: false,
-                        plugins: [
-                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | ' +
-                            'bold italic forecolor | alignleft aligncenter ' +
-                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                            'removeformat | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                    }}
-                />
-                <br />
-
-                <Form.Item label='Assign user' name='listUserAsign'  >
-                    <Select
-                        name='listUserAsign'
-                        value={values.listUserAsign}
-                        style={{ width: '100%' }}
-                        placeholder="Select user"
-                        optionFilterProp='label'
                         mode="multiple"
                         showSearch
                         allowClear
-                        onChange={(value) => customHandleChangeAntd(value, 'listUserAsign')}
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        options={getUserByProjectId.map(u => ({ label: u.name, value: u.userId }))}
                     />
-                </Form.Item>
+                </div>
 
-                <Form.Item label='Time Tracking' name='timeTrackingSpent'  >
-                    <Slider
+                <div className={cx("row")}>
+                    <SliderField
+                        label='Time Tracking'
                         name='timeTrackingSpent'
-                        value={values.timeTrackingSpent}
-                        disabled
-                        min={0}
-                        max={values.timeTrackingSpent + values.timeTrackingRemaining}
-                        onChange={(value) => customHandleChangeAntd(value, 'timeTrackingSpent')}
+                        spentValue={values.timeTrackingSpent}
+                        remainValue={values.timeTrackingRemaining}
+                        onChange={handleChange}
                     />
-                </Form.Item>
+                </div>
 
-                <Row>
-                    <Col span={12}>
-                        <p>{values.timeTrackingSpent !== 0 ? `${values.timeTrackingSpent}h logged` : 'No time logged'}</p>
+                <Row className={cx("row")} gutter={[18, 18]}>
+                    <Col xs={24} md={12}>
+                        <InputField
+                            label='Time spent (hours)'
+                            name="timeTrackingSpent"
+                            type='number'
+                            value={values.timeTrackingSpent}
+                            error={errors.timeTrackingSpent}
+                            touched={touched.timeTrackingSpent}
+                            placeholder="Insert time spent"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            min={0}
+                        />
                     </Col>
-                    <Col span={12}>
-                        <p style={{ textAlign: 'right' }}>{values.timeTrackingRemaining ? `${values.timeTrackingRemaining}h remaining` : `${values.timeTrackingSpent + values.timeTrackingRemaining}h estimated`}</p>
+                    <Col xs={24} md={12}>
+                        <InputField
+                            label='Time remaining (hours)'
+                            name="timeTrackingRemaining"
+                            type='number'
+                            value={values.timeTrackingRemaining}
+                            error={errors.timeTrackingRemaining}
+                            touched={touched.timeTrackingRemaining}
+                            placeholder="Insert time remaning"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            min={0}
+                        />
                     </Col>
                 </Row>
 
-                <Row>
-                    <Col span={12}>
-                        <Form.Item label='Time spent (hours)' name='timeTrackingSpent' >
-                            <InputNumber
-                                name='timeTrackingSpent'
-                                value={values.timeTrackingSpent}
-                                min={0}
-                                placeholder='Number'
-                                onChange={(value) => customHandleChangeAntd(value, 'timeTrackingSpent')}
-                                style={{ width: '90%' }}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label='Time remaining (hours)' name='timeTrackingRemaining'>
-                            <InputNumber
-                                name='timeTrackingRemaining'
-                                value={values.timeTrackingRemaining}
-                                min={0}
-                                placeholder='Number'
-                                onChange={(value) => customHandleChangeAntd(value, 'timeTrackingRemaining')}
-                                style={{ width: '90%' }}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
-
-            </Form>
+            </form>
         </div >
     );
 }

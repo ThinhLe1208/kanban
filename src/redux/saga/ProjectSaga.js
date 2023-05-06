@@ -1,12 +1,12 @@
 import { call, delay, put, takeLatest } from "redux-saga/effects";
 import { ASSIGN_USER_PROJECT_SAGA, CREATE_PROJECT_SAGA, DELETE_PROJECT_SAGA, GET_ALL_PROJECT_SAGA, GET_PROJECT_DETAIL_SAGA, REMOVE_USER_PROJECT_SAGA, UPDATE_PROJECT_SAGA } from "redux/constants/JiraCloneConst";
-import { hideLoading, showLoading } from "redux/reducers/loadingReducer";
+import { hideLoading, showLoading } from "redux/reducers/uiControlReducer";
 import { getProjectList, setProjectDetail } from "redux/reducers/projectReducer";
 import { projectService } from "services/projectService";
 import { STATUS_CODE } from "util/constants/settingSystem";
 import { history } from "util/history";
 import { getAllProjectSagaAction } from "./actions/projectAction";
-import { hideDrawer } from "redux/reducers/drawerReducer";
+import { hideOffcanvas } from "redux/reducers/offcanvasReducer";
 import { showNotification } from "util/notification";
 
 function* createProjectSaga(action) {
@@ -16,9 +16,11 @@ function* createProjectSaga(action) {
     try {
         const { status } = yield call(projectService.createProjectAuthorization, action.newProject);
         if (status === STATUS_CODE.SUCCESS) {
+            showNotification('success', 'Success', 'Create project successfully !');
             yield history.push('/project/management');
         }
     } catch (err) {
+        showNotification('error', 'Error', 'Create project fail !');
         console.error(err);
     }
 
@@ -67,7 +69,7 @@ function* updateProjectSaga(action) {
         const { status } = yield call(projectService.updateProject, action.updatedProject);
         if (status === STATUS_CODE.SUCCESS) {
             yield put(getAllProjectSagaAction());
-            yield put(hideDrawer());
+            yield put(hideOffcanvas());
         }
     } catch (err) {
         console.error(err);

@@ -3,10 +3,13 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 
 import styles from './Issue.module.scss';
-import { getTaskDetailSagaAction } from 'redux/saga/actions/taskAction';
-import { Avatar, Badge, Tag, Tooltip } from 'antd';
+import { Avatar, Tag, Tooltip } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { Draggable } from 'react-beautiful-dnd';
+import { setOffcanvas } from 'redux/reducers/offcanvasReducer';
+import EditTaskForm from 'components/Form/EditTaskForm/EditTaskForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilePen } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +24,7 @@ export default function Issue({ issue, index }) {
     ));
 
     const handleClickIssue = () => {
-        dispatch(getTaskDetailSagaAction(taskId));
+        dispatch(setOffcanvas({ title: 'Detail Issue', icon: <FontAwesomeIcon icon={faFilePen} />, aceptBtn: '', showBtn: false, offcanvasContent: <EditTaskForm /> }));
     };
 
     const priority = () => {
@@ -55,30 +58,34 @@ export default function Issue({ issue, index }) {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
-                        <Badge.Ribbon className={cx("tag")} text={priorityTask.priority} color={priority()}>
-                            <div className={cx("issue")}>
-                                <Tag className={cx("type")} color={issue.taskTypeDetail?.id === 1 ? 'red' : 'geekblue'}>
-                                    {issue.taskTypeDetail?.taskType}
-                                </Tag>
+                        {/* <Badge.Ribbon className={cx("tag")} text={priorityTask.priority} color={priority()}> */}
+                        <div className={cx("issue")} onClick={handleClickIssue}>
+                            <Tag className={cx("priority")} color={priority()}>
+                                {priorityTask.priority}
+                            </Tag>
 
-                                <p className={cx("name")}>
-                                    <span>Issue:</span>
-                                    {taskName}
+                            <Tag className={cx("type")} color={issue.taskTypeDetail?.id === 1 ? 'red' : 'geekblue'}>
+                                {issue.taskTypeDetail?.taskType}
+                            </Tag>
+
+                            <p className={cx("name")}>
+                                <span>Issue:</span>
+                                {taskName}
+                            </p>
+
+                            <div className={cx("content")}>
+                                <p className={cx("time")}>
+                                    <ClockCircleOutlined />
+                                    <span>{Math.floor(Math.random() * 24 + 1)}</span>
+                                    <span>h ago</span>
                                 </p>
 
-                                <div className={cx("content")}>
-                                    <p className={cx("time")}>
-                                        <ClockCircleOutlined />
-                                        <span>{Math.floor(Math.random() * 24 + 1)}</span>
-                                        <span>h ago</span>
-                                    </p>
-
-                                    <Avatar.Group className={cx("assigneeGroup")} maxCount={3}>
-                                        {renderAssigness()}
-                                    </Avatar.Group>
-                                </div>
+                                <Avatar.Group className={cx("assigneeGroup")} maxCount={3}>
+                                    {renderAssigness()}
+                                </Avatar.Group>
                             </div>
-                        </Badge.Ribbon >
+                        </div>
+                        {/* </Badge.Ribbon > */}
                     </li>
                 );
             }}

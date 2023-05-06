@@ -2,16 +2,17 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ShareAltOutlined, SettingOutlined, BellOutlined, SearchOutlined, LayoutOutlined, BarsOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Input, Row } from 'antd';
+import { AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
+import { Button, Col, Input, Row, Segmented } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
 import styles from './ProjectBoard.module.scss';
 import { getProjectDetailSagaAction } from 'redux/saga/actions/projectAction';
-import InfoModal from 'components/Modal/InfoModal';
-import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import Detail from 'components/Detail/Detail';
-import Board from 'components/Board/Board';
+import Kanban from 'components/Kanban/Kanban';
+import Heading from 'components/Heading/Heading';
 
 const cx = classNames.bind(styles);
 
@@ -24,7 +25,7 @@ export default function ProjectBoard() {
 
     const breadCrumbList = [
         { href: '/', title: 'Home' },
-        { href: '/project', title: 'Projects' },
+        { href: '/project', title: 'Project' },
         { title: projectName }
     ];
 
@@ -38,25 +39,9 @@ export default function ProjectBoard() {
 
     return (
         <div className={cx("wrapper")}>
-            <Breadcrumbs items={breadCrumbList} />
-
-            <Row className={cx("header")} >
-                <Col className={cx("headerLeft")} xs={24} md={12} >
-                    <LayoutOutlined className={cx("icon")} />
-                    <h3 className={cx("projectName")}>{projectName}</h3>
-                </Col>
-
-                <Col className={cx("headerRight")} xs={24} md={12}>
-                    <Input
-                        className={cx("search")}
-                        placeholder="Search..."
-                        suffix={<SearchOutlined />}
-                    />
-                    <SettingOutlined className={cx("icon")} />
-                    <BellOutlined className={cx("icon")} />
-                    <Avatar className={cx("avatar")} src="https://api.multiavatar.com/Binx.png" />
-                </Col>
-            </Row>
+            <div className={cx(`heading`)}>
+                <Heading breadCrumbList={breadCrumbList} title={projectName} />
+            </div>
 
             <div className={cx("detail")}>
                 <Detail />
@@ -64,29 +49,33 @@ export default function ProjectBoard() {
 
             <Row className={cx("filter")} >
                 <Col className={cx("filterLeft")} >
-                    <Button className={cx("filterItem")}>Only my issues</Button>
-                    <Button className={cx("filterItem")}>Recently updated</Button>
+                    <Input className={cx(`search`)} placeholder="Search..." prefix={<FontAwesomeIcon icon={faMagnifyingGlass} />} />
+                    <Button >Only my issues</Button>
+                    <Button >Recently updated</Button>
                 </Col>
 
                 <Col className={cx("filterRight")} >
-                    <button className={cx("filterItem", "boardBtn")}>
-                        <LayoutOutlined style={{ color: 'var(--bg-blue-3)' }} />
-                    </button>
-                    <button className={cx("filterItem")}>
-                        <BarsOutlined />
-                    </button>
-                    <button className={cx("filterItem", "shareBtn")}>
-                        <ShareAltOutlined style={{ color: 'var(--white)', marginRight: '6px' }} />
-                        Share
-                    </button>
+                    <Segmented
+                        options={[
+                            {
+                                label: 'Kanban',
+                                value: 'Kanban',
+                                icon: <AppstoreOutlined />,
+                            },
+                            {
+                                label: 'List',
+                                value: 'List',
+                                icon: <BarsOutlined />,
+                            },
+                        ]}
+                    />
                 </Col>
             </Row>
 
             <div className={cx("board")}>
-                <Board projectDetail={projectDetail} />
+                <Kanban projectDetail={projectDetail} />
             </div>
 
-            <InfoModal />
         </div>
     );
 }

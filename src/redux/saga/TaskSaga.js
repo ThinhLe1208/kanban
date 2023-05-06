@@ -1,7 +1,7 @@
 import { call, delay, put, takeLatest } from "redux-saga/effects";
 import { CREATE_TASK_SAGA, GET_TASK_DETAIL_SAGA, UPDATE_ORIGINAL_ESTIMATE_SAGA, UPDATE_PRIORITY_SAGA, UPDATE_STATUS_SAGA, UPDATE_TASK_DESCRIPTION_SAGA, UPDATE_TASK_SAGA } from "redux/constants/JiraCloneConst";
-import { hideDrawer } from "redux/reducers/drawerReducer";
-import { hideLoading, showLoading } from "redux/reducers/loadingReducer";
+import { hideOffcanvas } from "redux/reducers/offcanvasReducer";
+import { hideLoading, showLoading } from "redux/reducers/uiControlReducer";
 import { taskService } from "services/taskService";
 import { showNotification } from "util/notification";
 import { STATUS_CODE } from "util/constants/settingSystem";
@@ -16,8 +16,9 @@ function* createTaskSaga(action) {
     try {
         const { status } = yield call(taskService.createTask, action.newTask);
         if (status === STATUS_CODE.SUCCESS) {
+            yield put(getProjectDetailSagaAction(action.newTask.projectId));
             showNotification('success', 'Success', 'Create task successfully !');
-            yield put(hideDrawer());
+            yield put(hideOffcanvas());
         }
     } catch (err) {
         console.error(err);

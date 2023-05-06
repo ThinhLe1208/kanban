@@ -1,68 +1,18 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  // width: 100%;
   height: 100%;
-  padding: 16px 40px;
+  padding: var(--wrapper-padding-y) var(--wrapper-padding-x);
 
-  // max-width: 80%;
   flex: 0 1 auto;
 
-  .header {
-    justify-content: space-between;
-    align-items: center;
-    row-gap: var(--row-gap);
+  .projectName {
+    font-family: var(--font-family);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-color);
     margin-top: calc(var(--row-space) + 8px);
     margin-bottom: var(--row-space);
-
-    .icon {
-      font-size: 24px;
-    }
-
-    .headerLeft {
-      display: flex;
-      align-items: center;
-
-      .icon {
-        margin-right: 8px;
-        transform: translateY(-4px);
-      }
-
-      .projectName {
-        font-family: var(--sub-font-family);
-        font-size: 32px;
-        font-weight: 700;
-        color: var(--text-color);
-        margin-bottom: 0;
-      }
-    }
-
-    .headerRight {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-grow: 1;
-
-      @media only screen and (min-width: 768px) {
-        justify-content: flex-end;
-      }
-
-      .search {
-        max-width: 400px;
-      }
-
-      .icon {
-        margin-left: var(--button-space);
-        cursor: pointer;
-      }
-
-      .avatar {
-        flex-shrink: 0;
-        display: block;
-        width: 30px;
-        margin-left: 16px;
-      }
-    }
   }
 
   .detail {
@@ -72,12 +22,18 @@
   .filter {
     justify-content: space-between;
     align-items: center;
-    row-gap: var(--row-gap);
+    gap: var(--gap);
     margin-bottom: calc(var(--row-space) + 10px);
 
     .filterLeft {
-      .filterItem {
-        margin-right: var(--button-space);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      gap: var(--gap);
+
+      .search {
+        width: 200px;
       }
     }
 
@@ -105,13 +61,13 @@
       }
 
       .boardBtn {
-        background-color: var(--bg-blue-2);
+        background-color: var(--primary-150);
       }
 
       .shareBtn {
         color: var(--white);
         font-size: 14px;
-        background-color: var(--bg-blue-1);
+        background-color: var(--primary-500);
         padding: 8px 12px;
       }
     }

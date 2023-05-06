@@ -7,7 +7,7 @@ import styles from './Loading.module.scss';
 const cx = classNames.bind(styles);
 
 export default function Loading() {
-    const { isLoading } = useSelector(state => state.loadingReducer);
+    const { isLoading } = useSelector(state => state.uiControlReducer);
 
     if (isLoading) {
         return (

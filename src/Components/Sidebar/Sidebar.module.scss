@@ -6,16 +6,15 @@ $logo-margin-y: 20px;
 
   .sidebar {
     height: 100%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--box-shadow-1);
+    border: none;
+
+    background-color: #fff;
 
     .logo {
       height: $logo-height;
       object-fit: contain;
       margin: $logo-margin-y auto;
-    }
-
-    .icon {
-      // font-size: 40px;
     }
 
     .menu {

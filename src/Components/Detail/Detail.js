@@ -1,7 +1,7 @@
 import React from 'react';
-import classNames from 'classnames/bind';
 import { Avatar, Col, Row, Tooltip } from 'antd';
 import { useSelector } from 'react-redux';
+import classNames from 'classnames/bind';
 
 import styles from './Detail.module.scss';
 

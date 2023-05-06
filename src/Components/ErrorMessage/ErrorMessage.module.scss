@@ -1,0 +1,21 @@
+.wrapper {
+  position: relative;
+
+  .content {
+    position: absolute;
+    top: 0;
+    font-family: var(--font-family);
+    color: var(--error);
+    margin-bottom: 0;
+    animation: init linear 0.2s;
+  }
+}
+
+@keyframes init {
+  from {
+    transform: translateY(-6px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

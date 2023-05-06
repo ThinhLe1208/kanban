@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
 import classNames from 'classnames/bind';
 
-import styles from './Board.module.scss';
+import styles from './Kanban.module.scss';
 import Column from 'components/Column/Column';
 import { useDispatch } from 'react-redux';
 import { updateStatusSagaAction } from 'redux/saga/actions/taskAction';
+import { showNotification } from 'util/notification';
 
 const cx = classNames.bind(styles);
 
-export default function Board({ projectDetail }) {
+export default function Kanban({ projectDetail }) {
     const { lstTask } = projectDetail;
     const [list, setList] = useState(lstTask);
     const dispatch = useDispatch();
 
     const renderColumns = () => {
-        console.log(list);
         return list?.map((colDetail, index) => (
             <Col key={index} >
                 <Column colDetail={colDetail} index={index} />
@@ -61,8 +62,15 @@ export default function Board({ projectDetail }) {
     return (
         <div className={cx("wrapper")}>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <Row className={cx("columns")} wrap={false}>
+                <Row className={cx("columns")} wrap={false} gutter={18}>
                     {renderColumns()}
+
+                    <Col style={{ width: '324px' }}>
+                        <button className={cx("addListBtn")} onClick={() => showNotification('info', 'Info', 'Coming soon')}>
+                            <PlusCircleOutlined style={{ marginRight: '6px' }} />
+                            Add another list
+                        </button>
+                    </Col>
                 </Row>
             </DragDropContext>
         </div>

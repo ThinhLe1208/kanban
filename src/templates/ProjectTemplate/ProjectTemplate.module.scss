@@ -3,6 +3,7 @@
   background-color: transparent;
 
   .content {
-    background-color: transparent;
+    background-color: var(--grey);
+    overflow-y: auto;
   }
 }

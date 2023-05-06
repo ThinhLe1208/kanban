@@ -1,3 +1,4 @@
+import React from 'react';
 import { Routes, Route, unstable_HistoryRouter as HistoryRouter, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -8,17 +9,18 @@ import ProjectTemplate from 'templates/ProjectTemplate/ProjectTemplate';
 import Home from 'pages/Home';
 import Signin from 'pages/Signin';
 import ProjectBoard from 'pages/ProjectBoard/ProjectBoard';
-import ProjectCreate from 'pages/ProjectCreate';
-import ProjectManagement from 'pages/ProjectManagement';
-import CustomDrawer from 'HOC/Drawer/CustomDrawer';
+import ProjectCreate from 'pages/ProjectCreate/ProjectCreate';
+import ProjectManagement from 'pages/ProjectManagement/ProjectManagement';
+import Offcanvas from 'components/Offcanvas/Offcanvas';
 import Loading from 'components/Loading/Loading';
 
 function App() {
-  const { isLoading } = useSelector(state => state.loadingReducer);
+  const { isLoading } = useSelector(state => state.uiControlReducer);
 
   return (
-    <>
-      <CustomDrawer />
+    <div className='app'>
+
+      <Offcanvas />
       {isLoading && <Loading />}
 
       {/* Use historyRouter to redirect in redux-saga */}
@@ -47,7 +49,7 @@ function App() {
         </Routes>
         {/* </BrowserRouter> */}
       </HistoryRouter >
-    </>
+    </div>
   );
 }
 

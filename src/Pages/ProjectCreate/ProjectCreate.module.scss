@@ -1,0 +1,15 @@
+.wrapper {
+  padding: var(--wrapper-padding-y) var(--wrapper-padding-x);
+
+  .row {
+    margin-bottom: var(--row-space-form);
+  }
+
+  .buttons {
+    text-align: end;
+
+    button + button {
+      margin-left: var(--button-space);
+    }
+  }
+}

@@ -1,16 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { AutoComplete, Avatar, Breadcrumb, Button, Input, Popconfirm, Popover, Space, Table, Tag, Tooltip } from 'antd';
+import { NavLink } from 'react-router-dom';
+import { AutoComplete, Avatar, Button, Input, Popconfirm, Popover, Space, Table, Tag, Tooltip } from 'antd';
+import { CloseCircleOutlined, MinusCircleOutlined, PlusCircleOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import parse from 'html-react-parser';
 import { useDispatch, useSelector } from 'react-redux';
 import { assignUserProjectSagaAction, deleteProjectSagaAction, getAllProjectSagaAction, removeUserProjectSagaAction } from 'redux/saga/actions/projectAction';
+import classNames from 'classnames/bind';
 
-import { setDrawer } from 'redux/reducers/drawerReducer';
+import styles from './ProjectManagement.module.scss';
+import { setOffcanvas } from 'redux/reducers/offcanvasReducer';
 import { setProjectEdit } from 'redux/reducers/projectReducer';
 import { getUserSagaAction } from 'redux/saga/actions/userAction';
-import { NavLink } from 'react-router-dom';
 import EditProjectForm from 'components/Form/EditProjectForm/EditProjectForm';
+import Heading from 'components/Heading/Heading';
+import Card from 'components/Card/Card';
+
+const cx = classNames.bind(styles);
 
 const breadCrumbList = [
     {
@@ -29,6 +35,7 @@ const breadCrumbList = [
 export default function ProjectManagement() {
     const dispatch = useDispatch();
     const searchRef = useRef(null);
+    const [projectId, setProjectId] = useState(0);
 
     const { getUser } = useSelector(state => state.userReducer);
     const { projectList } = useSelector(state => state.projectReducer);
@@ -61,6 +68,7 @@ export default function ProjectManagement() {
             <div
                 style={{
                     padding: 8,
+                    textAlign: 'end'
                 }}
                 onKeyDown={(e) => e.stopPropagation()}
             >
@@ -77,17 +85,6 @@ export default function ProjectManagement() {
                 />
                 <Space>
                     <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{
-                            width: 90,
-                        }}
-                    >
-                        Search
-                    </Button>
-                    <Button
                         onClick={() => clearFilters && handleReset(clearFilters)}
                         size="small"
                         style={{
@@ -97,26 +94,15 @@ export default function ProjectManagement() {
                         Reset
                     </Button>
                     <Button
-                        type="link"
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
                         size="small"
-                        onClick={() => {
-                            confirm({
-                                closeDropdown: false,
-                            });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
+                        style={{
+                            width: 90,
                         }}
                     >
-                        Filter
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            close();
-                        }}
-                    >
-                        close
+                        Search
                     </Button>
                 </Space>
             </div>
@@ -150,6 +136,41 @@ export default function ProjectManagement() {
                 text
             ),
     });
+    // Remove member table
+    const memberColumns = [
+        {
+            title: 'ID',
+            dataIndex: 'userId',
+            key: 'userId',
+            render: (text) => <p>{text}</p>,
+        },
+        {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            key: 'avatar',
+            render: (text) => <Avatar src={text} />,
+        },
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            render: (text) => <p>{text}</p>,
+        },
+        {
+            title: 'Action',
+            dataIndex: 'action',
+            key: 'action',
+            render: (text, record) => (
+                <Button
+                    type='text'
+                    icon={<CloseCircleOutlined style={{ color: 'var(--error)' }} />}
+                    onClick={() => dispatch(removeUserProjectSagaAction(projectId, record.userId))}
+                />
+            )
+        }
+    ];
+
+    // Project management table
     const columns = [
         {
             title: 'ID',
@@ -177,14 +198,13 @@ export default function ProjectManagement() {
             },
             sortDirections: ['descend', 'ascend'],
             render: (text, record, index) => {
-                return <NavLink to={`/project/board/${record.id}`} >{text}</NavLink>;
+                return <NavLink to={`/project/board/${record.id}`} style={{ cursor: 'pointer' }}><Button type='link'>{text}</Button></NavLink>;
             }
         },
         {
             title: 'Category Name',
             dataIndex: 'categoryName',
             key: 'categoryName',
-            ...getColumnSearchProps('categoryName'),
             sorter: (a, b) => {
                 const n1 = a?.categoryName.trim().toLowerCase();
                 const n2 = b?.categoryName.trim().toLowerCase();
@@ -195,6 +215,21 @@ export default function ProjectManagement() {
                 }
             },
             sortDirections: ['descend', 'ascend'],
+            filters: [
+                {
+                    text: 'Dự án web',
+                    value: 1,
+                },
+                {
+                    text: 'Dự án phần mềm',
+                    value: 2,
+                },
+                {
+                    text: 'Dự án di động',
+                    value: 3,
+                },
+            ],
+            onFilter: (value, record) => record.categoryId === value,
             render: (text) => {
                 return <Tag color="blue">{text}</Tag>;
             }
@@ -223,19 +258,57 @@ export default function ProjectManagement() {
             title: 'Members',
             dataIndex: 'members',
             key: 'members',
-            ...getColumnSearchProps('members'),
             render: (text, record, index) => {
                 return (
                     <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}>
                         {/* member avatar list */}
-                        <Avatar.Group maxCount={2}>
+                        <Avatar.Group maxCount={2} maxStyle={{ backgroundColor: 'var(--bg-primary)' }}>
                             {record.members?.map(m => (
-                                <Tooltip key={m.userId} title={m.name} placement="top">
+                                <Tooltip key={m.userId} title={m.name} placement="top" color='cyan'>
                                     <Avatar src={m.avatar} />
                                 </Tooltip>
                             ))}
                         </Avatar.Group>
-                        {/* add member button */}
+
+                    </div>
+                );
+            }
+        },
+        {
+            title: 'Action',
+            dataIndex: '',
+            key: 'action',
+            render: (text, record, index) => (
+                <Space >
+                    {/* edit button */}
+                    <Tooltip title={'Edit Project'} color='#00c292' zIndex={5}>
+                        <Button
+                            type='text'
+                            icon={<EditOutlined style={{ color: 'var(--success)' }} />}
+                            onClick={() => {
+                                // open drawer with edit content
+                                dispatch(setOffcanvas({ title: 'Edit Project', offcanvasContent: <EditProjectForm /> }));
+                                dispatch(setProjectEdit(record));
+                            }}
+                        />
+                    </Tooltip>
+
+                    {/* delete button */}
+                    <Tooltip title={'Delete project'} color='#e46a76' zIndex={5}>
+                        <Popconfirm
+                            title="Delete project"
+                            description="Are you sure to delete this project?"
+                            onConfirm={() => dispatch(deleteProjectSagaAction(record.id))}
+                            // onCancel={}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <Button type='text' icon={<DeleteOutlined style={{ color: 'var(--error)' }} />} />
+                        </Popconfirm>
+                    </Tooltip>
+
+                    {/* add member button */}
+                    <Tooltip title={'Add member'} color='#03c9d7' zIndex={5}>
                         <Popover
                             content={() => <AutoComplete
                                 style={{
@@ -261,91 +334,71 @@ export default function ProjectManagement() {
                             title="Add member"
                             trigger="click"
                         >
-                            <Button>+</Button>
+                            <Button type='text' icon={<PlusCircleOutlined style={{ color: 'var(--info)' }} />} />
                         </Popover>
-                        {/* remove member button */}
+                    </Tooltip>
+
+                    {/* remove member button */}
+                    <Tooltip title={'Remove member'} color='#fec90f' zIndex={5}>
                         <Popover
                             content={() => (
-                                <table className='table'>
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Avatar</th>
-                                            <th>Name</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {record.members.map((m, i) => (
-                                            <tr key={i}>
-                                                <td>{m.userId}</td>
-                                                <td><Avatar src={m.avatar} /></td>
-                                                <td>{m.name}</td>
-                                                <td>
-                                                    <Button
-                                                        onClick={() => {
-                                                            dispatch(removeUserProjectSagaAction(record.id, m.userId));
-                                                        }}
-                                                    >x</Button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                // <table className='table'>
+                                //     <thead>
+                                //         <tr>
+                                //             <th>ID</th>
+                                //             <th>Avatar</th>
+                                //             <th>Name</th>
+                                //             <th></th>
+                                //         </tr>
+                                //     </thead>
+                                //     <tbody>
+                                //         {record.members.map((m, i) => (
+                                //             <tr key={i}>
+                                //                 <td>{m.userId}</td>
+                                //                 <td><Avatar src={m.avatar} /></td>
+                                //                 <td>{m.name}</td>
+                                //                 <td>
+                                //                     <Button
+                                //                         onClick={() => {
+                                //                             dispatch(removeUserProjectSagaAction(record.id, m.userId));
+                                //                         }}
+                                //                     >x</Button>
+                                //                 </td>
+                                //             </tr>
+                                //         ))}
+                                //     </tbody>
+                                // </table>
+
+                                <Card Card style={{ padding: '0' }}>
+                                    <Table columns={memberColumns} dataSource={record.members} rowKey={'id'} pagination={false} />
+                                </Card>
                             )}
-                            title="Member List"
+                            // title="Member List"
                             trigger="click"
                         >
-                            <Button>-</Button>
+                            <Button
+                                type='text'
+                                icon={<MinusCircleOutlined
+                                    style={{ color: 'var(--warning)' }} />}
+                                onClick={() => setProjectId(record.id)}
+                            />
                         </Popover>
-                    </div>
-                );
-            }
-        },
-        {
-            title: 'Action',
-            dataIndex: '',
-            key: 'action',
-            render: (text, record, index) => (
-                <Space size='middle'>
-                    {/* edit button */}
-                    <span
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                            // open drawer with edit content
-                            dispatch(setDrawer({ title: 'Edit Project', drawerContent: <EditProjectForm /> }));
-                            dispatch(setProjectEdit(record));
-                        }}
-                    >
-                        <EditOutlined />
-                    </span>
-                    {/* delete button */}
-                    <Popconfirm
-                        title="Delete the project"
-                        description="Are you sure to delete this project?"
-                        onConfirm={() => dispatch(deleteProjectSagaAction(record.id))}
-                        // onCancel={}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <span
-                            style={{ cursor: 'pointer' }}
-                        ><DeleteOutlined /></span>
-                    </Popconfirm>
-                </Space>
+                    </Tooltip>
+                </Space >
             )
         }
     ];
-    return (
-        <div className="main container py-3">
-            <Breadcrumb
-                items={breadCrumbList}
-            />
 
-            <h1 className='fs-1 mt-3 mb-4'>Project Management</h1>
+    return (
+        <div className={cx('wrapper')}>
+            <div className={cx(`heading`)}>
+                <Heading breadCrumbList={breadCrumbList} title={'Project Management'} />
+            </div>
 
             {/* rowKey fix error 'child need key' */}
-            <Table columns={columns} dataSource={projectList} rowKey={'id'} scroll={{ y: 500 }} />
+            <Card className={cx('card')}>
+                <Table columns={columns} dataSource={projectList} rowKey={'id'} pagination={{ position: ['bottomCenter '] }} />
+            </Card>
         </div>
     );
 }

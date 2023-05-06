@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { Editor } from '@tinymce/tinymce-react';
 
 import { getProjectCategorySagaAction } from 'redux/saga/actions/projectCategoryAction';
-import { setHandleSubmitDrawer } from 'redux/reducers/drawerReducer';
+import { setHandleSubmitOffcanvas } from 'redux/reducers/offcanvasReducer';
 import { updateProjectSagaAction } from 'redux/saga/actions/projectAction';
 
 const EditProjectSchema = Yup.object().shape({
@@ -64,7 +64,7 @@ export default function EditProjectForm() {
         // call api to get projectCategory
         dispatch(getProjectCategorySagaAction());
         // dispatch submit handler to redux-toolkit store
-        dispatch(setHandleSubmitDrawer(handleSubmit));
+        dispatch(setHandleSubmitOffcanvas(handleSubmit));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

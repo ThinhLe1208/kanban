@@ -2,11 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import { rootSaga } from './saga/rootSaga';
 
-import loadingReducer from './reducers/loadingReducer';
+import uiControlReducer from './reducers/uiControlReducer';
 import userReducer from './reducers/userReducer';
 import projectCategoryReducer from './reducers/projectCategoryReducer';
 import projectReducer from './reducers/projectReducer';
-import drawerReducer from './reducers/drawerReducer';
+import offcanvasReducer from './reducers/offcanvasReducer';
 import taskTypeReducer from './reducers/taskTypeReducer';
 import priorityReducer from './reducers/priorityReducer';
 import statusReducer from './reducers/statusReducer';
@@ -19,8 +19,8 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
     reducer: {
         userReducer,
-        loadingReducer,
-        drawerReducer,
+        uiControlReducer,
+        offcanvasReducer,
         projectCategoryReducer,
         taskTypeReducer,
         priorityReducer,
