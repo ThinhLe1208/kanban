@@ -5,13 +5,10 @@ import styles from "./styles.module.scss";
 
 const cx = classNames.bind(styles);
 
-export default function Title({ children, icon, ...rest }) {
+export default function ErrorMessage({ children }) {
   return (
     <div className={cx("wrapper")}>
-      <span className={cx("icon")}>{icon}</span>
-      <span className={cx("text")} {...rest}>
-        {children}
-      </span>
+      <p className={cx("content")}>{children}</p>
     </div>
   );
 }

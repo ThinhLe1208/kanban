@@ -8,11 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
-import styles from './ProjectBoard.module.scss';
+import styles from './styles.module.scss';
 import { getProjectDetailSagaAction } from 'redux/saga/actions/projectAction';
-import Detail from 'components/Detail/Detail';
-import Kanban from 'components/Kanban/Kanban';
-import Heading from 'components/Heading/Heading';
+import Detail from 'components/Detail';
+import Kanban from 'components/Kanban';
+import Heading from 'components/Heading';
 
 const cx = classNames.bind(styles);
 

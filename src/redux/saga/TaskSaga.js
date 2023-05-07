@@ -25,7 +25,7 @@ function* createTaskSaga(action) {
         if (err.response?.data.statusCode === STATUS_CODE.SERVICE_ERROR) {
             showNotification('error', 'Error', 'Task already exists !');
         } else {
-            showNotification('error', 'Error', 'Create task exists !');
+            showNotification('error', 'Error', 'Create task fail !');
         }
     } finally {
         yield put(hideLoading());

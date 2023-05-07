@@ -6,7 +6,7 @@ import { SendOutlined, LinkOutlined, DeleteOutlined, CloseOutlined } from "@ant-
 import { Editor } from "@tinymce/tinymce-react";
 import classNames from "classnames/bind";
 
-import styles from "./EditTaskForm.module.scss";
+import styles from "./styles.module.scss";
 import {
   updateOriginalEstimateSagaAction,
   updatePrioritySagaAction,

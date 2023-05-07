@@ -8,13 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { assignUserProjectSagaAction, deleteProjectSagaAction, getAllProjectSagaAction, removeUserProjectSagaAction } from 'redux/saga/actions/projectAction';
 import classNames from 'classnames/bind';
 
-import styles from './ProjectManagement.module.scss';
+import styles from './styles.module.scss';
 import { setOffcanvas } from 'redux/reducers/offcanvasReducer';
 import { setProjectEdit } from 'redux/reducers/projectReducer';
 import { getUserSagaAction } from 'redux/saga/actions/userAction';
-import EditProjectForm from 'components/Form/EditProjectForm/EditProjectForm';
-import Heading from 'components/Heading/Heading';
-import Card from 'components/Card/Card';
+import EditProjectForm from 'components/EditProjectForm';
+import Heading from 'components/Heading';
+import Card from 'components/Card';
 
 const cx = classNames.bind(styles);
 

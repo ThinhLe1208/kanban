@@ -5,7 +5,7 @@ import { ConfigProvider } from 'antd';
 
 import App from './App';
 import { store } from './redux/configStore';
-import GlobalStyle from 'components/GlobalStyle/GlobalStyle';
+import GlobalStyle from 'components/GlobalStyle';
 import themeConfig from './util/themes/antdTheme.json';
 
 

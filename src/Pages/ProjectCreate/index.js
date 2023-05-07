@@ -5,13 +5,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import classNames from 'classnames/bind';
 
-import styles from './ProjectCreate.module.scss';
+import styles from './styles.module.scss';
 import { createProjectSagaAction } from 'redux/saga/actions/projectAction';
-import Heading from 'components/Heading/Heading';
-import InputField from 'components/InputField/InputField';
-import EditorField from 'components/EditorField/EditorField';
-import SelectField from 'components/SelectField/SelectField';
-import Card from 'components/Card/Card';
+import Heading from 'components/Heading';
+import InputField from 'components/InputField';
+import EditorField from 'components/EditorField';
+import SelectField from 'components/SelectField';
+import Card from 'components/Card';
 
 const cx = classNames.bind(styles);
 
