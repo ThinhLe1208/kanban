@@ -10,6 +10,7 @@ import Header from 'components/Header/Header';
 import { getAllTaskTypeSagaAction } from 'redux/saga/actions/taskTypeAction';
 import { getAllPrioritySagaAction } from 'redux/saga/actions/priorityAction';
 import { getAllStatusSagaAction } from 'redux/saga/actions/statusAction';
+import { getProjectCategorySagaAction } from 'redux/saga/actions/projectCategoryAction';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +24,8 @@ export default function ProjectTemplate(props) {
         dispatch(getAllPrioritySagaAction());
         // call api to get all statuses
         dispatch(getAllStatusSagaAction());
+        // call api to get projectCategory
+        dispatch(getProjectCategorySagaAction());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

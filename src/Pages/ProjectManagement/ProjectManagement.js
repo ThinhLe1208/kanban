@@ -35,10 +35,13 @@ const breadCrumbList = [
 export default function ProjectManagement() {
     const dispatch = useDispatch();
     const searchRef = useRef(null);
-    const [projectId, setProjectId] = useState(0);
 
     const { getUser } = useSelector(state => state.userReducer);
     const { projectList } = useSelector(state => state.projectReducer);
+    const { projectCategoryArr } = useSelector(state => state.projectCategoryReducer);
+
+    // state support to the delete member button in the popup table 
+    const [projectId, setProjectId] = useState(0);
 
     // state of feature which searches and adds a member
     const [searchValue, setSearchValue] = useState('');
@@ -142,7 +145,7 @@ export default function ProjectManagement() {
             title: 'ID',
             dataIndex: 'userId',
             key: 'userId',
-            render: (text) => <p>{text}</p>,
+            render: (text) => <span>{text}</span>,
         },
         {
             title: 'Avatar',
@@ -154,7 +157,7 @@ export default function ProjectManagement() {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (text) => <p>{text}</p>,
+            render: (text) => <span>{text}</span>,
         },
         {
             title: 'Action',
@@ -176,16 +179,17 @@ export default function ProjectManagement() {
             title: 'ID',
             dataIndex: 'id',
             key: 'id',
-            width: '10%',
+            width: 100,
+            responsive: ['xl'],
             ...getColumnSearchProps('id'),
             sorter: (a, b) => a?.id - b?.id,
             sortDirections: ['descend', 'ascend'],
+            render: (text) => <span style={{ color: 'var(--sub-text-color)' }}>{text}</span>
         },
         {
             title: 'Project Name',
             dataIndex: 'projectName',
             key: 'projectName',
-            width: '20%',
             ...getColumnSearchProps('projectName'),
             sorter: (a, b) => {
                 const n1 = a?.projectName.trim().toLowerCase();
@@ -197,14 +201,16 @@ export default function ProjectManagement() {
                 }
             },
             sortDirections: ['descend', 'ascend'],
-            render: (text, record, index) => {
-                return <NavLink to={`/project/board/${record.id}`} style={{ cursor: 'pointer' }}><Button type='link'>{text}</Button></NavLink>;
+            render: (text, record) => {
+                return <NavLink to={`/project/board/${record.id}`} style={{ cursor: 'pointer', fontWeight: '600' }}>{text}</NavLink>;
             }
         },
         {
             title: 'Category Name',
             dataIndex: 'categoryName',
             key: 'categoryName',
+            width: 200,
+            responsive: ['xl'],
             sorter: (a, b) => {
                 const n1 = a?.categoryName.trim().toLowerCase();
                 const n2 = b?.categoryName.trim().toLowerCase();
@@ -215,29 +221,24 @@ export default function ProjectManagement() {
                 }
             },
             sortDirections: ['descend', 'ascend'],
-            filters: [
-                {
-                    text: 'Dự án web',
-                    value: 1,
-                },
-                {
-                    text: 'Dự án phần mềm',
-                    value: 2,
-                },
-                {
-                    text: 'Dự án di động',
-                    value: 3,
-                },
-            ],
+            filters: projectCategoryArr?.map(ctg => ({ text: ctg.projectCategoryName, value: ctg.id })),
             onFilter: (value, record) => record.categoryId === value,
             render: (text) => {
-                return <Tag color="blue">{text}</Tag>;
+                let color;
+                switch (text) {
+                    case 'Dự án web': color = 'purple'; break;
+                    case 'Dự án phần mềm': color = 'magenta'; break;
+                    default: color = 'lime';
+                }
+                return <Tag color={color}>{text}</Tag>;
             }
         },
         {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
+            width: 400,
+            responsive: ['md'],
             ...getColumnSearchProps('description'),
             sorter: (a, b) => {
                 const n1 = a?.description.trim().toLowerCase();
@@ -251,13 +252,15 @@ export default function ProjectManagement() {
             sortDirections: ['descend', 'ascend'],
             render: (text) => {
                 // description received from Editor tinyMCE is html 
-                return parse(text);
+                return <span style={{ color: 'var(--sub-text-color)' }}>{parse(text)}</span>;
             }
         },
         {
             title: 'Members',
             dataIndex: 'members',
             key: 'members',
+            width: 150,
+            responsive: ['lg'],
             render: (text, record, index) => {
                 return (
                     <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}>
@@ -269,7 +272,6 @@ export default function ProjectManagement() {
                                 </Tooltip>
                             ))}
                         </Avatar.Group>
-
                     </div>
                 );
             }
@@ -278,6 +280,7 @@ export default function ProjectManagement() {
             title: 'Action',
             dataIndex: '',
             key: 'action',
+            width: 200,
             render: (text, record, index) => (
                 <Space >
                     {/* edit button */}
@@ -341,39 +344,12 @@ export default function ProjectManagement() {
                     {/* remove member button */}
                     <Tooltip title={'Remove member'} color='#fec90f' zIndex={5}>
                         <Popover
+                            placement='left'
                             content={() => (
-                                // <table className='table'>
-                                //     <thead>
-                                //         <tr>
-                                //             <th>ID</th>
-                                //             <th>Avatar</th>
-                                //             <th>Name</th>
-                                //             <th></th>
-                                //         </tr>
-                                //     </thead>
-                                //     <tbody>
-                                //         {record.members.map((m, i) => (
-                                //             <tr key={i}>
-                                //                 <td>{m.userId}</td>
-                                //                 <td><Avatar src={m.avatar} /></td>
-                                //                 <td>{m.name}</td>
-                                //                 <td>
-                                //                     <Button
-                                //                         onClick={() => {
-                                //                             dispatch(removeUserProjectSagaAction(record.id, m.userId));
-                                //                         }}
-                                //                     >x</Button>
-                                //                 </td>
-                                //             </tr>
-                                //         ))}
-                                //     </tbody>
-                                // </table>
-
-                                <Card Card style={{ padding: '0' }}>
-                                    <Table columns={memberColumns} dataSource={record.members} rowKey={'id'} pagination={false} />
+                                <Card style={{ padding: '0' }}>
+                                    <Table columns={memberColumns} dataSource={record.members} rowKey={'userId'} pagination={false} />
                                 </Card>
                             )}
-                            // title="Member List"
                             trigger="click"
                         >
                             <Button
@@ -388,7 +364,8 @@ export default function ProjectManagement() {
             )
         }
     ];
-
+    console.log(projectCategoryArr);
+    console.log(projectCategoryArr?.map(ctg => ({ text: ctg.projectCategoryName, value: ctg.id })));
     return (
         <div className={cx('wrapper')}>
             <div className={cx(`heading`)}>

@@ -27,9 +27,9 @@ function* createTaskSaga(action) {
         } else {
             showNotification('error', 'Error', 'Create task exists !');
         }
+    } finally {
+        yield put(hideLoading());
     }
-
-    yield put(hideLoading());
 }
 
 export function* watchCreateTaskSaga() {

@@ -6,13 +6,13 @@ import { history } from 'util/history';
 import HomeTemplate from 'templates/HomeTemplate/HomeTemplate';
 import UserSigninTemplate from 'templates/UserSigninTemplate/UserSigninTemplate';
 import ProjectTemplate from 'templates/ProjectTemplate/ProjectTemplate';
-import Home from 'pages/Home';
-import Signin from 'pages/Signin';
+import Home from 'pages/Home/Home';
 import ProjectBoard from 'pages/ProjectBoard/ProjectBoard';
 import ProjectCreate from 'pages/ProjectCreate/ProjectCreate';
 import ProjectManagement from 'pages/ProjectManagement/ProjectManagement';
 import Offcanvas from 'components/Offcanvas/Offcanvas';
 import Loading from 'components/Loading/Loading';
+import Signin from 'pages/Singin/Signin';
 
 function App() {
   const { isLoading } = useSelector(state => state.uiControlReducer);

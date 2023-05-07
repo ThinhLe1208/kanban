@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'antd';
-import { PlusCircleOutlined } from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
 import classNames from 'classnames/bind';
@@ -9,7 +7,6 @@ import styles from './Kanban.module.scss';
 import Column from 'components/Column/Column';
 import { useDispatch } from 'react-redux';
 import { updateStatusSagaAction } from 'redux/saga/actions/taskAction';
-import { showNotification } from 'util/notification';
 
 const cx = classNames.bind(styles);
 
@@ -20,9 +17,9 @@ export default function Kanban({ projectDetail }) {
 
     const renderColumns = () => {
         return list?.map((colDetail, index) => (
-            <Col key={index} >
+            <div key={index} >
                 <Column colDetail={colDetail} index={index} />
-            </Col>
+            </div>
         ));
     };
 
@@ -62,16 +59,9 @@ export default function Kanban({ projectDetail }) {
     return (
         <div className={cx("wrapper")}>
             <DragDropContext onDragEnd={handleDragEnd}>
-                <Row className={cx("columns")} wrap={false} gutter={18}>
+                <div className={cx("columns")} >
                     {renderColumns()}
-
-                    <Col style={{ width: '324px' }}>
-                        <button className={cx("addListBtn")} onClick={() => showNotification('info', 'Info', 'Coming soon')}>
-                            <PlusCircleOutlined style={{ marginRight: '6px' }} />
-                            Add another list
-                        </button>
-                    </Col>
-                </Row>
+                </div>
             </DragDropContext>
         </div>
     );

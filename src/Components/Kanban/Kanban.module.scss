@@ -1,8 +1,11 @@
 .wrapper {
   .columns {
-    flex-grow: 1;
-    gap: var(--row-gap);
-    overflow-x: auto;
+    min-height: 480px;
+    gap: var(--gap);
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
   }
 
   .addListBtn {

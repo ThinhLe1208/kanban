@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'antd';
 import { useFormik } from 'formik';
@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import classNames from 'classnames/bind';
 
 import styles from './ProjectCreate.module.scss';
-import { getProjectCategorySagaAction } from 'redux/saga/actions/projectCategoryAction';
 import { createProjectSagaAction } from 'redux/saga/actions/projectAction';
 import Heading from 'components/Heading/Heading';
 import InputField from 'components/InputField/InputField';
@@ -62,12 +61,6 @@ export default function ProjectCreate() {
             dispatch(createProjectSagaAction(values));
         },
     });
-
-    useEffect(() => {
-        // call api to get projectCategory
-        dispatch(getProjectCategorySagaAction());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <div className={cx(`wrapper`)}>

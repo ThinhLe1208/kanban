@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Editor } from '@tinymce/tinymce-react';
 
-import { getProjectCategorySagaAction } from 'redux/saga/actions/projectCategoryAction';
 import { setHandleSubmitOffcanvas } from 'redux/reducers/offcanvasReducer';
 import { updateProjectSagaAction } from 'redux/saga/actions/projectAction';
 
@@ -61,8 +59,6 @@ export default function EditProjectForm() {
     });
 
     useEffect(() => {
-        // call api to get projectCategory
-        dispatch(getProjectCategorySagaAction());
         // dispatch submit handler to redux-toolkit store
         dispatch(setHandleSubmitOffcanvas(handleSubmit));
         // eslint-disable-next-line react-hooks/exhaustive-deps
