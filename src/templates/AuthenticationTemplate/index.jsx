@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 
 const cx = classNames.bind(styles);
 
-export default function HomeTemplate() {
+export default function AuthenticationTemplate() {
   return (
     <div className={cx('wrapper')}>
       <div className={cx('leftSide')}>

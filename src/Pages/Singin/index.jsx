@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Checkbox } from 'antd';
@@ -11,8 +12,8 @@ import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
 import InputField from 'components/InputField';
 import Card from 'components/Card';
-import { useDispatch } from 'react-redux';
 import { signInSagaAction } from 'redux/sagas/actions/userAction';
+import { CURRENT_USER, REMEMBER_USER } from 'util/constants/settingSystem';
 
 const cx = classNames.bind(styles);
 
@@ -33,10 +34,14 @@ export default function SignIn() {
     },
     validationSchema: SignInSchema,
     onSubmit: (values) => {
-      console.log(values);
       dispatch(signInSagaAction(values, isRemember));
     },
   });
+
+  // check the user 's remember status
+  if (localStorage.getItem(CURRENT_USER) && localStorage.getItem(REMEMBER_USER) === 'true') {
+    return <Navigate to='/project/management' replace={true} />;
+  }
 
   return (
     <div className={cx('wrapper')}>

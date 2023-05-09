@@ -2,6 +2,7 @@ export const DOMAIN = 'https://casestudy.cyberlearn.vn/api';
 
 export const ACCESS_TOKEN = 'ACCESS_TOKEN';
 export const CURRENT_USER = 'CURRENT_USER';
+export const REMEMBER_USER = 'REMEMBER_ME';
 
 export const STATUS_CODE = {
     SUCCESS: 200,

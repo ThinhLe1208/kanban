@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
@@ -11,10 +11,11 @@ import { getAllTaskTypeSagaAction } from 'redux/sagas/actions/taskTypeAction';
 import { getAllPrioritySagaAction } from 'redux/sagas/actions/priorityAction';
 import { getAllStatusSagaAction } from 'redux/sagas/actions/statusAction';
 import { getProjectCategorySagaAction } from 'redux/sagas/actions/projectCategoryAction';
+import { ACCESS_TOKEN, CURRENT_USER } from 'util/constants/settingSystem';
 
 const cx = classNames.bind(styles);
 
-export default function ProjectTemplate(props) {
+export default function ProjectTemplate() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,6 +29,11 @@ export default function ProjectTemplate(props) {
     dispatch(getProjectCategorySagaAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // check user signin or not
+  if (!localStorage.getItem(ACCESS_TOKEN) || !localStorage.getItem(CURRENT_USER)) {
+    return <Navigate to='/error' replace={true} />;
+  }
 
   return (
     <Layout className={cx('wrapper')}>
