@@ -9,7 +9,7 @@ if (localStorage.getItem(CURRENT_USER)) {
 const initialState = {
     currentUser,
     getUser: [],
-    getUserByProjectId: []
+    getUserByProjectId: [],
 };
 
 const userReducer = createSlice({

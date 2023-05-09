@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Checkbox } from 'antd';
@@ -41,7 +42,15 @@ export default function SignIn() {
     <div className={cx('wrapper')}>
       <Card className={cx('card')}>
         <form className={cx('form')} onSubmit={handleSubmit}>
-          <h1 className={cx('header')}>Sign in</h1>
+          <p className={cx('header')}>
+            <h3>Welcome to Bankan</h3>
+            <div>
+              <span className={cx('question')}>New to Bankan?</span>
+              <NavLink to='signup'>
+                <Button type='link'>Create an account</Button>
+              </NavLink>
+            </div>
+          </p>
 
           <div className={cx('body')}>
             <InputField
@@ -67,22 +76,23 @@ export default function SignIn() {
               onBlur={handleBlur}
             />
 
-            <Checkbox checked={isRemember} onChange={() => setIsRemember(!isRemember)}>
-              Remember me
-            </Checkbox>
+            <div className={cx('checkBox')}>
+              <Checkbox checked={isRemember} onChange={() => setIsRemember(!isRemember)}>
+                Remember me
+              </Checkbox>
 
-            <Button type='primary' block htmlType='submit'>
-              Sign in
-            </Button>
-
-            <div className={cx('links')}>
               <Button type='link'>Forgot password</Button>
-              <Button type='link'>Create an account</Button>
             </div>
+
+            <Button type='primary' block htmlType='submit' style={{ height: '44px' }}>
+              Sign In
+            </Button>
           </div>
 
           <div className={cx('footer')}>
-            <p className={cx('title')}>Or sign in with</p>
+            <p className={cx('title')}>
+              <span>or sign in with</span>
+            </p>
 
             <div className={cx('buttons')}>
               <button type='button' className={cx('button')}>
