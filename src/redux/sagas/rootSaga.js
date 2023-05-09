@@ -10,9 +10,10 @@ import * as commentSaga from './commentSaga';
 
 export function* rootSaga() {
     yield all([
-        userSaga.watchSigninSaga(),
         userSaga.watchGetUserSaga(),
         userSaga.watchGetUserByProjectIdSaga(),
+        userSaga.watchSignInSaga(),
+        userSaga.watchSignUpSaga(),
 
         projectCategorySaga.watchGetProjectCategorySaga(),
         taskTypeSaga.watchGetAllTaskType(),

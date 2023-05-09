@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Button, Checkbox } from 'antd';
+import { Button } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faApple, faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { GoogleOutlined } from '@ant-design/icons';
@@ -12,29 +12,35 @@ import styles from './styles.module.scss';
 import InputField from 'components/InputField';
 import Card from 'components/Card';
 import { useDispatch } from 'react-redux';
-import { signInSagaAction } from 'redux/sagas/actions/userAction';
+import { signUpSagaAction } from 'redux/sagas/actions/userAction';
 
 const cx = classNames.bind(styles);
 
-const SignInSchema = Yup.object().shape({
+const SignUpSchema = Yup.object().shape({
+  name: Yup.string()
+    .matches(/^([A-Za-z]+)((\s{1}[A-Za-z]+){1,})$/, 'Please provide an valid name.')
+    .required('Please provide name.'),
   email: Yup.string().email('Please provide an valid email.').required('Please provide an email.'),
   passWord: Yup.string().min(6, 'Please enter at least 6+ characters.').required('Please provide a password.'),
+  phoneNumber: Yup.string()
+    .matches(/^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/, 'Please provide a valid phone number.')
+    .required('Please provide a phone number.'),
 });
 
-export default function SignIn() {
+export default function SignUp() {
   const dispatch = useDispatch();
-  const [isRemember, setIsRemember] = useState(false);
 
   // Formik
   const { values, errors, touched, handleSubmit, handleChange, handleBlur } = useFormik({
     initialValues: {
+      name: '',
       email: '',
       passWord: '',
+      phoneNumber: '',
     },
-    validationSchema: SignInSchema,
+    validationSchema: SignUpSchema,
     onSubmit: (values) => {
-      console.log(values);
-      dispatch(signInSagaAction(values, isRemember));
+      dispatch(signUpSagaAction(values));
     },
   });
 
@@ -45,14 +51,25 @@ export default function SignIn() {
           <div className={cx('header')}>
             <h3>Welcome to Bankan</h3>
             <div>
-              <span className={cx('question')}>New to Bankan?</span>
-              <NavLink to='signup'>
-                <Button type='link'>Create an account</Button>
+              <span className={cx('question')}>Already have an Account?</span>
+              <NavLink to='signin'>
+                <Button type='link'>Sign In</Button>
               </NavLink>
             </div>
           </div>
 
           <div className={cx('body')}>
+            <InputField
+              label='Name'
+              name='name'
+              value={values.name}
+              error={errors.name}
+              touched={touched.name}
+              placeholder='Steve Paul Jobs'
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
+
             <InputField
               label='Email'
               name='email'
@@ -76,16 +93,20 @@ export default function SignIn() {
               onBlur={handleBlur}
             />
 
-            <div className={cx('checkBox')}>
-              <Checkbox checked={isRemember} onChange={() => setIsRemember(!isRemember)}>
-                Remember me
-              </Checkbox>
-
-              <Button type='link'>Forgot password</Button>
-            </div>
+            <InputField
+              label='Phone Number'
+              name='phoneNumber'
+              type='phoneNumber'
+              value={values.phoneNumber}
+              error={errors.phoneNumber}
+              touched={touched.phoneNumber}
+              placeholder='+84123456789'
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
 
             <Button type='primary' block htmlType='submit' style={{ height: '44px' }}>
-              Sign In
+              Sign Up
             </Button>
           </div>
 

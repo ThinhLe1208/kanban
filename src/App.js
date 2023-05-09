@@ -12,6 +12,7 @@ import ProjectManagement from 'pages/ProjectManagement';
 import Offcanvas from 'components/Offcanvas';
 import Loading from 'components/Loading';
 import SignIn from 'pages/SingIn';
+import SignUp from 'pages/SignUp';
 
 function App() {
   const { isLoading } = useSelector(state => state.uiControlReducer);
@@ -31,6 +32,7 @@ function App() {
             <Route index element={<SignIn />} />
             <Route path='home' element={<Home />} />
             <Route path='signin' element={<SignIn />} />
+            <Route path='signup' element={<SignUp />} />
             <Route path='*' element={<Navigate to='' />} />
           </Route>
 
