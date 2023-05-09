@@ -1,12 +1,12 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React from 'react';
+import { Outlet } from 'react-router-dom';
 
-import NavHome from "components/NavHome";
+import NavHome from 'components/NavHome';
 
 export default function HomeTemplate() {
   return (
     <>
-      <NavHome />
+      {/* <NavHome /> */}
       <Outlet />
     </>
   );

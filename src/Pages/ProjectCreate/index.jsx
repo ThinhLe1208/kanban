@@ -1,37 +1,37 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "antd";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import classNames from "classnames/bind";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from 'antd';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
-import { createProjectSagaAction } from "redux/saga/actions/projectAction";
-import Heading from "components/Heading";
-import InputField from "components/InputField";
-import EditorField from "components/EditorField";
-import SelectField from "components/SelectField";
-import Card from "components/Card";
+import styles from './styles.module.scss';
+import { createProjectSagaAction } from 'redux/sagas/actions/projectAction';
+import Heading from 'components/Heading';
+import InputField from 'components/InputField';
+import EditorField from 'components/EditorField';
+import SelectField from 'components/SelectField';
+import Card from 'components/Card';
 
 const cx = classNames.bind(styles);
 
 const breadCrumbList = [
   {
-    href: "/",
-    title: "Home",
+    href: '/',
+    title: 'Home',
   },
   {
-    href: "/project",
-    title: "Project",
+    href: '/project',
+    title: 'Project',
   },
   {
-    title: "Create Project",
+    title: 'Create Project',
   },
 ];
 
 const CreateProjectSchema = Yup.object().shape({
-  projectName: Yup.string().required("Please provide an issue name."),
-  categoryId: Yup.number().required("Please select a type."),
+  projectName: Yup.string().required('Please provide an issue name.'),
+  categoryId: Yup.number().required('Please select a type.'),
 });
 
 export default function ProjectCreate() {
@@ -44,8 +44,8 @@ export default function ProjectCreate() {
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
     enableReinitialize: true,
     initialValues: {
-      projectName: "",
-      description: "",
+      projectName: '',
+      description: '',
       categoryId: null,
     },
     validationSchema: CreateProjectSchema,
@@ -57,53 +57,52 @@ export default function ProjectCreate() {
   return (
     <div className={cx(`wrapper`)}>
       <div className={cx(`heading`)}>
-        <Heading breadCrumbList={breadCrumbList} title={"Create Project"} />
+        <Heading breadCrumbList={breadCrumbList} title={'Create Project'} />
       </div>
 
       <Card className={cx(`card`)}>
         <form className={cx(`form`)} onSubmit={handleSubmit}>
-          <div className={cx("row")}>
+          <div className={cx('row')}>
             <InputField
-              label="Project name"
-              name="projectName"
+              label='Project name'
+              name='projectName'
               value={values.projectName}
               error={errors.projectName}
               touched={touched.projectName}
-              placeholder="Insert project name"
+              placeholder='Insert project name'
               onChange={handleChange}
               onBlur={handleBlur}
             />
           </div>
 
-          <div className={cx("row")}>
+          <div className={cx('row')}>
             <EditorField
-              label="Desciption"
-              name="description"
+              label='Desciption'
+              name='description'
               height={250}
               value={values.description}
               onEditorChange={setFieldValue}
             />
           </div>
 
-          <div className={cx("row")}>
+          <div className={cx('row')}>
             <SelectField
-              label="Project Category"
-              name="categoryId"
+              label='Project Category'
+              name='categoryId'
               value={values.categoryId}
               error={errors.categoryId}
               touched={touched.categoryId}
-              placeholder="Select priority"
+              placeholder='Select priority'
               onChange={handleChange}
               onBlur={handleBlur}
               list={projectCategoryArr}
-              listLabel="projectCategoryName"
-              listValue="id"
+              listLabel='projectCategoryName'
+              listValue='id'
             />
           </div>
 
-          <div className={cx(`row`, "buttons")}>
-            <Button type="default">Cancel</Button>
-            <Button type="primary" htmlType="submit">
+          <div className={cx(`row`, 'buttons')}>
+            <Button type='primary' htmlType='submit'>
               Create
             </Button>
           </div>

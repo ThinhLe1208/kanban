@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { DragDropContext } from "react-beautiful-dnd";
-import _ from "lodash";
-import classNames from "classnames/bind";
+import React, { useEffect, useState } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
+import _ from 'lodash';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
-import Column from "components/Column";
-import { useDispatch } from "react-redux";
-import { updateStatusSagaAction } from "redux/saga/actions/taskAction";
+import styles from './styles.module.scss';
+import Column from 'components/Column';
+import { useDispatch } from 'react-redux';
+import { updateStatusSagaAction } from 'redux/sagas/actions/taskAction';
 
 const cx = classNames.bind(styles);
 
@@ -57,9 +57,9 @@ export default function Kanban({ projectDetail }) {
   }, [projectDetail.lstTask]);
 
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx('wrapper')}>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className={cx("columns")}>{renderColumns()}</div>
+        <div className={cx('columns')}>{renderColumns()}</div>
       </DragDropContext>
     </div>
   );

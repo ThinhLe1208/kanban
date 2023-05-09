@@ -11,7 +11,7 @@ import {
   updateTaskDescriptionSagaAction,
   updateTaskSagaAction,
   updateTimeTrackingSagaAction,
-} from 'redux/saga/actions/taskAction';
+} from 'redux/sagas/actions/taskAction';
 import EditorField from 'components/EditorField';
 import SelectField from 'components/SelectField';
 import { useFormik } from 'formik';
@@ -162,7 +162,7 @@ export default function EditTaskForm() {
         {isEditingDes ? (
           <div className={cx('row')}>
             <div className={cx('row')}>
-              <EditorField name='description' height={250} value={values.description} onEditorChange={setFieldValue} />
+              <EditorField name='description' height={150} value={values.description} onEditorChange={setFieldValue} />
             </div>
             <Space>
               <Button type='primary' size='small' onClick={handleSaveDescription}>
@@ -174,8 +174,8 @@ export default function EditTaskForm() {
             </Space>
           </div>
         ) : (
-          <div style={{ minHeight: '20px' }} onClick={handleShowDescription}>
-            {jsxDescription}
+          <div onClick={handleShowDescription}>
+            {jsxDescription.length === 0 ? <p className={cx('subTitle')}>Add a description...</p> : jsxDescription}
           </div>
         )}
       </>

@@ -1,4 +1,4 @@
-import { call, delay, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import { CREATE_TASK_SAGA, GET_TASK_DETAIL_SAGA, UPDATE_ORIGINAL_ESTIMATE_SAGA, UPDATE_PRIORITY_SAGA, UPDATE_STATUS_SAGA, UPDATE_TASK_DESCRIPTION_SAGA, UPDATE_TASK_SAGA, UPDATE_TIME_TRACKING_SAGA } from "redux/constants/JiraCloneConst";
 import { hideOffcanvas } from "redux/reducers/offcanvasReducer";
 import { hideLoading, showLoading } from "redux/reducers/uiControlReducer";

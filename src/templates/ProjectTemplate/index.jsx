@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
-import { Layout } from "antd";
-import { useDispatch } from "react-redux";
-import classNames from "classnames/bind";
+import React, { useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Layout } from 'antd';
+import { useDispatch } from 'react-redux';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
-import Sidebar from "components/Sidebar";
-import Header from "components/Header";
-import { getAllTaskTypeSagaAction } from "redux/saga/actions/taskTypeAction";
-import { getAllPrioritySagaAction } from "redux/saga/actions/priorityAction";
-import { getAllStatusSagaAction } from "redux/saga/actions/statusAction";
-import { getProjectCategorySagaAction } from "redux/saga/actions/projectCategoryAction";
+import styles from './styles.module.scss';
+import Sidebar from 'components/Sidebar';
+import Header from 'components/Header';
+import { getAllTaskTypeSagaAction } from 'redux/sagas/actions/taskTypeAction';
+import { getAllPrioritySagaAction } from 'redux/sagas/actions/priorityAction';
+import { getAllStatusSagaAction } from 'redux/sagas/actions/statusAction';
+import { getProjectCategorySagaAction } from 'redux/sagas/actions/projectCategoryAction';
 
 const cx = classNames.bind(styles);
 
@@ -30,12 +30,12 @@ export default function ProjectTemplate(props) {
   }, []);
 
   return (
-    <Layout className={cx("wrapper")}>
+    <Layout className={cx('wrapper')}>
       <Sidebar />
 
-      <Layout className={cx("content")}>
+      <Layout className={cx('content')}>
         <Header />
-        <div className={cx("outlet")}>
+        <div className={cx('outlet')}>
           <Outlet />
         </div>
       </Layout>

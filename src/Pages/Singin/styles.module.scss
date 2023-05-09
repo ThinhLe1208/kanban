@@ -1,0 +1,116 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  background: url('../../assets/images/background.png') left / cover no-repeat;
+
+  .card {
+    width: 480px;
+    padding: 30px 20px;
+    margin: 0 auto;
+
+    @media only screen and (min-width: 768px) {
+      margin-right: 10%;
+      padding: 56px 50px;
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: calc(var(--row-space-form) * 2);
+
+    .header {
+      font-size: 36px;
+    }
+
+    .body {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 20px;
+
+      .links {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: -8px;
+
+        button {
+          padding: 0;
+        }
+      }
+    }
+
+    .footer {
+      .title {
+        text-align: center;
+        color: var(--sub-text-color);
+        margin-bottom: 14px;
+      }
+
+      .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 14px;
+
+        .button {
+          display: block;
+          font-size: 20px;
+          padding: 8px 32px;
+          border-radius: 18px;
+          transition: all linear 0.2s;
+        }
+
+        .button:nth-child(1) {
+          color: #c71610ff;
+          background-color: #fef1f1ff;
+
+          &:hover {
+            background: #fbd2d0ff;
+          }
+
+          &:hover:active {
+            background: #f9b2b0ff;
+          }
+        }
+
+        .button:nth-child(2) {
+          color: #1773ea;
+          background-color: #f3f6fbff;
+
+          &:hover {
+            background: #d9e2f3ff;
+          }
+
+          &:hover:active {
+            background: #bfceebff;
+          }
+        }
+
+        .button:nth-child(3) {
+          color: #565e6cff;
+          background-color: #f3f4f6ff;
+
+          &:hover {
+            background: #dee1e6ff;
+          }
+
+          &:hover:active {
+            background: #cfd2daff;
+          }
+        }
+      }
+    }
+  }
+}

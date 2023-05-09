@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { AutoComplete, Avatar, Button, Input, Popconfirm, Popover, Space, Table, Tag, Tooltip } from "antd";
+import React, { useEffect, useRef, useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { AutoComplete, Avatar, Button, Input, Popconfirm, Popover, Space, Table, Tag, Tooltip } from 'antd';
 import {
   CloseCircleOutlined,
   MinusCircleOutlined,
@@ -8,41 +8,41 @@ import {
   SearchOutlined,
   EditOutlined,
   DeleteOutlined,
-} from "@ant-design/icons";
-import Highlighter from "react-highlight-words";
-import parse from "html-react-parser";
-import { useDispatch, useSelector } from "react-redux";
+} from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
+import parse from 'html-react-parser';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   assignUserProjectSagaAction,
   deleteProjectSagaAction,
   getAllProjectSagaAction,
   removeUserProjectSagaAction,
-} from "redux/saga/actions/projectAction";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
-import classNames from "classnames/bind";
+} from 'redux/sagas/actions/projectAction';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
-import { setOffcanvas } from "redux/reducers/offcanvasReducer";
-import { setProjectEdit } from "redux/reducers/projectReducer";
-import { getUserSagaAction } from "redux/saga/actions/userAction";
-import EditProjectForm from "components/EditProjectForm";
-import Heading from "components/Heading";
-import Card from "components/Card";
+import styles from './styles.module.scss';
+import { setOffcanvas } from 'redux/reducers/offcanvasReducer';
+import { setProjectEdit } from 'redux/reducers/projectReducer';
+import { getUserSagaAction } from 'redux/sagas/actions/userAction';
+import EditProjectForm from 'components/EditProjectForm';
+import Heading from 'components/Heading';
+import Card from 'components/Card';
 
 const cx = classNames.bind(styles);
 
 const breadCrumbList = [
   {
-    href: "/",
-    title: "Home",
+    href: '/',
+    title: 'Home',
   },
   {
-    href: "/project",
-    title: "Project",
+    href: '/project',
+    title: 'Project',
   },
   {
-    title: "Project Management",
+    title: 'Project Management',
   },
 ];
 
@@ -58,11 +58,11 @@ export default function ProjectManagement() {
   const [projectId, setProjectId] = useState(0);
 
   // state of feature which searches and adds a member
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   // table antd library
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   useEffect(() => {
@@ -78,14 +78,14 @@ export default function ProjectManagement() {
   };
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText("");
+    setSearchText('');
   };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div
         style={{
           padding: 8,
-          textAlign: "end",
+          textAlign: 'end',
         }}
         onKeyDown={(e) => e.stopPropagation()}
       >
@@ -97,13 +97,13 @@ export default function ProjectManagement() {
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
-            display: "block",
+            display: 'block',
           }}
         />
         <Space>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
+            size='small'
             style={{
               width: 90,
             }}
@@ -111,10 +111,10 @@ export default function ProjectManagement() {
             Reset
           </Button>
           <Button
-            type="primary"
+            type='primary'
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
             icon={<SearchOutlined />}
-            size="small"
+            size='small'
             style={{
               width: 90,
             }}
@@ -127,7 +127,7 @@ export default function ProjectManagement() {
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
-          color: filtered ? "#1890ff" : undefined,
+          color: filtered ? '#1890ff' : undefined,
         }}
       />
     ),
@@ -141,12 +141,12 @@ export default function ProjectManagement() {
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{
-            backgroundColor: "#ffc069",
+            backgroundColor: '#ffc069',
             padding: 0,
           }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ""}
+          textToHighlight={text ? text.toString() : ''}
         />
       ) : (
         text
@@ -155,31 +155,31 @@ export default function ProjectManagement() {
   // Remove member table
   const memberColumns = [
     {
-      title: "ID",
-      dataIndex: "userId",
-      key: "userId",
+      title: 'ID',
+      dataIndex: 'userId',
+      key: 'userId',
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Avatar",
-      dataIndex: "avatar",
-      key: "avatar",
+      title: 'Avatar',
+      dataIndex: 'avatar',
+      key: 'avatar',
       render: (text) => <Avatar src={text} />,
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
       render: (text, record) => (
         <Button
-          type="text"
-          icon={<CloseCircleOutlined style={{ color: "var(--error)" }} />}
+          type='text'
+          icon={<CloseCircleOutlined style={{ color: 'var(--error)' }} />}
           onClick={() => dispatch(removeUserProjectSagaAction(projectId, record.userId))}
         />
       ),
@@ -189,21 +189,21 @@ export default function ProjectManagement() {
   // Project management table
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
       width: 100,
-      responsive: ["xl"],
-      ...getColumnSearchProps("id"),
+      responsive: ['xl'],
+      ...getColumnSearchProps('id'),
       sorter: (a, b) => a?.id - b?.id,
-      sortDirections: ["descend", "ascend"],
-      render: (text) => <span style={{ color: "var(--sub-text-color)" }}>{text}</span>,
+      sortDirections: ['descend', 'ascend'],
+      render: (text) => <span style={{ color: 'var(--sub-text-color)' }}>{text}</span>,
     },
     {
-      title: "Project Name",
-      dataIndex: "projectName",
-      key: "projectName",
-      ...getColumnSearchProps("projectName"),
+      title: 'Project Name',
+      dataIndex: 'projectName',
+      key: 'projectName',
+      ...getColumnSearchProps('projectName'),
       sorter: (a, b) => {
         const n1 = a?.projectName.trim().toLowerCase();
         const n2 = b?.projectName.trim().toLowerCase();
@@ -213,21 +213,21 @@ export default function ProjectManagement() {
           return 1;
         }
       },
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ['descend', 'ascend'],
       render: (text, record) => {
         return (
-          <NavLink to={`/project/board/${record.id}`} style={{ cursor: "pointer", fontWeight: "600" }}>
+          <NavLink to={`/project/board/${record.id}`} style={{ cursor: 'pointer', fontWeight: '600' }}>
             {text}
           </NavLink>
         );
       },
     },
     {
-      title: "Category Name",
-      dataIndex: "categoryName",
-      key: "categoryName",
+      title: 'Category Name',
+      dataIndex: 'categoryName',
+      key: 'categoryName',
       width: 200,
-      responsive: ["xl"],
+      responsive: ['xl'],
       sorter: (a, b) => {
         const n1 = a?.categoryName.trim().toLowerCase();
         const n2 = b?.categoryName.trim().toLowerCase();
@@ -237,31 +237,31 @@ export default function ProjectManagement() {
           return 1;
         }
       },
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ['descend', 'ascend'],
       filters: projectCategoryArr?.map((ctg) => ({ text: ctg.projectCategoryName, value: ctg.id })),
       onFilter: (value, record) => record.categoryId === value,
       render: (text) => {
         let color;
         switch (text) {
-          case "Dự án web":
-            color = "purple";
+          case 'Dự án web':
+            color = 'purple';
             break;
-          case "Dự án phần mềm":
-            color = "magenta";
+          case 'Dự án phần mềm':
+            color = 'magenta';
             break;
           default:
-            color = "lime";
+            color = 'lime';
         }
         return <Tag color={color}>{text}</Tag>;
       },
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
       width: 400,
-      responsive: ["md"],
-      ...getColumnSearchProps("description"),
+      responsive: ['md'],
+      ...getColumnSearchProps('description'),
       sorter: (a, b) => {
         const n1 = a?.description.trim().toLowerCase();
         const n2 = b?.description.trim().toLowerCase();
@@ -271,25 +271,25 @@ export default function ProjectManagement() {
           return 1;
         }
       },
-      sortDirections: ["descend", "ascend"],
+      sortDirections: ['descend', 'ascend'],
       render: (text) => {
         // description received from Editor tinyMCE is html
-        return <span style={{ color: "var(--sub-text-color)" }}>{parse(text)}</span>;
+        return <span style={{ color: 'var(--sub-text-color)' }}>{parse(text)}</span>;
       },
     },
     {
-      title: "Member",
-      dataIndex: "members",
-      key: "members",
+      title: 'Member',
+      dataIndex: 'members',
+      key: 'members',
       width: 150,
-      responsive: ["lg"],
+      responsive: ['lg'],
       render: (text, record, index) => {
         return (
-          <div style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", display: "flex" }}>
+          <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', display: 'flex' }}>
             {/* member avatar list */}
-            <Avatar.Group maxCount={2} maxStyle={{ backgroundColor: "var(--bg-primary)" }}>
+            <Avatar.Group maxCount={2} maxStyle={{ backgroundColor: 'var(--bg-primary)' }}>
               {record.members?.map((m) => (
-                <Tooltip key={m.userId} title={m.name} placement="top" color="cyan">
+                <Tooltip key={m.userId} title={m.name} placement='top' color='cyan'>
                   <Avatar src={m.avatar} />
                 </Tooltip>
               ))}
@@ -299,24 +299,24 @@ export default function ProjectManagement() {
       },
     },
     {
-      title: "Action",
-      dataIndex: "",
-      key: "action",
+      title: 'Action',
+      dataIndex: '',
+      key: 'action',
       width: 200,
       render: (text, record, index) => (
         <Space>
           {/* edit button */}
-          <Tooltip title={"Edit Project"} color="#00c292" zIndex={5}>
+          <Tooltip title={'Edit Project'} color='#00c292' zIndex={5}>
             <Button
-              type="text"
-              icon={<EditOutlined style={{ color: "var(--success)" }} />}
+              type='text'
+              icon={<EditOutlined style={{ color: 'var(--success)' }} />}
               onClick={() => {
                 // open drawer with edit content
                 dispatch(
                   setOffcanvas({
-                    title: "Edit Project",
+                    title: 'Edit Project',
                     icon: <EditOutlined />,
-                    aceptBtn: "Edit",
+                    aceptBtn: 'Edit',
                     showBtn: true,
                     offcanvasContent: <EditProjectForm />,
                   })
@@ -328,26 +328,26 @@ export default function ProjectManagement() {
           </Tooltip>
 
           {/* remove button */}
-          <Tooltip title={"Delete project"} color="#e46a76" zIndex={5}>
+          <Tooltip title={'Delete project'} color='#e46a76' zIndex={5}>
             <Popconfirm
-              icon={<FontAwesomeIcon icon={faCircleQuestion} style={{ color: "#e46a76" }} />}
-              title="Are you sure to remove this project?"
-              okText="Remove"
-              cancelText="Cancel"
-              okButtonProps={{ style: { background: "#e46a76" } }}
+              icon={<FontAwesomeIcon icon={faCircleQuestion} style={{ color: '#e46a76' }} />}
+              title='Are you sure to remove this project?'
+              okText='Remove'
+              cancelText='Cancel'
+              okButtonProps={{ style: { background: '#e46a76' } }}
               onConfirm={() => dispatch(deleteProjectSagaAction(record.id))}
             >
-              <Button type="text" icon={<DeleteOutlined style={{ color: "var(--error)" }} />} />
+              <Button type='text' icon={<DeleteOutlined style={{ color: 'var(--error)' }} />} />
             </Popconfirm>
           </Tooltip>
 
           {/* add member button */}
-          <Tooltip title={"Add member"} color="#03c9d7" zIndex={5}>
+          <Tooltip title={'Add member'} color='#03c9d7' zIndex={5}>
             <Popover
               content={() => (
                 <AutoComplete
                   style={{
-                    width: "100%",
+                    width: '100%',
                   }}
                   options={getUser.map((u) => ({ label: u.name, value: u.userId.toString() }))}
                   value={searchValue}
@@ -366,27 +366,27 @@ export default function ProjectManagement() {
                   }}
                 />
               )}
-              title="Add member"
-              trigger="click"
+              title='Add member'
+              trigger='click'
             >
-              <Button type="text" icon={<PlusCircleOutlined style={{ color: "var(--info)" }} />} />
+              <Button type='text' icon={<PlusCircleOutlined style={{ color: 'var(--info)' }} />} />
             </Popover>
           </Tooltip>
 
           {/* remove member button */}
-          <Tooltip title={"Remove member"} color="#fec90f" zIndex={5}>
+          <Tooltip title={'Remove member'} color='#fec90f' zIndex={5}>
             <Popover
-              placement="left"
+              placement='left'
               content={() => (
-                <Card style={{ padding: "0" }}>
-                  <Table columns={memberColumns} dataSource={record.members} rowKey={"userId"} pagination={false} />
+                <Card style={{ padding: '0' }}>
+                  <Table columns={memberColumns} dataSource={record.members} rowKey={'userId'} pagination={false} />
                 </Card>
               )}
-              trigger="click"
+              trigger='click'
             >
               <Button
-                type="text"
-                icon={<MinusCircleOutlined style={{ color: "var(--warning)" }} />}
+                type='text'
+                icon={<MinusCircleOutlined style={{ color: 'var(--warning)' }} />}
                 onClick={() => setProjectId(record.id)}
               />
             </Popover>
@@ -398,14 +398,14 @@ export default function ProjectManagement() {
   console.log(projectCategoryArr);
   console.log(projectCategoryArr?.map((ctg) => ({ text: ctg.projectCategoryName, value: ctg.id })));
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx('wrapper')}>
       <div className={cx(`heading`)}>
-        <Heading breadCrumbList={breadCrumbList} title={"Project Management"} />
+        <Heading breadCrumbList={breadCrumbList} title={'Project Management'} />
       </div>
 
       {/* rowKey fix error 'child need key' */}
-      <Card className={cx("card")}>
-        <Table columns={columns} dataSource={projectList} rowKey={"id"} pagination={{ position: ["bottomCenter "] }} />
+      <Card className={cx('card')}>
+        <Table columns={columns} dataSource={projectList} rowKey={'id'} pagination={{ position: ['bottomCenter '] }} />
       </Card>
     </div>
   );

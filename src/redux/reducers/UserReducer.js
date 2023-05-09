@@ -16,7 +16,7 @@ const userReducer = createSlice({
     name: 'userReducer',
     initialState,
     reducers: {
-        userSignin: (state, { payload }) => {
+        setCurrentUser: (state, { payload }) => {
             state.currentUser = payload;
         },
         getUser: (state, { payload }) => {
@@ -29,7 +29,7 @@ const userReducer = createSlice({
 });
 
 export const {
-    userSignin,
+    setCurrentUser,
     getUser,
     getUserByProjectId
 } = userReducer.actions;

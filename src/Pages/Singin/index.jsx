@@ -1,92 +1,103 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Button, Typography } from 'antd';
-import { FastField, Form, Formik } from 'formik';
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { signinSagaAction } from 'redux/saga/actions/userAction';
+import { Button, Checkbox } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faApple, faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { GoogleOutlined } from '@ant-design/icons';
+import classNames from 'classnames/bind';
 
-const { Title } = Typography;
+import styles from './styles.module.scss';
+import InputField from 'components/InputField';
+import Card from 'components/Card';
+import { useDispatch } from 'react-redux';
+import { signinSagaAction } from 'redux/sagas/actions/userAction';
 
-const SigninSchema = Yup.object().shape({
-    email: Yup
-        .string()
-        // .email('Invalid email')
-        .required('Field is required'),
-    password: Yup
-        .string()
-        .min(4, 'Too Short!')
-        .max(20, 'Too Long!')
-        .required('Field is required'),
-    type: Yup
-        .number()
-        .required('Field is required')
+const cx = classNames.bind(styles);
+
+const SignInSchema = Yup.object().shape({
+  email: Yup.string().email('Please provide an valid email.').required('Please provide an email.'),
+  passWord: Yup.string().min(6, 'Please enter at least 6+ characters.').required('Please provide a password.'),
 });
 
-export default function Signin() {
-    const dispatch = useDispatch();
+export default function SignIn() {
+  const dispatch = useDispatch();
+  const [isRemember, setIsRemember] = useState(false);
 
-    const initialValues = {
-        email: '',
-        password: '',
-        type: null
-    };
+  // Formik
+  const { values, errors, touched, handleSubmit, handleChange, handleBlur } = useFormik({
+    initialValues: {
+      email: '',
+      passWord: '',
+    },
+    validationSchema: SignInSchema,
+    onSubmit: (values) => {
+      console.log(values);
+      dispatch(signinSagaAction(values.email, values.passWord, isRemember));
+    },
+  });
 
-    return (
-        <div className='d-flex flex-column justify-content-center h-100 px-5'>
-            <Title className='text-center text-primary mb-4'>Jira Clone</Title>
+  return (
+    <div className={cx('wrapper')}>
+      <Card className={cx('card')}>
+        <form className={cx('form')} onSubmit={handleSubmit}>
+          <h1 className={cx('header')}>Sign in</h1>
 
-            {/* <Formik
-                initialValues={initialValues}
-                validationSchema={SigninSchema}
-                onSubmit={(values) => {
-                    dispatch(signinSagaAction(values.email, values.password));
-                }}
-            >
-                {formikProps => {
+          <div className={cx('body')}>
+            <InputField
+              label='Email'
+              name='email'
+              value={values.email}
+              error={errors.email}
+              touched={touched.email}
+              placeholder='example.email@gmail.com'
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
 
-                    return (
-                        <Form>
-                            <FastField
-                                name='email'
-                                component={InputField}
+            <InputField
+              label='Password'
+              name='passWord'
+              type='password'
+              value={values.passWord}
+              error={errors.passWord}
+              touched={touched.passWord}
+              placeholder='Enter at least 6+ characters'
+              onChange={handleChange}
+              onBlur={handleBlur}
+            />
 
-                                // Formik set automatically these props to the InputField compontent
-                                type='text'
-                                label='Email'
-                                placeholder='email@gmail.com'
-                            />
+            <Checkbox checked={isRemember} onChange={() => setIsRemember(!isRemember)}>
+              Remember me
+            </Checkbox>
 
-                            <FastField
-                                name='password'
-                                component={InputField}
+            <Button type='primary' block htmlType='submit'>
+              Sign in
+            </Button>
 
-                                type='password'
-                                label='Password'
-                                placeholder='password'
-                            />
+            <div className={cx('links')}>
+              <Button type='link'>Forgot password</Button>
+              <Button type='link'>Create an account</Button>
+            </div>
+          </div>
 
-                            <FastField
-                                name='type'
-                                component={SelectField}
+          <div className={cx('footer')}>
+            <p className={cx('title')}>Or sign in with</p>
 
-                                type='select'
-                                label='Type'
-                                placeholder='What is your job?'
-                                options={[
-                                    { value: 1, label: 'Developer' },
-                                    { value: 2, label: 'Student' },
-                                    { value: 3, label: 'Designer' },
-                                ]}
-                            />
-
-                            <Button type="primary" htmlType="submit">
-                                Sign In
-                            </Button>
-
-                        </Form>
-                    );
-                }}
-            </Formik> */}
-        </div >
-    );
+            <div className={cx('buttons')}>
+              <button type='button' className={cx('button')}>
+                <GoogleOutlined />
+              </button>
+              <button type='button' className={cx('button')}>
+                <FontAwesomeIcon icon={faFacebook} />
+              </button>
+              <button type='button' className={cx('button')}>
+                <FontAwesomeIcon icon={faApple} />
+              </button>
+            </div>
+          </div>
+        </form>
+      </Card>
+    </div>
+  );
 }

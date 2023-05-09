@@ -4,7 +4,7 @@ import { Avatar, Button, Col, Input, Row, Space } from 'antd';
 import classNames from 'classnames/bind';
 
 import styles from './styles.module.scss';
-import { getAllCommentSagaAction, insertCommentSagaAction } from 'redux/saga/actions/commentAction';
+import { getAllCommentSagaAction, insertCommentSagaAction } from 'redux/sagas/actions/commentAction';
 import Card from 'components/Card';
 import Comment from 'components/Comment';
 

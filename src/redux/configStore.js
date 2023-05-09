@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
-import { rootSaga } from './saga/rootSaga';
+import { rootSaga } from './sagas/rootSaga';
 
 import uiControlReducer from './reducers/uiControlReducer';
 import userReducer from './reducers/userReducer';

@@ -1,26 +1,26 @@
-import React from "react";
-import { useEffect } from "react";
-import { Col, Row } from "antd";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import classNames from "classnames/bind";
+import React from 'react';
+import { useEffect } from 'react';
+import { Col, Row } from 'antd';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
-import { setHandleSubmitOffcanvas } from "redux/reducers/offcanvasReducer";
-import { createTaskSagaAction } from "redux/saga/actions/taskAction";
-import InputField from "components/InputField";
-import SelectField from "components/SelectField";
-import EditorField from "components/EditorField";
-import SliderField from "components/SliderField";
+import styles from './styles.module.scss';
+import { setHandleSubmitOffcanvas } from 'redux/reducers/offcanvasReducer';
+import { createTaskSagaAction } from 'redux/sagas/actions/taskAction';
+import InputField from 'components/InputField';
+import SelectField from 'components/SelectField';
+import EditorField from 'components/EditorField';
+import SliderField from 'components/SliderField';
 
 const cx = classNames.bind(styles);
 
 const CreateTaskSchema = Yup.object().shape({
-  taskName: Yup.string().required("Please provide an issue name."),
-  priorityId: Yup.number().required("Please select a priority."),
-  typeId: Yup.number().required("Please select a type."),
-  statusId: Yup.number().required("Please select a status."),
+  taskName: Yup.string().required('Please provide an issue name.'),
+  priorityId: Yup.number().required('Please select a priority.'),
+  typeId: Yup.number().required('Please select a type.'),
+  statusId: Yup.number().required('Please select a status.'),
 });
 
 export default function CreateTaskForm() {
@@ -36,11 +36,11 @@ export default function CreateTaskForm() {
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
     enableReinitialize: true,
     initialValues: {
-      taskName: "",
+      taskName: '',
       statusId: null,
       projectId: projectDetail.id,
       priorityId: null,
-      description: "",
+      description: '',
       typeId: null,
       originalEstimate: 0,
       timeTrackingSpent: 0,
@@ -64,17 +64,17 @@ export default function CreateTaskForm() {
   }, []);
 
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx('wrapper')}>
       <form onSubmit={handleSubmit}>
-        <Row className={cx("row")} gutter={[18, 18]}>
+        <Row className={cx('row')} gutter={[18, 18]}>
           <Col xs={24} md={12}>
             <InputField
-              label="Issue name"
-              name="taskName"
+              label='Issue name'
+              name='taskName'
               value={values.taskName}
               error={errors.taskName}
               touched={touched.taskName}
-              placeholder="Insert task name"
+              placeholder='Insert task name'
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -82,103 +82,103 @@ export default function CreateTaskForm() {
 
           <Col xs={24} md={12}>
             <SelectField
-              label="Status"
-              name="statusId"
+              label='Status'
+              name='statusId'
               value={values.statusId}
               error={errors.statusId}
               touched={touched.statusId}
-              placeholder="Select status"
+              placeholder='Select status'
               onChange={handleChange}
               onBlur={handleBlur}
               list={statusList}
-              listLabel="statusName"
-              listValue="statusId"
+              listLabel='statusName'
+              listValue='statusId'
             />
           </Col>
         </Row>
 
-        <Row className={cx("row")} gutter={[18, 18]}>
+        <Row className={cx('row')} gutter={[18, 18]}>
           <Col xs={24} md={12}>
             <SelectField
-              label="Priority"
-              name="priorityId"
+              label='Priority'
+              name='priorityId'
               value={values.priorityId}
               error={errors.priorityId}
               touched={touched.priorityId}
-              placeholder="Select priority"
+              placeholder='Select priority'
               onChange={handleChange}
               onBlur={handleBlur}
               list={priorityList}
-              listLabel="priority"
-              listValue="priorityId"
+              listLabel='priority'
+              listValue='priorityId'
             />
           </Col>
           <Col xs={24} md={12}>
             <SelectField
-              label="Type"
-              name="typeId"
+              label='Type'
+              name='typeId'
               value={values.typeId}
               error={errors.typeId}
               touched={touched.typeId}
-              placeholder="Select type"
+              placeholder='Select type'
               onChange={handleChange}
               onBlur={handleBlur}
               list={taskTypeList}
-              listLabel="taskType"
-              listValue="id"
+              listLabel='taskType'
+              listValue='id'
             />
           </Col>
         </Row>
 
-        <div className={cx("row")}>
+        <div className={cx('row')}>
           <EditorField
-            label="Desciption"
-            name="description"
+            label='Desciption'
+            name='description'
             height={250}
             value={values.description}
             onEditorChange={setFieldValue}
           />
         </div>
 
-        <div className={cx("row")}>
+        <div className={cx('row')}>
           <SelectField
-            label="Assign user"
-            name="listUserAsign"
+            label='Assign user'
+            name='listUserAsign'
             value={values.listUserAsign}
             error={errors.listUserAsign}
             touched={touched.listUserAsign}
             onChange={handleChange}
             onBlur={handleBlur}
             list={projectDetail.members}
-            listLabel="name"
-            listValue="userId"
-            filterOption={(input, option) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase())}
-            mode="multiple"
+            listLabel='name'
+            listValue='userId'
+            filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+            mode='multiple'
             showSearch
             allowClear
           />
         </div>
 
-        <div className={cx("row")}>
+        <div className={cx('row')}>
           <SliderField
-            label="Time Tracking"
-            name="timeTrackingSpent"
+            label='Time Tracking'
+            name='timeTrackingSpent'
             spentValue={values.timeTrackingSpent}
             remainValue={values.timeTrackingRemaining}
             onChange={handleChange}
           />
         </div>
 
-        <Row className={cx("row")} gutter={[18, 18]}>
+        <Row className={cx('row')} gutter={[18, 18]}>
           <Col xs={24} md={12}>
             <InputField
-              label="Time spent (hours)"
-              name="timeTrackingSpent"
-              type="number"
+              label='Time spent (hours)'
+              name='timeTrackingSpent'
+              type='number'
               value={values.timeTrackingSpent}
               error={errors.timeTrackingSpent}
               touched={touched.timeTrackingSpent}
-              placeholder="Insert time spent"
+              placeholder='Insert time spent'
               onChange={handleChange}
               onBlur={handleBlur}
               min={0}
@@ -186,13 +186,13 @@ export default function CreateTaskForm() {
           </Col>
           <Col xs={24} md={12}>
             <InputField
-              label="Time remaining (hours)"
-              name="timeTrackingRemaining"
-              type="number"
+              label='Time remaining (hours)'
+              name='timeTrackingRemaining'
+              type='number'
               value={values.timeTrackingRemaining}
               error={errors.timeTrackingRemaining}
               touched={touched.timeTrackingRemaining}
-              placeholder="Insert time remaning"
+              placeholder='Insert time remaning'
               onChange={handleChange}
               onBlur={handleBlur}
               min={0}

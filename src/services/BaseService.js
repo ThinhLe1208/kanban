@@ -1,5 +1,5 @@
 import axios from "axios";
-const { DOMAIN, ACCESS_TOKEN } = require("util/constants/settingSystem");
+import { DOMAIN, ACCESS_TOKEN } from "util/constants/settingSystem";
 
 export default class BaseService {
     post(url, model) {

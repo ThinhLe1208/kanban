@@ -1,20 +1,20 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import classNames from "classnames/bind";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
-import { setHandleSubmitOffcanvas } from "redux/reducers/offcanvasReducer";
-import { updateProjectSagaAction } from "redux/saga/actions/projectAction";
-import InputField from "components/InputField";
-import EditorField from "components/EditorField";
-import SelectField from "components/SelectField";
+import styles from './styles.module.scss';
+import { setHandleSubmitOffcanvas } from 'redux/reducers/offcanvasReducer';
+import { updateProjectSagaAction } from 'redux/sagas/actions/projectAction';
+import InputField from 'components/InputField';
+import EditorField from 'components/EditorField';
+import SelectField from 'components/SelectField';
 
 const cx = classNames.bind(styles);
 
 const EditProjectSchema = Yup.object().shape({
-  projectName: Yup.string().required("Please provide an issue name."),
+  projectName: Yup.string().required('Please provide an issue name.'),
 });
 
 export default function EditProjectForm() {
@@ -24,7 +24,7 @@ export default function EditProjectForm() {
   const { projectCategoryArr } = useSelector((state) => state.projectCategoryReducer);
   const { projectEdit } = useSelector((state) => state.projectReducer);
   const { projectName, description, categoryId, id } = projectEdit;
-  console.log("projectEdit", projectEdit);
+  console.log('projectEdit', projectEdit);
   // Formik
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
     enableReinitialize: true,
@@ -49,44 +49,44 @@ export default function EditProjectForm() {
   }, []);
 
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx('wrapper')}>
       <form className={cx(`form`)} onSubmit={handleSubmit}>
-        <div className={cx("row")}>
+        <div className={cx('row')}>
           <InputField
-            label="Project name"
-            name="projectName"
+            label='Project name'
+            name='projectName'
             value={values.projectName}
             error={errors.projectName}
             touched={touched.projectName}
-            placeholder="Insert project name"
+            placeholder='Insert project name'
             onChange={handleChange}
             onBlur={handleBlur}
           />
         </div>
 
-        <div className={cx("row")}>
+        <div className={cx('row')}>
           <EditorField
-            label="Desciption"
-            name="description"
+            label='Desciption'
+            name='description'
             height={250}
             value={values.description}
             onEditorChange={setFieldValue}
           />
         </div>
 
-        <div className={cx("row")}>
+        <div className={cx('row')}>
           <SelectField
-            label="Project Category"
-            name="categoryId"
+            label='Project Category'
+            name='categoryId'
             value={values.categoryId}
             error={errors.categoryId}
             touched={touched.categoryId}
-            placeholder="Select priority"
+            placeholder='Select priority'
             onChange={handleChange}
             onBlur={handleBlur}
             list={projectCategoryArr}
-            listLabel="projectCategoryName"
-            listValue="id"
+            listLabel='projectCategoryName'
+            listValue='id'
           />
         </div>
       </form>

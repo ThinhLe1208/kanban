@@ -1,11 +1,11 @@
-import React from "react";
-import { Select, Tag } from "antd";
-import classNames from "classnames/bind";
+import React from 'react';
+import { Select, Tag } from 'antd';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
-import ErrorMessage from "components/ErrorMessage";
-import { useDispatch } from "react-redux";
-import { updatePrioritySagaAction, updateStatusSagaAction } from "redux/saga/actions/taskAction";
+import styles from './styles.module.scss';
+import ErrorMessage from 'components/ErrorMessage';
+import { useDispatch } from 'react-redux';
+import { updatePrioritySagaAction, updateStatusSagaAction } from 'redux/sagas/actions/taskAction';
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +15,7 @@ export default function SelectField({
   value,
   error,
   touched,
-  placeholder = "",
+  placeholder = '',
   onChange,
   onBlur,
   list = [],
@@ -36,13 +36,13 @@ export default function SelectField({
     };
     return (
       <Tag
-        color="cyan"
+        color='cyan'
         onMouseDown={onPreventMouseDown}
         closable={closable}
         onClose={onClose}
         style={{
-          display: "flex",
-          alignItems: "center",
+          display: 'flex',
+          alignItems: 'center',
           marginRight: 3,
         }}
       >
@@ -55,10 +55,10 @@ export default function SelectField({
   const customHandleChangeAntd = (value, name) => {
     if (api) {
       switch (name) {
-        case "statusId":
+        case 'statusId':
           dispatch(updateStatusSagaAction(taskDetail.taskId, value, taskDetail.projectId));
           break;
-        case "priorityId":
+        case 'priorityId':
           dispatch(updatePrioritySagaAction(taskDetail.taskId, value, taskDetail.projectId));
           break;
         default:
@@ -74,20 +74,20 @@ export default function SelectField({
   };
 
   return (
-    <div className={cx("wrapper")}>
-      <label className={cx("label")} htmlFor={name}>
+    <div className={cx('wrapper')}>
+      <label className={cx('label')} htmlFor={name}>
         {label}
       </label>
 
       <Select
-        className={cx("input")}
+        className={cx('input')}
         name={name}
         id={name}
         value={value}
         placeholder={placeholder}
         onChange={(value) => customHandleChangeAntd(value, name)}
         onBlur={onBlur}
-        status={error && touched ? "error" : ""}
+        status={error && touched ? 'error' : ''}
         tagRender={tagRender}
         {...rest}
       >

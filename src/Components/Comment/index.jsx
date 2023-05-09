@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import styles from './styles.module.scss';
 import Card from 'components/Card';
 import { useDispatch } from 'react-redux';
-import { deleteCommentSagaAction, updateCommentSagaAction } from 'redux/saga/actions/commentAction';
+import { deleteCommentSagaAction, updateCommentSagaAction } from 'redux/sagas/actions/commentAction';
 
 const cx = classNames.bind(styles);
 
