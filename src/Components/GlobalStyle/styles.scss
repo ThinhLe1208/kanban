@@ -1,4 +1,4 @@
-@import "normalize.css";
+@import 'normalize.css';
 
 :root {
   --bg-primary: #13c2c2;
@@ -41,6 +41,7 @@
   --row-space: 12px;
   --row-space-form: 18px;
   --button-space: 16px;
+  --label-bottom-space: 6px;
 
   --wrapper-padding-x: 30px;
   --wrapper-padding-y: 16px;
@@ -48,7 +49,7 @@
   --box-shadow-1: 0px 7px 30px 0px rgba(90, 114, 123, 0.11);
   --box-shadow-2: 0px 4px 8px rgba(0, 0, 0, 0.2);
 
-  --font-family: "Inter", sans-serif;
+  --font-family: 'Inter', sans-serif;
 }
 
 * {
@@ -103,25 +104,25 @@ li {
 // Fonts embeded
 @font-face {
   font-family: Inter;
-  src: url("/assets/fonts/Inter-Regular.ttf");
+  src: url('/assets/fonts/Inter-Regular.ttf');
   font-weight: 400;
 }
 
 @font-face {
   font-family: Inter;
-  src: url("/assets/fonts/Inter-Medium.ttf");
+  src: url('/assets/fonts/Inter-Medium.ttf');
   font-weight: 500;
 }
 
 @font-face {
   font-family: Inter;
-  src: url("/assets/fonts/Inter-SemiBold.ttf");
+  src: url('/assets/fonts/Inter-SemiBold.ttf');
   font-weight: 600;
 }
 
 @font-face {
   font-family: Inter;
-  src: url("/assets/fonts/Inter-Bold.ttf");
+  src: url('/assets/fonts/Inter-Bold.ttf');
   font-weight: 700;
 }
 
@@ -159,4 +160,39 @@ html ::-webkit-scrollbar-track {
 
 .ant-select-dropdown .ant-select-item.ant-select-item-option .ant-select-item-option-content {
   font-size: 14px;
+}
+
+// antd-react  notification
+.notification {
+  display: flex !important;
+  justify-content: space-between !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-family) !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  border-radius: 4px !important;
+  box-shadow: var(--box-shadow-1) !important;
+  padding: 12px 16px !important;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important;
+  z-index: 9999 !important;
+
+  align-items: center !important;
+
+  .ant-notification-notice-with-icon {
+    // display: flex !important;
+    // justify-content: space-between !important;
+
+    .ant-notification-notice-message {
+      color: var(--text-primary) !important;
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .ant-notification-notice-close {
+    position: relative !important;
+    top: 0 !important;
+    inset-inline-end: 0 !important;
+    color: var(--text-primary) !important;
+    font-weight: 500 !important;
+  }
 }

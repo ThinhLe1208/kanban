@@ -66,7 +66,7 @@ export default function Sidebar() {
           transition: "all ease 0.2s",
         }}
       >
-        <img className={cx("logo")} src={require("../../assets/img/logo_jira.png")} alt="logo_jira" />
+        <img className={cx("logo")} src={require("../../assets/images/logo_jira.png")} alt="logo_jira" />
 
         <div className={cx("menu")}>
           <Menu mode="inline" items={itemsTop} onClick={handleClickMenuItem} style={{ border: "none" }} />

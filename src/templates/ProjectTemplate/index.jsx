@@ -35,8 +35,9 @@ export default function ProjectTemplate(props) {
 
       <Layout className={cx("content")}>
         <Header />
-
-        <Outlet />
+        <div className={cx("outlet")}>
+          <Outlet />
+        </div>
       </Layout>
     </Layout>
   );

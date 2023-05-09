@@ -6,6 +6,7 @@ import * as prioritySaga from './prioritySaga';
 import * as projectSaga from './projectSaga';
 import * as statusSaga from './statusSaga';
 import * as taskSaga from './taskSaga';
+import * as commentSaga from './commentSaga';
 
 export function* rootSaga() {
     yield all([
@@ -33,5 +34,11 @@ export function* rootSaga() {
         taskSaga.watchUpdateStatusSaga(),
         taskSaga.watchUpdatePrioritySaga(),
         taskSaga.watchUpdateOriginalEstimateSaga(),
+        taskSaga.watchUpdateTimeTrackingSaga(),
+
+        commentSaga.watchGetAllCommentSaga(),
+        commentSaga.watchUpdateCommentSaga(),
+        commentSaga.watchInsertCommentSaga(),
+        commentSaga.watchDeleteCommentSaga(),
     ]);
 }

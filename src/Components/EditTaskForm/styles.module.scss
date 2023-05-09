@@ -1,0 +1,31 @@
+.wrapper {
+  width: 100vw;
+  padding: 20px;
+
+  @media only screen and (min-width: 992px) {
+    width: 910px;
+    padding: 14px 20px;
+  }
+
+  .row {
+    margin-bottom: var(--row-space-form);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--row-space-form);
+  }
+
+  .taskName {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .description {
+    font-weight: 600;
+    margin-left: 2px;
+    margin-bottom: 6px;
+  }
+}

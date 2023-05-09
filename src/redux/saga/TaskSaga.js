@@ -1,5 +1,5 @@
 import { call, delay, put, takeLatest } from "redux-saga/effects";
-import { CREATE_TASK_SAGA, GET_TASK_DETAIL_SAGA, UPDATE_ORIGINAL_ESTIMATE_SAGA, UPDATE_PRIORITY_SAGA, UPDATE_STATUS_SAGA, UPDATE_TASK_DESCRIPTION_SAGA, UPDATE_TASK_SAGA } from "redux/constants/JiraCloneConst";
+import { CREATE_TASK_SAGA, GET_TASK_DETAIL_SAGA, UPDATE_ORIGINAL_ESTIMATE_SAGA, UPDATE_PRIORITY_SAGA, UPDATE_STATUS_SAGA, UPDATE_TASK_DESCRIPTION_SAGA, UPDATE_TASK_SAGA, UPDATE_TIME_TRACKING_SAGA } from "redux/constants/JiraCloneConst";
 import { hideOffcanvas } from "redux/reducers/offcanvasReducer";
 import { hideLoading, showLoading } from "redux/reducers/uiControlReducer";
 import { taskService } from "services/taskService";
@@ -11,21 +11,22 @@ import { getTaskDetailSagaAction } from "./actions/taskAction";
 
 function* createTaskSaga(action) {
     yield put(showLoading());
-    yield delay(2000);
 
     try {
         const { status } = yield call(taskService.createTask, action.newTask);
         if (status === STATUS_CODE.SUCCESS) {
+            yield put(hideOffcanvas());
             yield put(getProjectDetailSagaAction(action.newTask.projectId));
             showNotification('success', 'Success', 'Create task successfully !');
-            yield put(hideOffcanvas());
         }
     } catch (err) {
         console.error(err);
         if (err.response?.data.statusCode === STATUS_CODE.SERVICE_ERROR) {
-            showNotification('error', 'Error', 'Task already exists !');
+            showNotification('error', 'Task already exists !');
+        } else if (err.response?.data.statusCode === STATUS_CODE.FORBIDDEN) {
+            showNotification('error', 'Insufficient permissions !');
         } else {
-            showNotification('error', 'Error', 'Create task fail !');
+            showNotification('error', 'Create task fail !');
         }
     } finally {
         yield put(hideLoading());
@@ -52,6 +53,7 @@ export function* watchGetTaskDetailSaga() {
 }
 
 function* updateTaskSaga(action) {
+    console.log(action);
     try {
         const { data, status } = yield call(taskService.updateTask, action.updatedTask);
         if (status === STATUS_CODE.SUCCESS) {
@@ -77,7 +79,7 @@ function* updateTaskDescriptionSaga(action) {
     } catch (err) {
         console.error(err);
         if (err.response?.data.content === 'user is not assign!') {
-            showNotification('error', 'Error', 'You are not the assigned person !');
+            showNotification('error', 'You are not the assigned person !');
         }
     }
 }
@@ -119,10 +121,8 @@ export function* watchUpdatePrioritySaga() {
 }
 
 function* updateOriginalEstimateSaga(action) {
-    console.log(action);
     try {
         const { status } = yield call(taskService.updateOriginalEstimate, action.data);
-        console.log(status);
         if (status === STATUS_CODE.SUCCESS) {
             yield put(getTaskDetailSagaAction(action.data.taskId));
             yield put(getProjectDetailSagaAction(action.projectId));
@@ -134,4 +134,20 @@ function* updateOriginalEstimateSaga(action) {
 
 export function* watchUpdateOriginalEstimateSaga() {
     yield takeLatest(UPDATE_ORIGINAL_ESTIMATE_SAGA, updateOriginalEstimateSaga);
+}
+
+function* updateTimeTrackingSaga(action) {
+    try {
+        const { status } = yield call(taskService.updateTimeTracking, action.data);
+        if (status === STATUS_CODE.SUCCESS) {
+            yield put(getTaskDetailSagaAction(action.data.taskId));
+            yield put(getProjectDetailSagaAction(action.projectId));
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export function* watchUpdateTimeTrackingSaga() {
+    yield takeLatest(UPDATE_TIME_TRACKING_SAGA, updateTimeTrackingSaga);
 }

@@ -8,7 +8,7 @@ const initialState = {
     showBtn: true,
     offcanvasContent: <p>Empty</p>,
     handleSubmitOffcanvas: () => {
-        console.warning('Default handleSubmitOffcanvas');
+        console.warn('Default handleSubmitOffcanvas');
     }
 };
 

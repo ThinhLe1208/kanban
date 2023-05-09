@@ -4,6 +4,8 @@ import classNames from "classnames/bind";
 
 import styles from "./styles.module.scss";
 import ErrorMessage from "components/ErrorMessage";
+import { useDispatch } from "react-redux";
+import { updatePrioritySagaAction, updateStatusSagaAction } from "redux/saga/actions/taskAction";
 
 const cx = classNames.bind(styles);
 
@@ -19,8 +21,12 @@ export default function SelectField({
   list = [],
   listLabel,
   listValue,
+  api = false,
+  taskDetail,
   ...rest
 }) {
+  const dispatch = useDispatch();
+
   // style tags in the select
   const tagRender = (props) => {
     const { label, /* value , */ closable, onClose } = props;
@@ -47,6 +53,17 @@ export default function SelectField({
 
   // antd handler doesnt give a event param so fake an event for a handler
   const customHandleChangeAntd = (value, name) => {
+    if (api) {
+      switch (name) {
+        case "statusId":
+          dispatch(updateStatusSagaAction(taskDetail.taskId, value, taskDetail.projectId));
+          break;
+        case "priorityId":
+          dispatch(updatePrioritySagaAction(taskDetail.taskId, value, taskDetail.projectId));
+          break;
+        default:
+      }
+    }
     const changeEvent = {
       target: {
         name,

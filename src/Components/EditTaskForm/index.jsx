@@ -1,40 +1,157 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import parse from "html-react-parser";
-import { Avatar, Button, Col, Divider, Input, InputNumber, Row, Select, Slider, Space } from "antd";
-import { SendOutlined, LinkOutlined, DeleteOutlined, CloseOutlined } from "@ant-design/icons";
-import { Editor } from "@tinymce/tinymce-react";
-import classNames from "classnames/bind";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import parse from 'html-react-parser';
+import { Button, Col, Divider, Popover, Row, Space } from 'antd';
+import { SendOutlined, LinkOutlined, DeleteOutlined } from '@ant-design/icons';
+import * as Yup from 'yup';
+import classNames from 'classnames/bind';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 import {
-  updateOriginalEstimateSagaAction,
-  updatePrioritySagaAction,
-  updateStatusSagaAction,
   updateTaskDescriptionSagaAction,
   updateTaskSagaAction,
-} from "redux/saga/actions/taskAction";
+  updateTimeTrackingSagaAction,
+} from 'redux/saga/actions/taskAction';
+import EditorField from 'components/EditorField';
+import SelectField from 'components/SelectField';
+import { useFormik } from 'formik';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBug, faSquareCheck } from '@fortawesome/free-solid-svg-icons';
+import InputField from 'components/InputField';
+import SliderField from 'components/SliderField';
+import CommentBoard from 'components/CommentBoard';
+import Card from 'components/Card';
 
 const cx = classNames.bind(styles);
 
-export default function EditTaskForm() {
-  const dispatch = useDispatch();
+const EditTaskSchema = Yup.object().shape({
+  taskName: Yup.string().required('Please provide an issue name.'),
+});
 
-  // const { projectDetail } = useSelector(state => state.projectReducer);
+export default function EditTaskForm() {
+  const dispatch = useDispatch(); // connect to redux-toolkit store
+
+  const { projectDetail } = useSelector((state) => state.projectReducer);
   const { taskDetail } = useSelector((state) => state.taskReducer);
   const { statusList } = useSelector((state) => state.statusReducer);
   const { priorityList } = useSelector((state) => state.priorityReducer);
-  const { taskTypeList } = useSelector((state) => state.taskTypeReducer);
+  console.log('taskDetail EditTaskForm', taskDetail);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [contentEditor, setContentEditor] = useState(taskDetail.description);
+  let [isEditingName, setIsEditingName] = useState(false);
+  let [isEditingDes, setIsEditingDes] = useState(false);
+  // history values in case user click cancel button, show old values; in case user click accept button, set new values
+  let [contentName, setContentName] = useState(taskDetail.taskName);
+  let [contentEditor, setContentEditor] = useState(taskDetail.description);
+  let [openTracking, setOpenTracking] = useState(false);
 
-  const handleChangeField = (value, name) => {
-    const updatedTask = {
-      ...taskDetail,
-      [name]: value,
-    };
-    dispatch(updateTaskSagaAction(updatedTask));
+  // Formik
+  const { values, errors, touched, handleChange, handleBlur, setFieldValue } = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      taskName: taskDetail?.taskName,
+      statusId: taskDetail?.statusId,
+      projectId: projectDetail?.id,
+      priorityId: taskDetail?.priorityTask.priorityId,
+      description: taskDetail?.description,
+      originalEstimate: 7,
+      timeTrackingSpent: 3,
+      timeTrackingRemaining: 4,
+      listUserAsign: taskDetail?.assigness.map((assig) => assig.name),
+    },
+    validationSchema: EditTaskSchema,
+  });
+
+  const items = [
+    {
+      label: (
+        <Space>
+          <FontAwesomeIcon icon={faSquareCheck} style={{ color: '#03c9d7' }} />
+          <span>new task</span>
+        </Space>
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <Space>
+          <FontAwesomeIcon icon={faBug} style={{ color: '#e46a76' }} />
+          <span>bug</span>
+        </Space>
+      ),
+      key: '1',
+    },
+  ];
+
+  const handleSaveDescription = () => {
+    dispatch(updateTaskDescriptionSagaAction(taskDetail.taskId, values.description, taskDetail.projectId));
+    // set the description 's content to new value
+    setFieldValue('description', contentEditor);
+    // set the old value (history value) to new value
+    setContentEditor(values.description);
+    setIsEditingDes(false);
+  };
+
+  const handleCancelDescription = () => {
+    setIsEditingDes(false);
+    // set the description 's content back to old value (history value)
+    setFieldValue('description', contentEditor);
+  };
+
+  const handleShowDescription = () => {
+    setIsEditingDes(true);
+    // update the description 's content to be the same as the api data
+    setFieldValue('description', taskDetail.description);
+  };
+
+  const renderTaskName = () => {
+    return (
+      <>
+        {isEditingName ? (
+          <div className={cx('row')}>
+            <div className={cx('row')}>
+              <InputField
+                name='taskName'
+                value={values.taskName}
+                error={errors.taskName}
+                touched={touched.taskName}
+                placeholder='Insert task name'
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+            </div>
+            <Space>
+              <Button
+                type='primary'
+                size='small'
+                onClick={() => {
+                  dispatch(updateTaskSagaAction({ ...taskDetail, taskName: values.taskName }));
+                  setIsEditingName(false);
+                  setContentName(values.taskName);
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                type='text'
+                size='small'
+                onClick={() => {
+                  setFieldValue('taskName', contentName);
+                  setIsEditingName(false);
+                }}
+              >
+                Cancel
+              </Button>
+            </Space>
+          </div>
+        ) : (
+          <div className={cx('row')} style={{ marginLeft: '-16px' }}>
+            <Button type='text' onClick={() => setIsEditingName(true)}>
+              <span className={cx('taskName')}>{contentName}</span>
+            </Button>
+          </div>
+        )}
+      </>
+    );
   };
 
   const renderDescription = () => {
@@ -42,252 +159,204 @@ export default function EditTaskForm() {
 
     return (
       <>
-        {isEditing ? (
-          <div>
-            <Editor
-              name="description"
-              apiKey="64iv1bamj3ly5fr482iq34ud6xb2ebvhmf30hyzbx11eauzq"
-              initialValue={taskDetail.description}
-              value={contentEditor}
-              onEditorChange={(v) => setContentEditor(v)}
-              init={{
-                height: 200,
-                menubar: false,
-                plugins: [
-                  "advlist",
-                  "autolink",
-                  "lists",
-                  "link",
-                  "image",
-                  "charmap",
-                  "preview",
-                  "anchor",
-                  "searchreplace",
-                  "visualblocks",
-                  "code",
-                  "fullscreen",
-                  "insertdatetime",
-                  "media",
-                  "table",
-                  "code",
-                  "help",
-                  "wordcount",
-                ],
-                toolbar:
-                  "undo redo | blocks | " +
-                  "bold italic forecolor | alignleft aligncenter " +
-                  "alignright alignjustify | bullist numlist outdent indent | " +
-                  "removeformat | help",
-                content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-              }}
-            />
+        {isEditingDes ? (
+          <div className={cx('row')}>
+            <div className={cx('row')}>
+              <EditorField name='description' height={250} value={values.description} onEditorChange={setFieldValue} />
+            </div>
             <Space>
-              <Button
-                type="primary"
-                onClick={() => {
-                  dispatch(updateTaskDescriptionSagaAction(taskDetail.taskId, contentEditor, taskDetail.projectId));
-                  setIsEditing(false);
-                }}
-              >
+              <Button type='primary' size='small' onClick={handleSaveDescription}>
                 Save
               </Button>
-              <Button type="text" onClick={() => setIsEditing(false)}>
+              <Button type='text' size='small' onClick={handleCancelDescription}>
                 Cancel
               </Button>
             </Space>
           </div>
         ) : (
-          <div onClick={() => setIsEditing(true)}>{jsxDescription}</div>
+          <div style={{ minHeight: '20px' }} onClick={handleShowDescription}>
+            {jsxDescription}
+          </div>
         )}
       </>
     );
   };
 
-  const renderAssignees = () => {
-    return taskDetail.assigness?.map((a, i) => (
-      <div key={i} className="item" style={{ display: "flex" }}>
-        <div className="avatar">
-          <img src={a.avatar} alt="avatar" />
-        </div>
-        <p className="name">
-          {a.name}
-          <i className="fa fa-times" style={{ marginLeft: 5 }} />
-        </p>
-      </div>
-    ));
-  };
-
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx('wrapper')}>
       {/* header */}
-      <Row>
+      <div className={cx('header')}>
         {/* left header */}
-        <Col span={12}>
-          <label htmlFor="typeId">
-            <h6>TYPE</h6>
-          </label>
-          <Select
-            name="typeId"
-            id="typeId"
-            value={taskDetail.typeId}
-            onChange={(value) => handleChangeField(value, "typeId")}
-            style={{ width: "100%" }}
-          >
-            {taskTypeList?.map((s) => (
-              <Select.Option key={s.id} value={s.id}>
-                {s.taskType}
-              </Select.Option>
-            ))}
-          </Select>
-        </Col>
-        {/* right header */}
-        <Col span={12} align="right">
-          <Space>
-            <Button type="text" icon={<SendOutlined />}>
-              Give feedback
-            </Button>
-            <Button type="text" icon={<LinkOutlined />}>
-              Copy link
-            </Button>
-            <Button type="text" icon={<DeleteOutlined />} />
-            <Button type="text" icon={<CloseOutlined />} />
-          </Space>
-        </Col>
-      </Row>
+        <Button type='text' style={{ color: 'var(--sub-text-color)', marginLeft: '-16px' }}>
+          {taskDetail.taskTypeDetail.id === 2 ? items[0].label : items[1].label}-{taskDetail.taskId}
+        </Button>
 
-      <Divider />
+        {/* right header */}
+        <Space>
+          <Button type='text' icon={<SendOutlined />}>
+            Give feedback
+          </Button>
+          <Button type='text' icon={<LinkOutlined />}>
+            Copy link
+          </Button>
+          <Button type='text' icon={<DeleteOutlined />} />
+        </Space>
+      </div>
 
       {/* body */}
-      <Row gutter={24}>
+      <Row gutter={[24, 16]}>
         {/* Leftside */}
-        <Col span={14}>
+        <Col xs={24} md={15}>
           {/* content */}
-          <h1>{taskDetail.taskName}</h1>
+          <Card style={{ marginBottom: '20px' }}>
+            <div className={cx('row')}>{renderTaskName()}</div>
 
-          <p>Desciption</p>
-          {renderDescription()}
-
-          <Divider />
+            <div className={cx('row')}>
+              <p className={cx('description')}>Desciption</p>
+              {renderDescription()}
+            </div>
+          </Card>
 
           {/* comment */}
-          <p>Comments</p>
-
-          <Row>
-            <Col span={2}>
-              <Avatar />
-            </Col>
-            <Col span={22}>
-              <Input name="comment" placeholder="Add a comment..." style={{ width: "90%" }} />
-            </Col>
-          </Row>
-          {/* comment list */}
-          <Row>
-            <Col span={2}>
-              <Avatar />
-            </Col>
-            <Col span={22}>Comment 1</Col>
-          </Row>
-          <Row>
-            <Col span={2}>
-              <Avatar />
-            </Col>
-            <Col span={22}>Comment 2</Col>
-          </Row>
+          <CommentBoard taskDetail={taskDetail} />
         </Col>
 
         {/* Rightside */}
-        <Col span={10}>
-          <label htmlFor="statusId">
-            <h6>STATUS</h6>
-          </label>
-          <Select
-            name="statusId"
-            id="statusId"
-            value={taskDetail.statusId}
-            onChange={(value) => dispatch(updateStatusSagaAction(taskDetail.taskId, value, taskDetail.projectId))}
-            style={{ width: "100%" }}
-          >
-            {statusList?.map((s, i) => (
-              <Select.Option key={i} value={s.statusId}>
-                {s.statusName}
-              </Select.Option>
-            ))}
-          </Select>
+        <Col xs={24} md={9}>
+          <Card>
+            {/* Status */}
+            <div className={cx('row')}>
+              <SelectField
+                label='Status'
+                name='statusId'
+                value={values.statusId}
+                error={errors.statusId}
+                touched={touched.statusId}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                list={statusList}
+                listLabel='statusName'
+                listValue='statusId'
+                // dispatch action-saga
+                api={true}
+                taskDetail={taskDetail}
+              />
+            </div>
 
-          <label htmlFor="listUserAsign">
-            <h6>ASSIGNEES</h6>
-          </label>
-          <div style={{ display: "flex" }}>
-            {renderAssignees()}
-            {taskDetail.assigness?.length ? (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <i className="fa fa-plus" style={{ marginRight: 5 }} />
-                <span>Add more</span>
+            {/* Priority */}
+            <div className={cx('row')}>
+              <SelectField
+                label='Priority'
+                name='priorityId'
+                value={values.priorityId}
+                error={errors.priorityId}
+                touched={touched.priorityId}
+                placeholder='Select priority'
+                onChange={handleChange}
+                onBlur={handleBlur}
+                list={priorityList}
+                listLabel='priority'
+                listValue='priorityId'
+                // dispatch action-saga
+                api={true}
+                taskDetail={taskDetail}
+              />
+            </div>
+
+            {/* Member */}
+            <div className={cx('row')}>
+              <SelectField
+                label='Assign user'
+                name='listUserAsign'
+                value={values.listUserAsign}
+                defaultValue={values.listUserAsign}
+                error={errors.listUserAsign}
+                touched={touched.listUserAsign}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                list={projectDetail.members}
+                listLabel='name'
+                listValue='userId'
+                filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                mode='multiple'
+                showSearch
+                allowClear
+              />
+            </div>
+
+            {/* Time tracking */}
+            <Popover
+              content={
+                <>
+                  <InputField
+                    label='Time spent (hours)'
+                    name='timeTrackingSpent'
+                    type='number'
+                    value={values.timeTrackingSpent}
+                    error={errors.timeTrackingSpent}
+                    touched={touched.timeTrackingSpent}
+                    placeholder='Insert time spent'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    min={0}
+                  />
+                  <div style={{ marginTop: '8px' }}>
+                    <InputField
+                      label='Time remaining (hours)'
+                      name='timeTrackingRemaining'
+                      type='number'
+                      value={values.timeTrackingRemaining}
+                      error={errors.timeTrackingRemaining}
+                      touched={touched.timeTrackingRemaining}
+                      placeholder='Insert time remaning'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      min={0}
+                    />
+                  </div>
+                  <div style={{ marginTop: '8px', textAlign: 'end' }}>
+                    <Button
+                      type='primary'
+                      onClick={() => {
+                        dispatch(
+                          updateTimeTrackingSagaAction(
+                            taskDetail.taskId,
+                            values.timeTrackingSpent,
+                            values.timeTrackingRemaining,
+                            projectDetail.id
+                          )
+                        );
+                        setOpenTracking(false);
+                      }}
+                    >
+                      Done
+                    </Button>
+                  </div>
+                </>
+              }
+              trigger='click'
+              open={openTracking}
+              onOpenChange={(e) => setOpenTracking(e)}
+            >
+              <div className={cx('row')}>
+                <SliderField
+                  label='Time Tracking'
+                  name='timeTrackingSpent'
+                  spentValue={values.timeTrackingSpent}
+                  remainValue={values.timeTrackingRemaining}
+                  onChange={handleChange}
+                  api={true}
+                  taskDetail={taskDetail}
+                />
               </div>
-            ) : (
-              <p>Unassigned</p>
-            )}
-          </div>
-
-          <label htmlFor="priorityId">
-            <h6>PRIORITY</h6>
-          </label>
-          <Select
-            name="priorityId"
-            id="priorityId"
-            value={taskDetail.priorityTask?.priorityId}
-            onChange={(value) => dispatch(updatePrioritySagaAction(taskDetail.taskId, value, taskDetail.projectId))}
-            style={{ width: "100%" }}
-          >
-            {priorityList?.map((s, i) => (
-              <Select.Option key={i} value={s.priorityId}>
-                {s.priority}
-              </Select.Option>
-            ))}
-          </Select>
-
-          <label htmlFor="originalEstimate">
-            <h6>ORIGINAL ESTIMATE (HOURS)</h6>
-          </label>
-          <InputNumber
-            name="originalEstimate"
-            value={taskDetail.originalEstimate}
-            min={0}
-            placeholder="Number"
-            onChange={(value) =>
-              dispatch(updateOriginalEstimateSagaAction(taskDetail.taskId, value, taskDetail.projectId))
-            }
-          />
-
-          <label htmlFor="timeTracking">
-            <h6>TIME TRACKING</h6>
-          </label>
-          <Slider
-            name="timeTracking"
-            value={taskDetail.timeTrackingSpent}
-            disabled
-            min={0}
-            max={taskDetail.timeTrackingSpent + taskDetail.timeTrackingRemaining}
-          />
-
-          <Row>
-            <Col span={12}>
-              <p>{taskDetail.timeTrackingSpent !== 0 ? `${taskDetail.timeTrackingSpent}h logged` : "No time logged"}</p>
-            </Col>
-            <Col span={12}>
-              <p style={{ textAlign: "right" }}>
-                {taskDetail.timeTrackingRemaining
-                  ? `${taskDetail.timeTrackingRemaining}h remaining`
-                  : `${taskDetail.timeTrackingSpent + taskDetail.timeTrackingRemaining}h estimated`}
-              </p>
-            </Col>
-          </Row>
+            </Popover>
+          </Card>
 
           <Divider />
 
           {/* time */}
-          <div style={{ color: "#929398" }}>Create at a month ago</div>
-          <div style={{ color: "#929398" }}>Update at a few seconds ago</div>
+          <div style={{ color: '#929398' }}>Create at a month ago</div>
+          <div style={{ color: '#929398' }}>Update at a few seconds ago</div>
         </Col>
       </Row>
     </div>

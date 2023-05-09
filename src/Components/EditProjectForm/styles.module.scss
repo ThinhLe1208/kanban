@@ -1,0 +1,13 @@
+.wrapper {
+  width: 100vw;
+  padding: 20px;
+
+  @media only screen and (min-width: 576px) {
+    width: 576px;
+    padding: 14px 20px;
+  }
+
+  .row {
+    margin-bottom: var(--row-space-form);
+  }
+}

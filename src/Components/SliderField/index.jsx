@@ -3,11 +3,26 @@ import classNames from "classnames/bind";
 
 import styles from "./styles.module.scss";
 import { Col, Row, Slider } from "antd";
+import { useDispatch } from "react-redux";
+import { updateOriginalEstimateSagaAction } from "redux/saga/actions/taskAction";
 
 const cx = classNames.bind(styles);
 
-export default function SliderField({ label, name, spentValue, remainValue, onChange, disabled = false }) {
+export default function SliderField({
+  label,
+  name,
+  spentValue,
+  remainValue,
+  onChange,
+  disabled = false,
+  api = false,
+  taskDetail,
+}) {
+  const dispatch = useDispatch();
   const customHandleChangeAntd = (value, name) => {
+    if (api) {
+      dispatch(updateOriginalEstimateSagaAction(taskDetail.taskId, value, taskDetail.projectId));
+    }
     const changeEvent = {
       target: {
         name,

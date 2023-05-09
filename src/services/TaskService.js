@@ -14,6 +14,8 @@ class TaskService extends BaseService {
     updatePriority = data => this.put('Project/updatePriority', data);
 
     updateOriginalEstimate = data => this.put('Project/updateEstimate', data);
+
+    updateTimeTracking = data => this.put('Project/updateTimeTracking', data);
 }
 
 export const taskService = new TaskService();

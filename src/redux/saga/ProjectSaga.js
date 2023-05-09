@@ -1,4 +1,4 @@
-import { call, delay, put, takeLatest } from "redux-saga/effects";
+import { call, put, select, takeLatest } from "redux-saga/effects";
 import { ASSIGN_USER_PROJECT_SAGA, CREATE_PROJECT_SAGA, DELETE_PROJECT_SAGA, GET_ALL_PROJECT_SAGA, GET_PROJECT_DETAIL_SAGA, REMOVE_USER_PROJECT_SAGA, UPDATE_PROJECT_SAGA } from "redux/constants/JiraCloneConst";
 import { hideLoading, showLoading } from "redux/reducers/uiControlReducer";
 import { getProjectList, setProjectDetail } from "redux/reducers/projectReducer";
@@ -11,20 +11,19 @@ import { showNotification } from "util/notification";
 
 function* createProjectSaga(action) {
     yield put(showLoading());
-    yield delay(500);
 
     try {
         const { status } = yield call(projectService.createProjectAuthorization, action.newProject);
         if (status === STATUS_CODE.SUCCESS) {
-            showNotification('success', 'Success', 'Create project successfully !');
+            showNotification('success', 'Create project successfully !');
             yield history.push('/project/management');
         }
     } catch (err) {
-        showNotification('error', 'Error', 'Create project fail !');
+        showNotification('error', 'Create project fail !');
         console.error(err);
+    } finally {
+        yield put(hideLoading());
     }
-
-    yield put(hideLoading());
 }
 
 export function* watchCreateProjectSaga() {
@@ -39,6 +38,12 @@ function* getAllProjectSaga() {
         }
     } catch (err) {
         console.error(err);
+    } finally {
+        // get loading state from redux store
+        const { isLoading } = yield select(state => state.uiControlReducer);
+        if (isLoading) {
+            yield put(hideLoading());
+        }
     }
 }
 
@@ -63,19 +68,20 @@ export function* watchGetProjectDetailSaga() {
 
 function* updateProjectSaga(action) {
     yield put(showLoading());
-    yield delay(500);
 
     try {
         const { status } = yield call(projectService.updateProject, action.updatedProject);
         if (status === STATUS_CODE.SUCCESS) {
-            yield put(getAllProjectSagaAction());
             yield put(hideOffcanvas());
+            yield put(getAllProjectSagaAction());
+            // hide loading in getAllProjectSagaAction
+            showNotification('success', 'Edit project successfully !');
         }
     } catch (err) {
+        yield put(hideLoading());
+        showNotification('error', 'Edit project fail !');
         console.error(err);
     }
-
-    yield put(hideLoading());
 }
 
 export function* watchUpdateProjectSaga() {
@@ -84,20 +90,19 @@ export function* watchUpdateProjectSaga() {
 
 function* deleteProjectSaga(action) {
     yield put(showLoading());
-    yield delay(500);
 
     try {
         const { status } = yield call(projectService.deleteProject, action.id);
         if (status === STATUS_CODE.SUCCESS) {
             yield put(getAllProjectSagaAction());
-            showNotification('success', 'Success', 'Delete project successfully !');
+            // hide loading in getAllProjectSagaAction
+            showNotification('success', 'Delete project successfully !');
         }
     } catch (err) {
-        showNotification('error', 'Error', 'Delete project fail !');
+        yield put(hideLoading());
+        showNotification('error', 'Delete project fail !');
         console.error(err);
     }
-
-    yield put(hideLoading());
 }
 
 export function* watchDeleteProjectSaga() {
@@ -106,20 +111,23 @@ export function* watchDeleteProjectSaga() {
 
 function* assignUserProjectSaga(action) {
     yield put(showLoading());
-    yield delay(500);
 
     try {
         const { status } = yield call(projectService.assignUserProject, action.userProject);
         if (status === STATUS_CODE.SUCCESS) {
             yield put(getAllProjectSagaAction());
-            showNotification('success', 'Success', 'Add a member successfully !');
+            // hide loading in getAllProjectSagaAction
+            showNotification('success', 'Add member successfully !');
         }
     } catch (err) {
-        showNotification('error', 'Error', 'Add a member fail !');
+        yield put(hideLoading());
+        if (err.response.data.statusCode === STATUS_CODE.FORBIDDEN) {
+            showNotification('error', 'Insufficient permissions !');
+        } else {
+            showNotification('error', 'Add member fail !');
+        }
         console.error(err);
     }
-
-    yield put(hideLoading());
 }
 
 export function* watchAssignUserProjectSaga() {
@@ -128,20 +136,23 @@ export function* watchAssignUserProjectSaga() {
 
 function* removeUserProjectSaga(action) {
     yield put(showLoading());
-    yield delay(500);
 
     try {
         const { status } = yield call(projectService.removeUserProject, action.userProject);
         if (status === STATUS_CODE.SUCCESS) {
             yield put(getAllProjectSagaAction());
-            showNotification('success', 'Success', 'Remove a member successfully !');
+            // hide loading in getAllProjectSagaAction
+            showNotification('success', 'Remove member successfully !');
         }
     } catch (err) {
-        showNotification('error', 'Error', 'Remove a member fail !');
+        yield put(hideLoading());
+        if (err.response.data.statusCode === STATUS_CODE.FORBIDDEN) {
+            showNotification('error', 'Insufficient permissions !');
+        } else {
+            showNotification('error', 'Remove member fail !');
+        }
         console.error(err);
     }
-
-    yield put(hideLoading());
 }
 
 export function* watchRemoveUserProjectSaga() {

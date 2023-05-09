@@ -4,6 +4,13 @@
 
   .content {
     background-color: var(--grey);
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    .outlet {
+      overflow-y: auto;
+    }
   }
 }

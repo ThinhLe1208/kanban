@@ -12,7 +12,7 @@ export default function Loading() {
   if (isLoading) {
     return (
       <div className={cx("bgLoading")}>
-        <img src={require("../../assets/img/loading.png")} alt="loading" />
+        <img src={require("../../assets/images/loading.png")} alt="loading" />
       </div>
     );
   }

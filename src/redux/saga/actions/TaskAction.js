@@ -42,9 +42,14 @@ export const updatePrioritySagaAction = (taskId, priorityId, projectId) => ({
     projectId
 });
 
-export const updateTimeTrackingSagaAction = updatedTimeTracking => ({
+export const updateTimeTrackingSagaAction = (taskId, timeTrackingSpent, timeTrackingRemaining, projectId) => ({
     type: UPDATE_TIME_TRACKING_SAGA,
-    updatedTimeTracking
+    data: {
+        taskId,
+        timeTrackingSpent,
+        timeTrackingRemaining
+    },
+    projectId
 });
 
 export const updateOriginalEstimateSagaAction = (taskId, originalEstimate, projectId) => ({
