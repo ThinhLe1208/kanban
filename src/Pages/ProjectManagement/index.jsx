@@ -395,8 +395,7 @@ export default function ProjectManagement() {
       ),
     },
   ];
-  console.log(projectCategoryArr);
-  console.log(projectCategoryArr?.map((ctg) => ({ text: ctg.projectCategoryName, value: ctg.id })));
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx(`heading`)}>

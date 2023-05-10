@@ -10,19 +10,19 @@ import { hideOffcanvas } from "redux/reducers/offcanvasReducer";
 import { showNotification } from "util/notification";
 
 function* createProjectSaga(action) {
-    yield put(showLoading());
-
     try {
-        const { status } = yield call(projectService.createProjectAuthorization, action.newProject);
+        const { data, status } = yield call(projectService.createProjectAuthorization, action.newProject);
         if (status === STATUS_CODE.SUCCESS) {
             showNotification('success', 'Create project successfully !');
-            yield history.push('/project/management');
+            yield history.push(`/project/board/${data.content.id}`);
         }
     } catch (err) {
-        showNotification('error', 'Create project fail !');
+        if (err.response.status === STATUS_CODE.SERVICE_ERROR) {
+            showNotification('error', 'Project name already exists !');
+        } else {
+            showNotification('error', 'Create project fail !');
+        }
         console.error(err);
-    } finally {
-        yield put(hideLoading());
     }
 }
 

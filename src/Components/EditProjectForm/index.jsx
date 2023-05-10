@@ -24,7 +24,7 @@ export default function EditProjectForm() {
   const { projectCategoryArr } = useSelector((state) => state.projectCategoryReducer);
   const { projectEdit } = useSelector((state) => state.projectReducer);
   const { projectName, description, categoryId, id } = projectEdit;
-  console.log('projectEdit', projectEdit);
+
   // Formik
   const { values, errors, touched, handleSubmit, handleChange, handleBlur, setFieldValue } = useFormik({
     enableReinitialize: true,

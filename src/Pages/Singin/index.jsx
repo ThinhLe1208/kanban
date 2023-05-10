@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Navigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -13,7 +13,6 @@ import styles from './styles.module.scss';
 import InputField from 'components/InputField';
 import Card from 'components/Card';
 import { signInSagaAction } from 'redux/sagas/actions/userAction';
-import { CURRENT_USER, REMEMBER_USER } from 'util/constants/settingSystem';
 
 const cx = classNames.bind(styles);
 
@@ -38,11 +37,6 @@ export default function SignIn() {
     },
   });
 
-  // check the user 's remember status
-  if (localStorage.getItem(CURRENT_USER) && localStorage.getItem(REMEMBER_USER) === 'true') {
-    return <Navigate to='/project/management' replace={true} />;
-  }
-
   return (
     <div className={cx('wrapper')}>
       <Card className={cx('card')}>
@@ -51,7 +45,7 @@ export default function SignIn() {
             <h3>Welcome to Bankan</h3>
             <div>
               <span className={cx('question')}>New to Bankan?</span>
-              <NavLink to='signup'>
+              <NavLink to='/signup'>
                 <Button type='link'>Create an account</Button>
               </NavLink>
             </div>

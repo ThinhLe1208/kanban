@@ -35,7 +35,6 @@ export default function EditTaskForm() {
   const { taskDetail } = useSelector((state) => state.taskReducer);
   const { statusList } = useSelector((state) => state.statusReducer);
   const { priorityList } = useSelector((state) => state.priorityReducer);
-  console.log('taskDetail EditTaskForm', taskDetail);
 
   let [isEditingName, setIsEditingName] = useState(false);
   let [isEditingDes, setIsEditingDes] = useState(false);
@@ -266,7 +265,7 @@ export default function EditTaskForm() {
             {/* Member */}
             <div className={cx('row')}>
               <SelectField
-                label='Assign user'
+                label='Assign member'
                 name='listUserAsign'
                 value={values.listUserAsign}
                 defaultValue={values.listUserAsign}

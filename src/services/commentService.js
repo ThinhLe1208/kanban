@@ -1,4 +1,4 @@
-const { default: BaseService } = require("./BaseService");
+import BaseService from "./BaseService";
 
 class CommentService extends BaseService {
     getAllCommentService = taskId => this.get(`Comment/getAll?taskId=${taskId}`);

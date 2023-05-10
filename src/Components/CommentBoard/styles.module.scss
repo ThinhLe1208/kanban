@@ -5,7 +5,11 @@
     margin-bottom: 14px;
   }
 
-  .commentBtns {
-    margin-top: var(--label-bottom-space);
+  .rightSide {
+    padding-left: 10px;
+
+    .commentBtns {
+      margin-top: var(--label-bottom-space);
+    }
   }
 }

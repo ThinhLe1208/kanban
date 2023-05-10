@@ -11,7 +11,6 @@ function* getAllCommentSaga(action) {
     try {
         const { data, status } = yield call(commentService.getAllCommentService, action.taskId);
         if (status === STATUS_CODE.SUCCESS) {
-            console.log(data);
             yield put(setCommentList(data.content));
         }
     } catch (err) {
@@ -60,11 +59,9 @@ export function* watchUpdateCommentSaga() {
 }
 
 function* deleteCommentSaga(action) {
-    console.log(action);
     try {
-        const { data, status } = yield call(commentService.deleteCommentService, action.commentId);
+        const { status } = yield call(commentService.deleteCommentService, action.commentId);
         if (status === STATUS_CODE.SUCCESS) {
-            console.log(data);
             // call api because cant update the commentList in the store of redux, the response of backend is not same format (not include user property)
             yield put(getAllCommentSagaAction(action.taskId));
             showNotification('success', 'Delete comment successfully !');

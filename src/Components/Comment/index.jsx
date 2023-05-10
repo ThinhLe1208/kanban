@@ -17,7 +17,6 @@ export default function Comment({ comment }) {
   const [updatedComment, setUpdatedComment] = useState(contentComment);
   // random comment generation time
   const timeRef = useRef(Math.floor(Math.random() * 24 + 1));
-  console.log('comment Comment', comment);
 
   const handleUpdateComment = () => {
     dispatch(updateCommentSagaAction(id, updatedComment));
@@ -36,7 +35,7 @@ export default function Comment({ comment }) {
   return (
     <div className={cx('wrapper')}>
       <Row>
-        <Col span={2}>
+        <Col span={2} className={cx('leftSide')}>
           <Avatar src={user.avatar} />
         </Col>
 

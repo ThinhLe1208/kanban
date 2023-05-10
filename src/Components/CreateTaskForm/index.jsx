@@ -142,7 +142,7 @@ export default function CreateTaskForm() {
 
         <div className={cx('row')}>
           <SelectField
-            label='Assign user'
+            label='Assign member'
             name='listUserAsign'
             value={values.listUserAsign}
             error={errors.listUserAsign}

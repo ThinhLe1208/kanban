@@ -1,6 +1,5 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { GET_USER_BY_PROJECT_ID_SAGA, GET_USER_SAGA, USER_SIGNIN_SAGA, USER_SIGNUP_SAGA } from "redux/constants/JiraCloneConst";
-import { hideLoading, showLoading } from "redux/reducers/uiControlReducer";
 import { getUser, getUserByProjectId, setCurrentUser } from "redux/reducers/userReducer";
 import { userService } from "services/userService";
 import { ACCESS_TOKEN, CURRENT_USER, REMEMBER_USER, STATUS_CODE } from "util/constants/settingSystem";
@@ -41,8 +40,6 @@ export function* watchGetUserByProjectIdSaga() {
 }
 
 function* signInSaga(action) {
-    yield put(showLoading());
-
     try {
         const { data, status } = yield call(userService.signIn, action.userSignIn);
         if (status === STATUS_CODE.SUCCESS) {
@@ -54,12 +51,11 @@ function* signInSaga(action) {
             // save user info to redux store
             yield put(setCurrentUser(data.content));
             // navigate to project manament
-            yield history.push("/project/management");
+            yield history.push("/project/board/12464");
         }
     } catch (err) {
         console.error(err);
         showNotification('error', 'Sign in fail !');
-        yield put(hideLoading());
     }
 }
 
@@ -68,12 +64,9 @@ export function* watchSignInSaga() {
 }
 
 function* signUpSaga(action) {
-    yield put(showLoading());
-
     try {
-        const { data, status } = yield call(userService.signUp, action.userSignUp);
+        const { status } = yield call(userService.signUp, action.userSignUp);
         if (status === STATUS_CODE.SUCCESS) {
-            console.log(data);
             showNotification('success', 'Sign up successfully !');
             // navigate to signin
             yield history.push("/signin");
@@ -85,8 +78,6 @@ function* signUpSaga(action) {
         } else {
             showNotification('error', 'Sign up fail !');
         }
-    } finally {
-        yield put(hideLoading());
     }
 }
 

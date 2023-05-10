@@ -52,7 +52,7 @@ export default function SignUp() {
             <h3>Welcome to Bankan</h3>
             <div>
               <span className={cx('question')}>Already have an Account?</span>
-              <NavLink to='signin'>
+              <NavLink to='/signin'>
                 <Button type='link'>Sign In</Button>
               </NavLink>
             </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Avatar, Button, Col, Input, Row, Space } from 'antd';
+import { Avatar, Button, Col, Divider, Input, Row, Space } from 'antd';
 import classNames from 'classnames/bind';
 
 import styles from './styles.module.scss';
@@ -33,7 +33,6 @@ export default function CommentBoard({ taskDetail }) {
   };
 
   useEffect(() => {
-    console.log('useEffect');
     dispatch(getAllCommentSagaAction(taskId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -43,10 +42,10 @@ export default function CommentBoard({ taskDetail }) {
       <p className={cx('label')}>Comments</p>
 
       <Row style={{ marginBottom: '20px' }}>
-        <Col span={2}>
+        <Col span={2} className={cx('leftSide')}>
           <Avatar src={currentUser.avatar} />
         </Col>
-        <Col span={22}>
+        <Col span={22} className={cx('rightSide')}>
           <Input
             value={contentComment}
             placeholder='Add a comment...'
@@ -72,6 +71,9 @@ export default function CommentBoard({ taskDetail }) {
           )}
         </Col>
       </Row>
+
+      <Divider />
+
       {/* comment list */}
       {renderCommentMessages(commentList)}
     </Card>

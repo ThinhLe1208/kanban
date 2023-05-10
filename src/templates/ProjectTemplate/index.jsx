@@ -12,6 +12,7 @@ import { getAllPrioritySagaAction } from 'redux/sagas/actions/priorityAction';
 import { getAllStatusSagaAction } from 'redux/sagas/actions/statusAction';
 import { getProjectCategorySagaAction } from 'redux/sagas/actions/projectCategoryAction';
 import { ACCESS_TOKEN, CURRENT_USER } from 'util/constants/settingSystem';
+import { showNotification } from 'util/notification';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +33,7 @@ export default function ProjectTemplate() {
 
   // check user signin or not
   if (!localStorage.getItem(ACCESS_TOKEN) || !localStorage.getItem(CURRENT_USER)) {
+    showNotification('error', 'You may need to sign in !');
     return <Navigate to='/error' replace={true} />;
   }
 
