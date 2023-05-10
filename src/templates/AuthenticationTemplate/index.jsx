@@ -11,7 +11,8 @@ const cx = classNames.bind(styles);
 export default function AuthenticationTemplate() {
   // check the user 's remember status
   if (localStorage.getItem(CURRENT_USER) && !!localStorage.getItem(REMEMBER_USER)) {
-    showNotification('info', 'You may need to log out !'); // error
+    // error
+    showNotification('info', 'You may need to log out !');
     return <Navigate to='/project/management' replace={true} />;
   }
 
